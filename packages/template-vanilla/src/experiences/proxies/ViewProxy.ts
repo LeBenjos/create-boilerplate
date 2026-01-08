@@ -4,35 +4,35 @@ import type ViewBase from '../views/bases/ViewBase';
 
 type ViewConstructor<T extends ViewBase> = new (id: ViewId) => T;
 
-export default class ViewProxy {
-    private static _Views = new Map<ViewId, ViewBase>();
+class ViewProxy {
+    private _views = new Map<ViewId, ViewBase>();
 
-    public static Init(): void {
+    public init(): void {
         //
     }
 
-    public static Add(viewId: ViewId, ViewClass: ViewConstructor<ViewBase>): void {
-        if (ViewProxy._Views.has(viewId)) {
+    public add(viewId: ViewId, ViewClass: ViewConstructor<ViewBase>): void {
+        if (this._views.has(viewId)) {
             throw new Error(`ViewProxy: View with id "${viewId}" already exists.`);
         }
 
-        ViewProxy._Views.set(viewId, new ViewClass(viewId));
+        this._views.set(viewId, new ViewClass(viewId));
     }
 
-    public static GetById<T extends ViewBase = ViewBase>(viewId: ViewId): T {
-        const view = ViewProxy._Views.get(viewId);
+    public getById<T extends ViewBase = ViewBase>(viewId: ViewId): T {
+        const view = this._views.get(viewId);
         if (!view) throw new Error(`ViewProxy: View with id "${viewId}" not found.`);
         return view as T;
     }
 
-    public static Has(viewId: ViewId): boolean {
-        return ViewProxy._Views.has(viewId);
+    public has(viewId: ViewId): boolean {
+        return this._views.has(viewId);
     }
 
-    public static GetAll<T extends ViewBase>(type?: ViewType): T[] {
+    public getAll<T extends ViewBase>(type?: ViewType): T[] {
         const views: T[] = [];
 
-        ViewProxy._Views.forEach((view) => {
+        this._views.forEach((view) => {
             if (type && type === view.type) {
                 views.push(view as T);
             } else {
@@ -43,3 +43,5 @@ export default class ViewProxy {
         return views;
     }
 }
+
+export default new ViewProxy();

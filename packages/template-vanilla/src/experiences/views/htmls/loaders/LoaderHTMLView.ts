@@ -8,18 +8,18 @@ export default class LoaderHTMLView extends HTMLViewBase {
     declare private _htmlLoader: HTMLTemplateLoader;
 
     constructor(id: ViewId) {
-        super(id, DomUtils.getLoader());
+        super(id, DomUtils.GetLoader());
 
         this._generateLoader();
 
-        LoaderManager.OnBeginLoad.add(this._onBeginLoad);
-        LoaderManager.OnFinishLoad.add(this._onFinishLoad);
+        LoaderManager.onBeginLoad.add(this._onBeginLoad);
+        LoaderManager.onFinishLoad.add(this._onFinishLoad);
     }
 
     private _generateLoader(): void {
         this._htmlLoader = new HTMLTemplateLoader();
         this._htmlContainer.appendChild(this._htmlLoader.htmlElement);
-        DomUtils.getLoader().appendChild(this._htmlContainer);
+        DomUtils.GetLoader().appendChild(this._htmlContainer);
     }
 
     private readonly _onBeginLoad = (): void => {

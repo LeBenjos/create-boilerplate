@@ -8,7 +8,7 @@ export default abstract class HTMLViewBase extends ViewBase {
     private readonly _parentElement: HTMLElement;
     protected readonly _htmlContainer: HTMLDivElement;
 
-    constructor(id: ViewId, parentElement: HTMLElement = DomUtils.getApp()) {
+    constructor(id: ViewId, parentElement: HTMLElement = DomUtils.GetApp()) {
         super(id, ViewType.HTML);
         this._parentElement = parentElement;
         this._htmlContainer = document.createElement('div');

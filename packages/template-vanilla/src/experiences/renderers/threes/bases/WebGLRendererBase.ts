@@ -1,5 +1,5 @@
+import { DomResizeManager } from '@benjos/cookware';
 import { Camera, Scene, WebGLRenderer, type WebGLRendererParameters } from 'three';
-import { ResizeManager } from '../../../managers/ResizeManager';
 
 export default abstract class WebGLRendererBase extends WebGLRenderer {
     private readonly _scene: Scene;
@@ -19,8 +19,8 @@ export default abstract class WebGLRendererBase extends WebGLRenderer {
     }
 
     public resize(): void {
-        this.setSize(ResizeManager.Width, ResizeManager.Height);
-        this.setPixelRatio(ResizeManager.PixelRatio);
+        this.setSize(DomResizeManager.width, DomResizeManager.height);
+        this.setPixelRatio(DomResizeManager.pixelRatio);
     }
 
     public update(_dt: number): void {

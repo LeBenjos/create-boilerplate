@@ -8,7 +8,7 @@ export default abstract class ThreeViewBase extends ViewBase {
     protected _scene: Scene;
     protected _container: Object3D;
 
-    constructor(id: ViewId, scene: Scene = MainThree.Scene) {
+    constructor(id: ViewId, scene: Scene = MainThree.scene) {
         super(id, ViewType.THREE);
 
         this._scene = scene;

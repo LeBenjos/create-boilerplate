@@ -1,48 +1,26 @@
+import { DomResizeManager } from '@benjos/cookware';
 import { Object3D, OrthographicCamera, PerspectiveCamera } from 'three';
 import type { CameraId } from '../../../constants/experiences/CameraId';
-import { CameraType } from '../../../constants/experiences/CameraType';
 import MainThree from '../../../engines/threes/MainThree';
-import { ResizeManager } from '../../../managers/ResizeManager';
+import { ThreeCameraOptions, ThreeCameraType, ThreeControls } from '../../../types/cameraTypes';
 
-export interface IThreeCameraOptions {
-    type: CameraType;
-    fov?: number;
-    aspect?: number;
-    near?: number;
-    far?: number;
-    left?: number;
-    right?: number;
-    top?: number;
-    bottom?: number;
-}
-
-export interface IThreeControls {
-    update(delta?: number): void;
-    enabled: boolean;
-    dispose(): void;
-}
-
-export default abstract class ThreeCameraControllerBase<T extends IThreeControls = IThreeControls> extends Object3D {
-    protected readonly _cameraId: CameraId;
-    declare protected _camera: PerspectiveCamera | OrthographicCamera;
-    declare protected _container: Object3D;
-    declare protected _controls: T;
-
-    //#region Constants
-    //
-    private static readonly _DEFAULT_CAMERA_OPTIONS: IThreeCameraOptions = {
-        type: CameraType.PERSPECTIVE,
+export default abstract class ThreeCameraControllerBase<T extends ThreeControls = ThreeControls> extends Object3D {
+    private static readonly _DEFAULT_CAMERA_OPTIONS: ThreeCameraOptions = {
+        type: ThreeCameraType.PERSPECTIVE,
         fov: 75,
         aspect: window.innerWidth / window.innerHeight,
         near: 0.1,
         far: 1000,
     };
-    //
-    //#endregion
+
+    protected readonly _cameraId: CameraId;
+    declare protected _camera: PerspectiveCamera | OrthographicCamera;
+    declare protected _container: Object3D;
+    declare protected _controls: T;
 
     constructor(
         cameraId: CameraId,
-        cameraOptions: IThreeCameraOptions = ThreeCameraControllerBase._DEFAULT_CAMERA_OPTIONS
+        cameraOptions: ThreeCameraOptions = ThreeCameraControllerBase._DEFAULT_CAMERA_OPTIONS
     ) {
         super();
         this._cameraId = cameraId;
@@ -50,7 +28,7 @@ export default abstract class ThreeCameraControllerBase<T extends IThreeControls
         this._generateContainer();
         this._generateCamera(cameraOptions);
 
-        MainThree.Scene.add(this);
+        MainThree.scene.add(this);
     }
 
     private _generateContainer(): void {
@@ -58,8 +36,8 @@ export default abstract class ThreeCameraControllerBase<T extends IThreeControls
         this.add(this._container);
     }
 
-    private _generateCamera(cameraOptions: IThreeCameraOptions): void {
-        if (cameraOptions.type === CameraType.PERSPECTIVE) {
+    private _generateCamera(cameraOptions: ThreeCameraOptions): void {
+        if (cameraOptions.type === ThreeCameraType.PERSPECTIVE) {
             this._camera = new PerspectiveCamera(
                 cameraOptions.fov,
                 cameraOptions.aspect,
@@ -88,7 +66,7 @@ export default abstract class ThreeCameraControllerBase<T extends IThreeControls
     }
 
     public resize(): void {
-        if (this._camera instanceof PerspectiveCamera) this._camera.aspect = ResizeManager.Width / ResizeManager.Height;
+        if (this._camera instanceof PerspectiveCamera) this._camera.aspect = DomResizeManager.width / DomResizeManager.height;
         this._camera.updateProjectionMatrix();
     }
 

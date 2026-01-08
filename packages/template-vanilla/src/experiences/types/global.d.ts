@@ -1,10 +1,9 @@
-import type Experience from '../Experience';
+import { MainThree } from "../engines/threes/MainThree";
 
 declare global {
     interface Window {
-        experience: Experience;
+        mainThree: MainThree;
     }
 }
 
 export { };
-

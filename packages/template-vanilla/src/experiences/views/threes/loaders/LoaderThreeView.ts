@@ -8,13 +8,13 @@ export default class LoaderThreeView extends ThreeViewBase {
     declare private _threeLoader: ThreeTemplateLoader;
 
     constructor(id: ViewId) {
-        super(id, MainThree.LoaderScene);
+        super(id, MainThree.loaderScene);
 
         this._isVisible = true;
         this._generateLoader();
 
-        LoaderManager.OnBeginLoad.add(this._onBeginLoad);
-        LoaderManager.OnFinishLoad.add(this._onFinishLoad);
+        LoaderManager.onBeginLoad.add(this._onBeginLoad);
+        LoaderManager.onFinishLoad.add(this._onFinishLoad);
     }
 
     private _generateLoader(): void {

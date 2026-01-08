@@ -1,4 +1,4 @@
-import { DomUtils } from '@benjos/cookware';
+import { DomKeyboardManager, DomResizeManager, DomUtils, TickerManager } from '@benjos/cookware';
 import { KeyboardConstant } from '@benjos/spices';
 import { MeshStandardMaterial, Scene } from 'three';
 import type ThreeCameraControllerBase from '../../cameras/threes/bases/ThreeCameraControllerBase';
@@ -8,10 +8,7 @@ import MainThreeCameraController from '../../cameras/threes/MainThreeCameraContr
 import { CameraId } from '../../constants/experiences/CameraId';
 import { ViewId } from '../../constants/experiences/ViewId';
 import DebugManager from '../../managers/DebugManager';
-import { KeyboardManager } from '../../managers/KeyboardManager';
-import { ResizeManager } from '../../managers/ResizeManager';
 import ThreeCameraControllerManager from '../../managers/threes/ThreeCameraControllerManager';
-import TickerManager from '../../managers/TickerManager';
 import ViewProxy from '../../proxies/ViewProxy';
 import WebGLRendererBase from '../../renderers/threes/bases/WebGLRendererBase';
 import LoaderRenderer from '../../renderers/threes/LoaderRenderer';
@@ -19,18 +16,7 @@ import Renderer from '../../renderers/threes/Renderer';
 import LoaderThreeView from '../../views/threes/loaders/LoaderThreeView';
 import WorldThreeView from '../../views/threes/worlds/WorldThreeView';
 
-export default class MainThree {
-    private static _DomElementContainer: HTMLElement;
-    private static _LoaderDomElementContainer: HTMLElement;
-    private static _Scene: Scene;
-    private static _LoaderScene: Scene;
-    private static _CameraController: ThreeCameraControllerBase;
-    private static _Renderer: Renderer;
-    private static _LoaderRenderer: WebGLRendererBase;
-    private static _DebugWireframeMaterial: MeshStandardMaterial;
-
-    //#region Constants
-    //
+class MainThree {
     private static readonly _DEBUG_WIREFRAME_MATERIAL_COLOR: number = 0x3f79f3;
     private static readonly _TOGGLE_SWITCH_TO_DEBUG_CAMERA_KEYS: string[] = [
         KeyboardConstant.CODES.SHIFT_LEFT,
@@ -40,132 +26,142 @@ export default class MainThree {
         KeyboardConstant.CODES.SHIFT_LEFT,
         KeyboardConstant.CODES.KEY_W,
     ];
-    //
-    //#endregion
 
-    public static Init(): void {
-        TickerManager.Add(MainThree.Update);
+    declare private _domElementContainer: HTMLElement;
+    declare private _loaderDomElementContainer: HTMLElement;
+    declare private _scene: Scene;
+    declare private _loaderScene: Scene;
+    declare private _cameraController: ThreeCameraControllerBase;
+    declare private _renderer: Renderer;
+    declare private _loaderRenderer: WebGLRendererBase;
+    declare private _debugWireframeMaterial: MeshStandardMaterial;
 
-        MainThree._DomElementContainer = DomUtils.getApp();
-        MainThree._LoaderDomElementContainer = DomUtils.getLoader();
+    public init(): void {
+        TickerManager.add(this._update);
 
-        MainThree._GenerateScenes();
-        MainThree._GenerateCameras();
-        MainThree._GenerateRenderers();
+        this._domElementContainer = DomUtils.GetApp();
+        this._loaderDomElementContainer = DomUtils.GetLoader();
 
-        MainThree._OnResize();
-        ResizeManager.OnResize.add(MainThree._OnResize);
+        this._generateScenes();
+        this._generateCameras();
+        this._generateRenderers();
 
-        MainThree._GenerateViews();
+        this._onResize();
+        DomResizeManager.onResize.add(this._onResize);
 
-        if (DebugManager.IsActive) {
-            window.experience = MainThree;
-            KeyboardManager.OnKeyUp.add(MainThree._OnKeyUp);
+        this._generateViews();
+
+        if (DebugManager.isActive) {
+            window.mainThree = this;
+            DomKeyboardManager.onKeyUp.add(this._onKeyUp);
         }
     }
 
-    private static _GenerateScenes(): void {
-        MainThree._Scene = new Scene();
-        MainThree._LoaderScene = new Scene();
+    private _generateScenes(): void {
+        this._scene = new Scene();
+        this._loaderScene = new Scene();
 
-        if (DebugManager.IsActive) {
-            MainThree._DebugWireframeMaterial = new MeshStandardMaterial({
+        if (DebugManager.isActive) {
+            this._debugWireframeMaterial = new MeshStandardMaterial({
                 wireframe: true,
                 color: MainThree._DEBUG_WIREFRAME_MATERIAL_COLOR,
             });
         }
     }
 
-    private static _GenerateViews(): void {
-        ViewProxy.Add(ViewId.THREE_LOADER, LoaderThreeView);
-        ViewProxy.Add(ViewId.THREE_WORLD, WorldThreeView);
+    private _generateViews(): void {
+        ViewProxy.add(ViewId.THREE_LOADER, LoaderThreeView);
+        ViewProxy.add(ViewId.THREE_WORLD, WorldThreeView);
     }
 
-    private static _GenerateCameras(): void {
-        ThreeCameraControllerManager.Add(new MainThreeCameraController(), true);
-        ThreeCameraControllerManager.Add(new LoaderThreeCameraController());
-        MainThree._CameraController = ThreeCameraControllerManager.Get(CameraId.THREE_MAIN);
+    private _generateCameras(): void {
+        ThreeCameraControllerManager.add(new MainThreeCameraController(), true);
+        ThreeCameraControllerManager.add(new LoaderThreeCameraController());
+        this._cameraController = ThreeCameraControllerManager.get(CameraId.THREE_MAIN);
 
-        if (DebugManager.IsActive) {
-            ThreeCameraControllerManager.Add(new DebugThreeCameraController());
+        if (DebugManager.isActive) {
+            ThreeCameraControllerManager.add(new DebugThreeCameraController());
         }
 
-        ThreeCameraControllerManager.OnActiveThreeCameraControllerChange.add(MainThree._OnActiveCameraControllerChange);
+        ThreeCameraControllerManager.onActiveThreeCameraControllerChange.add(this._onActiveCameraControllerChange);
     }
 
-    private static _GenerateRenderers(): void {
-        MainThree._Renderer = new Renderer(MainThree.Scene, MainThree._CameraController.camera, { antialias: true });
-        MainThree._DomElementContainer.appendChild(MainThree._Renderer.domElement);
+    private _generateRenderers(): void {
+        this._renderer = new Renderer(this._scene, this._cameraController.camera, { antialias: true });
+        this._domElementContainer.appendChild(this._renderer.domElement);
 
-        MainThree._LoaderRenderer = new LoaderRenderer(
-            MainThree.LoaderScene,
-            ThreeCameraControllerManager.Get(CameraId.THREE_LOADER).camera
+        this._loaderRenderer = new LoaderRenderer(
+            this._loaderScene,
+            ThreeCameraControllerManager.get(CameraId.THREE_LOADER).camera
         );
-        MainThree._LoaderDomElementContainer.appendChild(MainThree._LoaderRenderer.domElement);
+        this._loaderDomElementContainer.appendChild(this._loaderRenderer.domElement);
     }
 
-    private static _OnActiveCameraControllerChange = (): void => {
-        MainThree._CameraController = ThreeCameraControllerManager.ActiveThreeCameraController;
-        MainThree._Renderer.setCamera(MainThree._CameraController.camera);
-        MainThree._OnResize();
+    private _onActiveCameraControllerChange = (): void => {
+        this._cameraController = ThreeCameraControllerManager.activeThreeCameraController;
+        this._renderer.setCamera(this._cameraController.camera);
+        this._onResize();
     };
 
-    private static readonly _OnKeyUp = (_e: KeyboardEvent): void => {
-        if (DebugManager.IsActive) {
-            if (KeyboardManager.AreAllKeysDown(MainThree._TOGGLE_SWITCH_TO_DEBUG_CAMERA_KEYS)) {
-                ThreeCameraControllerManager.SetActiveCamera(
-                    MainThree._CameraController.cameraId === CameraId.THREE_MAIN
+    private readonly _onKeyUp = (_e: KeyboardEvent): void => {
+        if (DebugManager.isActive) {
+            if (DomKeyboardManager.areAllKeysDown(MainThree._TOGGLE_SWITCH_TO_DEBUG_CAMERA_KEYS)) {
+                ThreeCameraControllerManager.setActiveCamera(
+                    this._cameraController.cameraId === CameraId.THREE_MAIN
                         ? CameraId.THREE_DEBUG
                         : CameraId.THREE_MAIN
                 );
-            } else if (KeyboardManager.AreAllKeysDown(MainThree._TOGGLE_WIREFRAME_KEYS)) {
-                if (MainThree._Scene.overrideMaterial === null) {
-                    MainThree._Scene.overrideMaterial = MainThree._DebugWireframeMaterial;
-                    MainThree._LoaderScene.overrideMaterial = MainThree._DebugWireframeMaterial;
+            } else if (DomKeyboardManager.areAllKeysDown(MainThree._TOGGLE_WIREFRAME_KEYS)) {
+                if (this._scene.overrideMaterial === null) {
+                    this._scene.overrideMaterial = this._debugWireframeMaterial;
+                    this._loaderScene.overrideMaterial = this._debugWireframeMaterial;
                 } else {
-                    MainThree._Scene.overrideMaterial = null;
-                    MainThree._LoaderScene.overrideMaterial = null;
+                    this._scene.overrideMaterial = null;
+                    this._loaderScene.overrideMaterial = null;
                 }
             }
         }
     };
 
-    private static _OnResize = (): void => {
-        MainThree._Renderer.domElement.width = window.innerWidth;
-        MainThree._Renderer.domElement.height = window.innerHeight;
+    private _onResize = (): void => {
+        this._renderer.domElement.width = window.innerWidth;
+        this._renderer.domElement.height = window.innerHeight;
 
-        MainThree._LoaderRenderer.domElement.width = window.innerWidth;
-        MainThree._LoaderRenderer.domElement.height = window.innerHeight;
+        this._loaderRenderer.domElement.width = window.innerWidth;
+        this._loaderRenderer.domElement.height = window.innerHeight;
 
-        MainThree._CameraController.resize();
-        MainThree._Renderer.resize();
-        MainThree._LoaderRenderer.resize();
+        this._cameraController.resize();
+        this._renderer.resize();
+        this._loaderRenderer.resize();
     };
 
-    public static Update = (dt: number): void => {
-        MainThree._CameraController.update(dt);
-        if (ViewProxy.Has(ViewId.THREE_WORLD)) ViewProxy.GetById<WorldThreeView>(ViewId.THREE_WORLD).update(dt);
-        MainThree._Renderer.update(dt);
-        MainThree._LoaderRenderer.update(dt);
+    private _update = (dt: number): void => {
+        this._cameraController.update(dt);
+        if (ViewProxy.has(ViewId.THREE_WORLD)) ViewProxy.getById<WorldThreeView>(ViewId.THREE_WORLD).update(dt);
+        this._renderer.update(dt);
+        this._loaderRenderer.update(dt);
     };
 
     //#region Getters
     //
-    public static get DomElementContainer(): HTMLElement {
-        return this._DomElementContainer;
+    public get domElementContainer(): HTMLElement {
+        return this._domElementContainer;
     }
-    public static get Scene(): Scene {
-        return this._Scene;
+    public get scene(): Scene {
+        return this._scene;
     }
-    public static get LoaderScene(): Scene {
-        return this._LoaderScene;
+    public get loaderScene(): Scene {
+        return this._loaderScene;
     }
-    public static get Renderer(): WebGLRendererBase {
-        return this._Renderer;
+    public get renderer(): WebGLRendererBase {
+        return this._renderer;
     }
-    public static get CameraController(): ThreeCameraControllerBase {
-        return this._CameraController;
+    public get cameraController(): ThreeCameraControllerBase {
+        return this._cameraController;
     }
     //
     //#endregion
 }
+
+export type { MainThree };
+export default new MainThree();

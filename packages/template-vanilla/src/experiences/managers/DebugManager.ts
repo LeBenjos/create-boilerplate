@@ -1,15 +1,10 @@
+import { DomKeyboardManager } from '@benjos/cookware';
 import { KeyboardConstant } from '@benjos/spices';
 import GUI from 'lil-gui';
 import { ThreePerf } from 'three-perf';
 import MainThree from '../engines/threes/MainThree';
-import { KeyboardManager } from './KeyboardManager';
 
-export default class DebugManager {
-    private static _Gui: GUI;
-    private static _ThreePerf: ThreePerf;
-
-    //#region Constants
-    //
+class DebugManager {
     private static readonly _IS_ACTIVE_STRING: string = '#debug';
     private static readonly _GUI_WIDTH: number = 300;
     private static readonly _GUI_TITLE: string = 'Debug Panel';
@@ -19,60 +14,63 @@ export default class DebugManager {
         KeyboardConstant.CODES.SHIFT_LEFT,
         KeyboardConstant.CODES.KEY_H,
     ];
-    //
-    //#endregion
 
-    public static Init(): void {
-        if (DebugManager.IsActive) {
-            DebugManager._InitGui();
+    declare private _gui: GUI;
+    declare private _threePerf: ThreePerf;
+
+    public init(): void {
+        if (this.isActive) {
+            this._initGui();
         }
     }
 
-    private static _InitGui(): void {
-        DebugManager._Gui = new GUI({
+    private _initGui(): void {
+        this._gui = new GUI({
             width: DebugManager._GUI_WIDTH,
             title: DebugManager._GUI_TITLE,
             closeFolders: true,
         });
-        DebugManager._Gui.close();
-        KeyboardManager.OnKeyUp.remove(DebugManager._OnKeyUp);
-        KeyboardManager.OnKeyUp.add(DebugManager._OnKeyUp);
+        this._gui.close();
+        DomKeyboardManager.onKeyUp.remove(this._onKeyUp);
+        DomKeyboardManager.onKeyUp.add(this._onKeyUp);
     }
 
-    private static _InitThreePerf = (): void => {
-        DebugManager._ThreePerf = new ThreePerf({
+    private _initThreePerf = (): void => {
+        this._threePerf = new ThreePerf({
             anchorX: DebugManager._THREE_PERF_ANCHOR_X,
             anchorY: DebugManager._THREE_PERF_ANCHOR_Y,
             domElement: document.body,
-            renderer: MainThree.Renderer,
+            renderer: MainThree.renderer,
             showGraph: false,
         });
     };
 
-    public static BeginThreePerf(): void {
-        if (!DebugManager._ThreePerf) DebugManager._InitThreePerf();
-        DebugManager._ThreePerf.begin();
+    public beginThreePerf(): void {
+        if (!this._threePerf) this._initThreePerf();
+        this._threePerf.begin();
     }
 
-    public static EndThreePerf(): void {
-        DebugManager._ThreePerf.end();
+    public endThreePerf(): void {
+        this._threePerf.end();
     }
 
-    private static readonly _OnKeyUp = (_e: KeyboardEvent): void => {
-        if (KeyboardManager.AreAllKeysDown(DebugManager._TOGGLE_HIDDEN_KEYS)) {
-            DebugManager._Gui.show(DebugManager._Gui._hidden);
-            DebugManager._ThreePerf.visible = !DebugManager._ThreePerf.visible;
+    private readonly _onKeyUp = (_e: KeyboardEvent): void => {
+        if (DomKeyboardManager.areAllKeysDown(DebugManager._TOGGLE_HIDDEN_KEYS)) {
+            this._gui.show(this._gui._hidden);
+            this._threePerf.visible = !this._threePerf.visible;
         }
     };
 
     //#region Getters
     //
-    public static get IsActive(): boolean {
+    public get isActive(): boolean {
         return window.location.hash === DebugManager._IS_ACTIVE_STRING;
     }
-    public static get Gui(): GUI {
-        return DebugManager._Gui;
+    public get gui(): GUI {
+        return this._gui;
     }
     //
     //#endregion
 }
+
+export default new DebugManager();

@@ -5,7 +5,7 @@ import type { Object3DId } from '../../../../../../constants/experiences/Object3
 import ThreeAssetsManager from '../../../../../../managers/threes/ThreeAssetsManager';
 import ActorBase from './ActorBase';
 
-export interface IModelBaseParams {
+export interface ModelBaseParams {
     object3DId?: Object3DId;
     castShadow?: boolean;
     receiveShadow?: boolean;
@@ -13,10 +13,10 @@ export interface IModelBaseParams {
 
 export default abstract class ModelBase extends ActorBase {
     protected _assetId: AssetId;
-    protected _parameters: IModelBaseParams;
+    protected _parameters: ModelBaseParams;
     declare protected _model: Group | Object3D | Mesh;
 
-    constructor(assetId: AssetId, params: IModelBaseParams = {}) {
+    constructor(assetId: AssetId, params: ModelBaseParams = {}) {
         super();
         this._assetId = assetId;
         this._parameters = params || {};
@@ -25,7 +25,7 @@ export default abstract class ModelBase extends ActorBase {
     }
 
     protected _generateModel(): void {
-        const originalModel = ThreeAssetsManager.GetModel(this._assetId).scene;
+        const originalModel = ThreeAssetsManager.getModel(this._assetId).scene;
         const model = SkeletonUtils.clone(originalModel);
 
         this._model = this._parameters.object3DId

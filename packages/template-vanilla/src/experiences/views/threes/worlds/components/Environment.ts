@@ -4,13 +4,13 @@ import MainThree from '../../../../engines/threes/MainThree';
 import DebugManager from '../../../../managers/DebugManager';
 import ThreeAssetsManager from '../../../../managers/threes/ThreeAssetsManager';
 
-interface IEnvironmentMap {
+interface EnvironmentMap {
     intensity?: number;
     texture?: DataTexture;
 }
 
 export default class Environment extends Object3D {
-    declare private _environmentMap: IEnvironmentMap;
+    declare private _environmentMap: EnvironmentMap;
     declare private _sunLight: DirectionalLight;
 
     //#region Constants
@@ -35,16 +35,16 @@ export default class Environment extends Object3D {
     private _generateEnvironmentMap = (): void => {
         this._environmentMap = {};
         this._environmentMap.intensity = Environment._DEFAULT_ENVIRONMENT_MAP_INTENSITY;
-        this._environmentMap.texture = ThreeAssetsManager.GetHDR(AssetId.THREE_HDR_TEMPLATE);
+        this._environmentMap.texture = ThreeAssetsManager.getHDR(AssetId.THREE_HDR_TEMPLATE);
         this._environmentMap.texture.needsUpdate = true;
 
-        MainThree.Scene.environment = this._environmentMap.texture;
-        MainThree.Scene.environmentIntensity = this._environmentMap.intensity!;
+        MainThree.scene.environment = this._environmentMap.texture;
+        MainThree.scene.environmentIntensity = this._environmentMap.intensity!;
 
-        if (DebugManager.IsActive) {
-            const environmentFolder = DebugManager.Gui.addFolder('Environment');
+        if (DebugManager.isActive) {
+            const environmentFolder = DebugManager.gui.addFolder('Environment');
             environmentFolder.add(this._environmentMap, 'intensity', 0, 10, 0.01).onChange(() => {
-                MainThree.Scene.environmentIntensity = this._environmentMap.intensity!;
+                MainThree.scene.environmentIntensity = this._environmentMap.intensity!;
             });
         }
     };
@@ -64,8 +64,8 @@ export default class Environment extends Object3D {
         this._sunLight.position.copy(Environment._DEFAULT_SUN_POSITION);
         this.add(this._sunLight);
 
-        if (DebugManager.IsActive) {
-            const sunLightFolder = DebugManager.Gui.addFolder('Sun Light');
+        if (DebugManager.isActive) {
+            const sunLightFolder = DebugManager.gui.addFolder('Sun Light');
             sunLightFolder.add(this._sunLight, 'intensity', 0, 10, 0.01).name('intensity');
             sunLightFolder.add(this._sunLight.position, 'x', -5, 5, 0.01).name('positionX');
             sunLightFolder.add(this._sunLight.position, 'y', -5, 5, 0.01).name('positionY');
@@ -73,5 +73,5 @@ export default class Environment extends Object3D {
         }
     }
 
-    public update(_dt: number): void {}
+    public update(_dt: number): void { }
 }

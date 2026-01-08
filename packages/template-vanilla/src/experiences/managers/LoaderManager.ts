@@ -1,79 +1,87 @@
 import { Action } from '@benjos/cookware';
 import ThreeAssetsManager from './threes/ThreeAssetsManager';
 
-export default class LoaderManager {
-    private static _TotalSize = 0;
-    private static _LoadedSize = 0;
+class LoaderManager {
+    private _totalSize = 0;
+    private _loadedSize = 0;
 
-    public static readonly OnBeginLoad = new Action();
-    public static readonly OnProgress = new Action();
-    public static readonly OnFinishLoad = new Action();
+    public readonly onBeginLoad = new Action();
+    public readonly onProgress = new Action();
+    public readonly onFinishLoad = new Action();
 
-    public static Init(): void {
-        LoaderManager._AddCallbacks();
+    public init(): void {
+        this._addCallbacks();
     }
 
-    private static _AddCallbacks(): void {
-        LoaderManager._RemoveCallbacks();
-        ThreeAssetsManager.OnLoad.add(LoaderManager._OnLoad);
-        ThreeAssetsManager.OnProgress.add(LoaderManager._OnProgress);
+    private _addCallbacks(): void {
+        this._removeCallbacks();
+        ThreeAssetsManager.onLoad.add(this._onLoad);
+        ThreeAssetsManager.onProgress.add(this._onProgress);
     }
 
-    private static _RemoveCallbacks(): void {
-        ThreeAssetsManager.OnLoad.remove(LoaderManager._OnLoad);
-        ThreeAssetsManager.OnProgress.remove(LoaderManager._OnProgress);
+    private _removeCallbacks(): void {
+        ThreeAssetsManager.onLoad.remove(this._onLoad);
+        ThreeAssetsManager.onProgress.remove(this._onProgress);
     }
 
-    public static LoadAllAssets(): void {
-        if (LoaderManager._CheckIsFinished()) return;
-        else LoaderManager.OnBeginLoad.execute();
+    private _beginLoad = (): void => {
+        ThreeAssetsManager.beginLoad();
+        this.onBeginLoad.execute();
     }
 
-    private static _OnLoad = (): void => {
-        LoaderManager._RefreshSizes();
-        if (LoaderManager._CheckIsFinished()) LoaderManager._OnFinishLoad();
+    private _finishLoad = (): void => {
+        ThreeAssetsManager.finishLoad();
+        this.onFinishLoad.execute();
     };
 
-    private static _CheckIsFinished = (): boolean => {
-        if (!ThreeAssetsManager.IsLoaded) return false;
+    public loadAllAssets(): void {
+        if (this._checkIsFinished()) return;
+        this._beginLoad();
+    }
+
+    private _onLoad = (): void => {
+        this._refreshSizes();
+        if (this._checkIsFinished()) this._finishLoad();
+    };
+
+    private _checkIsFinished = (): boolean => {
+        if (!ThreeAssetsManager.isLoaded) return false;
         return true;
     };
 
-    private static _OnProgress = (): void => {
-        LoaderManager._RefreshSizes();
-        LoaderManager.OnProgress.execute();
+    private _onProgress = (): void => {
+        this._refreshSizes();
+        this.onProgress.execute();
     };
 
-    private static _RefreshSizes = (): void => {
-        LoaderManager._RefreshTotalSize();
-        LoaderManager._RefreshLoadedSize();
+    private _refreshSizes = (): void => {
+        this._refreshTotalSize();
+        this._refreshLoadedSize();
     };
 
-    private static _RefreshTotalSize = (): void => {
-        LoaderManager._TotalSize = 0;
-        LoaderManager._TotalSize += ThreeAssetsManager.TotalSize;
+    private _refreshTotalSize = (): void => {
+        this._totalSize = 0;
+        this._totalSize += ThreeAssetsManager.totalSize;
     };
 
-    private static _RefreshLoadedSize = (): void => {
-        LoaderManager._LoadedSize = 0;
-        LoaderManager._LoadedSize += ThreeAssetsManager.LoadedSize;
-    };
-
-    private static _OnFinishLoad = (): void => {
-        LoaderManager.OnFinishLoad.execute();
+    private _refreshLoadedSize = (): void => {
+        this._loadedSize = 0;
+        this._loadedSize += ThreeAssetsManager.loadedSize;
     };
 
     //#region Getters
     //
-    public static get IsLoaded(): boolean {
-        return LoaderManager._CheckIsFinished();
+    public get isLoaded(): boolean {
+        return this._checkIsFinished();
     }
-    public static get TotalSize(): number {
-        return LoaderManager._TotalSize;
+    public get totalSize(): number {
+        return this._totalSize;
     }
-    public static get LoadedSize(): number {
-        return LoaderManager._LoadedSize;
+    public get loadedSize(): number {
+        return this._loadedSize;
     }
     //
     //#endregion
 }
+
+export default new LoaderManager();

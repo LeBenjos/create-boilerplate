@@ -16,7 +16,7 @@ export default class WorldThreeView extends ThreeViewBase {
 
         this._actors = [];
 
-        LoaderManager.OnFinishLoad.add(this._onFinishLoad);
+        LoaderManager.onFinishLoad.add(this._onFinishLoad);
     }
 
     private readonly _onFinishLoad = (): void => {

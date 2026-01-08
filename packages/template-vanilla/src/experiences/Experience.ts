@@ -5,18 +5,18 @@ import MainHTML from './engines/htmls/MainHTML';
 import MainThree from './engines/threes/MainThree';
 import LoaderManager from './managers/LoaderManager';
 
-export default class Experience {
-    private static _isInitialized = false;
+class Experience {
+    private _isInitialized: boolean = false;
 
-    public static Init(): void {
-        if (Experience._isInitialized) {
-            return;
-        }
-        Experience._isInitialized = true;
+    public init(): void {
+        if (this._isInitialized) return;
+        this._isInitialized = true;
 
-        InitCommand.Init();
-        MainHTML.Init();
-        MainThree.Init();
-        void LoaderManager.LoadAllAssets();
+        InitCommand.init();
+        MainHTML.init();
+        MainThree.init();
+        void LoaderManager.loadAllAssets();
     }
 }
+
+export default new Experience();

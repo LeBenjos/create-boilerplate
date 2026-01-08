@@ -2,42 +2,45 @@ import { Action } from '@benjos/cookware';
 import type ThreeCameraControllerBase from '../../cameras/threes/bases/ThreeCameraControllerBase';
 import type { CameraId } from '../../constants/experiences/CameraId';
 
-export default class ThreeCameraControllerManager {
-    private static readonly _ThreeCameraControllers = new Map<CameraId, ThreeCameraControllerBase>();
-    private static _ActiveThreeCameraController: ThreeCameraControllerBase;
+class ThreeCameraControllerManager {
+    declare private _threeCameraControllers: Map<CameraId, ThreeCameraControllerBase>;
+    declare private _activeThreeCameraController: ThreeCameraControllerBase;
 
-    public static readonly OnActiveThreeCameraControllerChange = new Action();
+    public readonly onActiveThreeCameraControllerChange = new Action();
 
-    public static Init(): void {
-        ThreeCameraControllerManager._ThreeCameraControllers.clear();
+    public init(): void {
+        this._threeCameraControllers = new Map();
+        this._threeCameraControllers.clear();
     }
 
-    public static Add(threeCameraController: ThreeCameraControllerBase, isActive = false): void {
-        ThreeCameraControllerManager._ThreeCameraControllers.set(threeCameraController.cameraId, threeCameraController);
-        if (isActive) ThreeCameraControllerManager.SetActiveCamera(threeCameraController.cameraId);
+    public add(threeCameraController: ThreeCameraControllerBase, isActive = false): void {
+        this._threeCameraControllers.set(threeCameraController.cameraId, threeCameraController);
+        if (isActive) this.setActiveCamera(threeCameraController.cameraId);
     }
 
-    public static Get(cameraId: CameraId): ThreeCameraControllerBase {
-        const threeCameraController = ThreeCameraControllerManager._ThreeCameraControllers.get(cameraId);
+    public get(cameraId: CameraId): ThreeCameraControllerBase {
+        const threeCameraController = this._threeCameraControllers.get(cameraId);
         if (!threeCameraController) {
             throw new Error(`CameraControllerManager: No camera found with id ${cameraId}`);
         }
         return threeCameraController;
     }
 
-    public static SetActiveCamera(cameraId: CameraId): void {
-        const threeCameraController = ThreeCameraControllerManager.Get(cameraId);
-        ThreeCameraControllerManager._ActiveThreeCameraController?.disable();
-        ThreeCameraControllerManager._ActiveThreeCameraController = threeCameraController;
-        ThreeCameraControllerManager._ActiveThreeCameraController.enable();
-        ThreeCameraControllerManager.OnActiveThreeCameraControllerChange.execute();
+    public setActiveCamera(cameraId: CameraId): void {
+        const threeCameraController = this.get(cameraId);
+        this._activeThreeCameraController?.disable();
+        this._activeThreeCameraController = threeCameraController;
+        this._activeThreeCameraController.enable();
+        this.onActiveThreeCameraControllerChange.execute();
     }
 
     //#region Getters
     //
-    public static get ActiveThreeCameraController(): ThreeCameraControllerBase {
-        return ThreeCameraControllerManager._ActiveThreeCameraController;
+    public get activeThreeCameraController(): ThreeCameraControllerBase {
+        return this._activeThreeCameraController;
     }
     //
     //#endregion
 }
+
+export default new ThreeCameraControllerManager();

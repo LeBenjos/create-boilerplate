@@ -1,19 +1,16 @@
+import { DomKeyboardManager, DomPointerManager } from '@benjos/cookware';
 import { KeyboardConstant } from '@benjos/spices';
 import { Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { CameraId } from '../../constants/experiences/CameraId';
-import { CameraType } from '../../constants/experiences/CameraType';
 import MainThree from '../../engines/threes/MainThree';
-import { KeyboardManager } from '../../managers/KeyboardManager';
-import MouseManager from '../../managers/MouseManager';
 import ThreeRaycasterManager from '../../managers/threes/ThreeRaycasterManager';
-import ThreeCameraControllerBase, { type IThreeCameraOptions } from './bases/ThreeCameraControllerBase';
+import { ThreeCameraOptions, ThreeCameraType } from '../../types/cameraTypes';
+import ThreeCameraControllerBase from './bases/ThreeCameraControllerBase';
 
 export default class DebugThreeCameraController extends ThreeCameraControllerBase<OrbitControls> {
-    //#region Constants
-    //
-    private static readonly _DEBUG_CAMERA_OPTIONS: IThreeCameraOptions = {
-        type: CameraType.PERSPECTIVE,
+    private static readonly _DEBUG_CAMERA_OPTIONS: ThreeCameraOptions = {
+        type: ThreeCameraType.PERSPECTIVE,
         fov: 75,
         aspect: window.innerWidth / window.innerHeight,
         near: 0.1,
@@ -22,10 +19,8 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
     private static readonly _DEFAULT_CAMERA_POSITION: Vector3 = new Vector3(0, 1.5, 3);
     private static readonly _CONTROLS_DAMPING_FACTOR: number = 0.05;
     private static readonly _CONTROLS_CENTER_KEY: string = KeyboardConstant.CODES.CONTROL_LEFT;
-    //
-    //#endregion
 
-    constructor(cameraOption: IThreeCameraOptions = DebugThreeCameraController._DEBUG_CAMERA_OPTIONS) {
+    constructor(cameraOption: ThreeCameraOptions = DebugThreeCameraController._DEBUG_CAMERA_OPTIONS) {
         super(CameraId.THREE_DEBUG, cameraOption);
         this._camera.position.copy(DebugThreeCameraController._DEFAULT_CAMERA_POSITION);
         this._setControls();
@@ -34,23 +29,23 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
 
     public override enable(): void {
         super.enable();
-        MouseManager.OnMouseDown.add(this._onMouseDown);
+        DomPointerManager.onPointerDown.add(this._onMouseDown);
     }
 
     public override disable(): void {
         super.disable();
-        MouseManager.OnMouseDown.remove(this._onMouseDown);
+        DomPointerManager.onPointerDown.remove(this._onMouseDown);
     }
 
     private _setControls(): void {
-        this._controls = new OrbitControls(this._camera, MainThree.DomElementContainer);
+        this._controls = new OrbitControls(this._camera, MainThree.domElementContainer);
         this._controls.enableDamping = true;
         this._controls.dampingFactor = DebugThreeCameraController._CONTROLS_DAMPING_FACTOR;
     }
 
     private readonly _onMouseDown = (): void => {
-        if (KeyboardManager.IsKeyDown(DebugThreeCameraController._CONTROLS_CENTER_KEY)) {
-            const intersect = ThreeRaycasterManager.CastFromCameraToMouse(MainThree.Scene.children);
+        if (DomKeyboardManager.isKeyDown(DebugThreeCameraController._CONTROLS_CENTER_KEY)) {
+            const intersect = ThreeRaycasterManager.castFromCameraToPointer(MainThree.scene.children);
             if (intersect.length > 0) {
                 this._controls.target.copy(intersect[0].point);
                 this._controls.update();

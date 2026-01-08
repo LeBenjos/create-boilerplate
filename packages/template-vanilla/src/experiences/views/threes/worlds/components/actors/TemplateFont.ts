@@ -44,7 +44,7 @@ export default class TemplateFont extends ActorBase {
     private _generateGeometry(): void {
         this._geometry = new TextGeometry(TemplateFont._DEFAULT_TEXT, {
             ...TemplateFont._DEFAULT_TEXT_OPTION,
-            font: ThreeAssetsManager.GetFont(AssetId.THREE_FONT_TEMPLATE),
+            font: ThreeAssetsManager.getFont(AssetId.THREE_FONT_TEMPLATE),
         });
         this._geometry.center();
     }

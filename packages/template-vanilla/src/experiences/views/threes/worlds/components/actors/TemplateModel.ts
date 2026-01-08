@@ -18,8 +18,8 @@ export default class TemplateModel extends ModelBase {
         });
         this.position.copy(TemplateModel._DEFAULT_POSITION);
 
-        if (DebugManager.IsActive) {
-            const templateModelFolder = DebugManager.Gui.addFolder('Template Model');
+        if (DebugManager.isActive) {
+            const templateModelFolder = DebugManager.gui.addFolder('Template Model');
             templateModelFolder.add(this.position, 'y', -1, 1, 0.01);
         }
     }

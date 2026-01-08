@@ -40,8 +40,8 @@ export default class Renderer extends WebGLRendererBase {
         this.shadowMap.type = Renderer._DEFAULT_SHADOW_MAP_TYPE;
         this.setClearColor(Renderer._DEFAULT_CLEAR_COLOR, Renderer._DEFAULT_CLEAR_ALPHA);
 
-        if (DebugManager.IsActive) {
-            const rendererFolder = DebugManager.Gui.addFolder('Renderer');
+        if (DebugManager.isActive) {
+            const rendererFolder = DebugManager.gui.addFolder('Renderer');
             rendererFolder
                 .add(this, 'toneMapping', {
                     NoToneMapping,
@@ -66,9 +66,9 @@ export default class Renderer extends WebGLRendererBase {
     }
 
     public override update(dt: number): void {
-        const isDebug = DebugManager.IsActive;
-        if (isDebug) DebugManager.BeginThreePerf();
+        const isDebug = DebugManager.isActive;
+        if (isDebug) DebugManager.beginThreePerf();
         super.update(dt);
-        if (isDebug) DebugManager.EndThreePerf();
+        if (isDebug) DebugManager.endThreePerf();
     }
 }

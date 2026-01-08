@@ -9,7 +9,7 @@ export default class HTMLTemplateLoader {
     constructor() {
         this._generateElement();
 
-        LoaderManager.OnProgress.add(this._onProgress);
+        LoaderManager.onProgress.add(this._onProgress);
     }
 
     private _generateElement(): void {
@@ -30,7 +30,7 @@ export default class HTMLTemplateLoader {
     }
 
     private readonly _onProgress = (): void => {
-        const progress = (LoaderManager.LoadedSize / LoaderManager.TotalSize) * 100;
+        const progress = (LoaderManager.loadedSize / LoaderManager.totalSize) * 100;
         this._loadingBar.style.transform = `translateY(-50%) scaleX(${progress / 100})`;
         this._loadingNumber.textContent = Math.round(progress).toString();
     };

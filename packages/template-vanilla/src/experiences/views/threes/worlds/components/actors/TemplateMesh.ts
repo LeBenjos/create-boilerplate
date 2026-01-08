@@ -41,7 +41,7 @@ export default class TemplateMesh extends ActorBase {
     }
 
     private _generateMaterial(): void {
-        const normalMat = ThreeAssetsManager.GetTexture(AssetId.THREE_TEXTURE_TEMPLATE);
+        const normalMat = ThreeAssetsManager.getTexture(AssetId.THREE_TEXTURE_TEMPLATE);
         normalMat.repeat.set(TemplateMesh._DEFAULT_MATERIAL_REPEAT, TemplateMesh._DEFAULT_MATERIAL_REPEAT);
         normalMat.wrapS = normalMat.wrapT = RepeatWrapping;
 

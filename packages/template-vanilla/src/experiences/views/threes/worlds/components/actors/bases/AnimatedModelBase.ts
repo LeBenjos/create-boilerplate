@@ -2,7 +2,7 @@ import { AnimationAction, AnimationMixer } from 'three';
 import type { AnimationId } from '../../../../../../constants/experiences/AnimationId';
 import type { AssetId } from '../../../../../../constants/experiences/AssetId';
 import ThreeAssetsManager from '../../../../../../managers/threes/ThreeAssetsManager';
-import ModelBase, { type IModelBaseParams } from './ModelBase';
+import ModelBase, { type ModelBaseParams } from './ModelBase';
 
 export default abstract class AnimatedModelBase extends ModelBase {
     declare private _mixer: AnimationMixer;
@@ -15,7 +15,7 @@ export default abstract class AnimatedModelBase extends ModelBase {
     //
     //#endregion
 
-    constructor(assetId: AssetId, params: IModelBaseParams = {}) {
+    constructor(assetId: AssetId, params: ModelBaseParams = {}) {
         super(assetId, params);
 
         this._generateAnimations();

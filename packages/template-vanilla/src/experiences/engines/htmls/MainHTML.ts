@@ -2,12 +2,14 @@ import { ViewId } from '../../constants/experiences/ViewId';
 import ViewProxy from '../../proxies/ViewProxy';
 import LoaderHTMLView from '../../views/htmls/loaders/LoaderHTMLView';
 
-export default class MainHTML {
-    public static Init(): void {
-        MainHTML._GenerateViews();
+class MainHTML {
+    public init(): void {
+        this._generateViews();
     }
 
-    private static _GenerateViews(): void {
-        ViewProxy.Add(ViewId.HTML_LOADER, LoaderHTMLView);
+    private _generateViews(): void {
+        ViewProxy.add(ViewId.HTML_LOADER, LoaderHTMLView);
     }
 }
+
+export default new MainHTML();
