@@ -12,7 +12,7 @@ import {
 } from 'three';
 import { DRACOLoader, Font, FontLoader, GLTFLoader, HDRLoader, type GLTF } from 'three/examples/jsm/Addons.js';
 import type { AssetId } from '../../constants/experiences/AssetId';
-import { AssetType } from '../../constants/experiences/AssetType';
+import { AssetType } from '../../types/assetTypes';
 
 export interface ThreeAssetToLoad {
     id: AssetId;
