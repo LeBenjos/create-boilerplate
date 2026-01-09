@@ -26,9 +26,7 @@ interface OrthographicCameraOptions extends CameraOptionsBase {
     bottom: number;
 }
 
-export type ThreeCameraOptions =
-    | PerspectiveCameraOptions
-    | OrthographicCameraOptions;
+export type ThreeCameraOptions = PerspectiveCameraOptions | OrthographicCameraOptions;
 
 export interface ThreeControls {
     enabled: boolean;

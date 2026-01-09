@@ -4,12 +4,8 @@ import DebugManager from '../../../../../managers/DebugManager';
 import ModelBase from './bases/ModelBase';
 
 export default class TemplateModel extends ModelBase {
-    //#region Constants
-    //
     private static readonly _DEFAULT_POSITION: Vector3 = new Vector3(0, 1, 0);
     private static readonly _ROTATION_Y = 0.25;
-    //
-    //#endregion
 
     constructor() {
         super(AssetId.THREE_GLTF_TEMPLATE, {

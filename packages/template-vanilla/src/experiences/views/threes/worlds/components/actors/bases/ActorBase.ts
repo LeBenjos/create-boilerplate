@@ -5,5 +5,9 @@ export default abstract class ActorBase extends Object3D {
         super();
     }
 
-    public update(_dt: number): void {}
+    public dispose(): void {
+        //
+    }
+
+    public update(_dt: number): void { }
 }

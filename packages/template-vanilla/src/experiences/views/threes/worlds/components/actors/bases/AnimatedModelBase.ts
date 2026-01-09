@@ -5,15 +5,11 @@ import ThreeAssetsManager from '../../../../../../managers/threes/ThreeAssetsMan
 import ModelBase, { type ModelBaseParams } from './ModelBase';
 
 export default abstract class AnimatedModelBase extends ModelBase {
+    private static readonly _DEFAULT_ANIMATION_FADE_DURATION: number = 1;
+
     declare private _mixer: AnimationMixer;
     declare private _actions: AnimationAction[];
     declare private _currentAction: AnimationAction | null;
-
-    //#region Constants
-    //
-    private static readonly _DEFAULT_ANIMATION_FADE_DURATION: number = 1;
-    //
-    //#endregion
 
     constructor(assetId: AssetId, params: ModelBaseParams = {}) {
         super(assetId, params);
@@ -22,7 +18,7 @@ export default abstract class AnimatedModelBase extends ModelBase {
     }
 
     protected _generateAnimations(): void {
-        const animations = ThreeAssetsManager.GetModel(this._assetId).animations;
+        const animations = ThreeAssetsManager.getModel(this._assetId).animations;
         this._mixer = new AnimationMixer(this._model);
         this._actions = [];
         this._currentAction = null;

@@ -2,15 +2,11 @@ import { Camera, LinearSRGBColorSpace, NoToneMapping, Scene, type WebGLRendererP
 import WebGLRendererBase from './bases/WebGLRendererBase';
 
 export default class LoaderRenderer extends WebGLRendererBase {
-    //#region Constants
-    //
     private static readonly _DEFAULT_TONE_MAPPING = NoToneMapping;
     private static readonly _DEFAULT_OUTPUT_COLOR_SPACE = LinearSRGBColorSpace;
     private static readonly _DEFAULT_TONE_MAPPING_EXPOSURE = 1;
     private static readonly _DEFAULT_CLEAR_COLOR = 0x000000;
     private static readonly _DEFAULT_CLEAR_ALPHA = 0;
-    //
-    //#endregion
 
     constructor(scene: Scene, camera: Camera, parameters: WebGLRendererParameters = {}) {
         super(scene, camera, parameters);

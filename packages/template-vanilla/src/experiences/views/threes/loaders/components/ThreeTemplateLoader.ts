@@ -1,19 +1,16 @@
-import { Mesh, Object3D, PlaneGeometry } from 'three';
+import { Mesh, PlaneGeometry } from 'three';
 import LoaderMaterial from '../../../../materials/threes/loaders/LoaderMaterial';
+import ActorBase from '../../worlds/components/actors/bases/ActorBase';
 
-export default class ThreeTemplateLoader extends Object3D {
-    declare private _geometry: PlaneGeometry;
-    declare private _material: LoaderMaterial;
-    declare private _loader: Mesh;
-
-    //#region Constants
-    //
+export default class ThreeTemplateLoader extends ActorBase {
     private static readonly _DEFAULT_SIZE_WIDTH: number = 2;
     private static readonly _DEFAULT_SIZE_HEIGHT: number = 2;
     private static readonly _DEFAULT_SEGMENTS_WIDTH: number = 1;
     private static readonly _DEFAULT_SEGMENTS_HEIGHT: number = 1;
-    //
-    //#endregion
+
+    declare private _geometry: PlaneGeometry;
+    declare private _material: LoaderMaterial;
+    declare private _mesh: Mesh;
 
     constructor() {
         super();
@@ -22,7 +19,7 @@ export default class ThreeTemplateLoader extends Object3D {
         this._generateMaterial();
         this._generateMesh();
 
-        this.add(this._loader);
+        this.add(this._mesh);
     }
 
     private _generateGeometry(): void {
@@ -39,7 +36,13 @@ export default class ThreeTemplateLoader extends Object3D {
     }
 
     private _generateMesh(): void {
-        this._loader = new Mesh(this._geometry, this._material);
+        this._mesh = new Mesh(this._geometry, this._material);
+    }
+
+    public override dispose(): void {
+        super.dispose();
+        this._geometry.dispose();
+        this._material.dispose();
     }
 
     //#region Getters

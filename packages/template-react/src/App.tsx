@@ -1,14 +1,10 @@
-import { useState } from 'react'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [count, setCount] = useState(0);
 
-  return (
-    <>
-      Hello boilerplate react!
-    </>
-  )
+    return <>Hello boilerplate react!</>;
 }
 
-export default App
+export default App;

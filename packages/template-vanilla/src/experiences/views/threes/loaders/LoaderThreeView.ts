@@ -1,5 +1,3 @@
-import { ViewId } from '../../../constants/experiences/ViewId';
-import MainThree from '../../../engines/threes/MainThree';
 import LoaderManager from '../../../managers/LoaderManager';
 import ThreeViewBase from '../bases/ThreeViewBase';
 import ThreeTemplateLoader from './components/ThreeTemplateLoader';
@@ -7,28 +5,26 @@ import ThreeTemplateLoader from './components/ThreeTemplateLoader';
 export default class LoaderThreeView extends ThreeViewBase {
     declare private _threeLoader: ThreeTemplateLoader;
 
-    constructor(id: ViewId) {
-        super(id, MainThree.loaderScene);
-
-        this._isVisible = true;
-        this._generateLoader();
-
+    constructor() {
+        super();
+        this._generateActors();
         LoaderManager.onBeginLoad.add(this._onBeginLoad);
         LoaderManager.onFinishLoad.add(this._onFinishLoad);
     }
 
-    private _generateLoader(): void {
+    protected override _generateActors(): void {
+        super._generateActors();
         this._threeLoader = new ThreeTemplateLoader();
+        this._actors.push(this._threeLoader);
 
-        this._container.add(this._threeLoader);
-        this._scene.add(this._container);
+        for (const actor of this._actors) this.add(actor);
     }
 
-    protected override _show(): void {
+    protected _show(): void {
         this._threeLoader.material.show();
     }
 
-    protected override _hide(): void {
+    protected _hide(): void {
         this._threeLoader.material.hide();
     }
 

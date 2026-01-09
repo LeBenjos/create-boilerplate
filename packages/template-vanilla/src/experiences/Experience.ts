@@ -4,6 +4,7 @@ import InitCommand from './commands/InitCommand';
 import MainHTML from './engines/htmls/MainHTML';
 import MainThree from './engines/threes/MainThree';
 import LoaderManager from './managers/LoaderManager';
+import LoaderThree from './engines/threes/LoaderThree';
 
 class Experience {
     private _isInitialized: boolean = false;
@@ -14,6 +15,7 @@ class Experience {
 
         InitCommand.init();
         MainHTML.init();
+        LoaderThree.init();
         MainThree.init();
         void LoaderManager.loadAllAssets();
     }

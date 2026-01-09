@@ -3,11 +3,12 @@
 $outroFadeOutDuration: 1.5s;
 
 body {
-    > #app,
-    > #root {
-        > #loader {
-            .view-html-container {
-                &.hide {
+
+    >#app,
+    >#root {
+        >#loader {
+            .html-view {
+                &.hidden {
                     animation-duration: $outroFadeOutDuration;
                 }
             }

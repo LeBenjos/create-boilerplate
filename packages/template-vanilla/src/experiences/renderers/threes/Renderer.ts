@@ -20,16 +20,12 @@ import DebugManager from '../../managers/DebugManager';
 import WebGLRendererBase from './bases/WebGLRendererBase';
 
 export default class Renderer extends WebGLRendererBase {
-    //#region Constants
-    //
     private static readonly _DEFAULT_TONE_MAPPING = CineonToneMapping;
     private static readonly _DEFAULT_OUTPUT_COLOR_SPACE = SRGBColorSpace;
     private static readonly _DEFAULT_SHADOW_MAP_TYPE = PCFSoftShadowMap;
     private static readonly _DEFAULT_TONE_MAPPING_EXPOSURE = 1;
     private static readonly _DEFAULT_CLEAR_COLOR = 0xfafafa;
     private static readonly _DEFAULT_CLEAR_ALPHA = 0;
-    //
-    //#endregion
 
     constructor(scene: Scene, camera: Camera, parameters: WebGLRendererParameters = {}) {
         super(scene, camera, parameters);

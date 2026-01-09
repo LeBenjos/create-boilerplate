@@ -10,11 +10,6 @@ interface EnvironmentMap {
 }
 
 export default class Environment extends Object3D {
-    declare private _environmentMap: EnvironmentMap;
-    declare private _sunLight: DirectionalLight;
-
-    //#region Constants
-    //
     private static readonly _DEFAULT_ENVIRONMENT_MAP_INTENSITY: number = 1;
     private static readonly _DEFAULT_SUN_LIGHT_COLOR: number = 0xffffff;
     private static readonly _DEFAULT_SUN_LIGHT_INTENSITY: number = 10;
@@ -22,8 +17,9 @@ export default class Environment extends Object3D {
     private static readonly _DEFAULT_SUN_SHADOW_MAP_SIZE: number = 1024;
     private static readonly _DEFAULT_SUN_SHADOW_NORMAL_BIAS: number = 0.05;
     private static readonly _DEFAULT_SUN_POSITION: Vector3 = new Vector3(0, 2, 1);
-    //
-    //#endregion
+
+    declare private _environmentMap: EnvironmentMap;
+    declare private _sunLight: DirectionalLight;
 
     constructor() {
         super();
@@ -73,5 +69,5 @@ export default class Environment extends Object3D {
         }
     }
 
-    public update(_dt: number): void { }
+    public update(_dt: number): void {}
 }

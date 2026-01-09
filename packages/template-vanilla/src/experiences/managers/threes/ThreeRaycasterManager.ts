@@ -10,10 +10,7 @@ class ThreeRaycasterManager {
         //
     }
 
-    public castFromCameraToPointer(
-        objects: Object3D[],
-        recursive = true
-    ): Intersection<Object3D<Object3DEventMap>>[] {
+    public castFromCameraToPointer(objects: Object3D[], recursive = true): Intersection<Object3D<Object3DEventMap>>[] {
         this._pointerPosition.set(DomPointerManager.ndcX, DomPointerManager.ndcY);
         this._raycaster.setFromCamera(this._pointerPosition, MainThree.cameraController.camera);
         const intersects = this._raycaster.intersectObjects(objects, recursive);

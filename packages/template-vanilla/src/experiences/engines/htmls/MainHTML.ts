@@ -1,14 +1,15 @@
-import { ViewId } from '../../constants/experiences/ViewId';
-import ViewProxy from '../../proxies/ViewProxy';
+import HTMLViewBase from '../../views/htmls/bases/HTMLViewBase';
 import LoaderHTMLView from '../../views/htmls/loaders/LoaderHTMLView';
 
 class MainHTML {
+    private _views: HTMLViewBase[] = [];
+
     public init(): void {
         this._generateViews();
     }
 
     private _generateViews(): void {
-        ViewProxy.add(ViewId.HTML_LOADER, LoaderHTMLView);
+        this._views.push(new LoaderHTMLView());
     }
 }
 

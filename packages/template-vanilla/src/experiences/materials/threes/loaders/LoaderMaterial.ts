@@ -4,16 +4,12 @@ import LoaderFragmentShader from '../../../shaders/threes/loaders/LoaderFragment
 import LoaderVertexShader from '../../../shaders/threes/loaders/LoaderVertexShader.glsl';
 
 export default class LoaderMaterial extends ShaderMaterial {
-    //#region Constants
-    //
     private static readonly _DEFAULT_UNIFORMS_ALPHA: number = 1;
     private static readonly _DEFAULT_UNIFORMS_COLOR: number = 0x3f79f3;
     private static readonly _GSAP_DURATION_FADE_IN: number = 0.5;
     private static readonly _GSAP_EASE_FADE_IN: string = 'power2.out';
     private static readonly _GSAP_DURATION_FADE_OUT: number = 1.5;
     private static readonly _GSAP_EASE_FADE_OUT: string = 'power2.in';
-    //
-    //#endregion
 
     constructor() {
         super({

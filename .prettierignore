@@ -2,5 +2,6 @@ dist
 node_modules
 *.min.js
 *.min.css
-public/assets
+**/public/assets
 package-lock.json
+scripts/

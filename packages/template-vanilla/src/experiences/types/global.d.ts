@@ -1,4 +1,4 @@
-import { MainThree } from "../engines/threes/MainThree";
+import { MainThree } from '../engines/threes/MainThree';
 
 declare global {
     interface Window {
@@ -6,4 +6,4 @@ declare global {
     }
 }
 
-export { };
+export {};

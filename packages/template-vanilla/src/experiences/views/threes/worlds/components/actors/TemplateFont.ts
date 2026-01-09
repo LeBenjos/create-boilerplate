@@ -5,12 +5,6 @@ import ThreeAssetsManager from '../../../../../managers/threes/ThreeAssetsManage
 import ActorBase from './bases/ActorBase';
 
 export default class TemplateFont extends ActorBase {
-    declare private _geometry: TextGeometry;
-    declare private _material: MeshStandardMaterial;
-    declare private _mesh: Mesh;
-
-    //#region Constants
-    //
     private static readonly _DEFAULT_TEXT: string = 'Hello boilerplate!';
     private static readonly _DEFAULT_TEXT_OPTION: TextGeometryParameters = {
         font: null!,
@@ -30,8 +24,10 @@ export default class TemplateFont extends ActorBase {
         envMapIntensity: 0,
     };
     private static readonly _DEFAULT_MESH_POSITION_Y = 3;
-    //
-    //#endregion
+
+    declare private _geometry: TextGeometry;
+    declare private _material: MeshStandardMaterial;
+    declare private _mesh: Mesh;
 
     constructor() {
         super();
@@ -58,5 +54,11 @@ export default class TemplateFont extends ActorBase {
         this._mesh.position.y = TemplateFont._DEFAULT_MESH_POSITION_Y;
 
         this.add(this._mesh);
+    }
+
+    public override dispose(): void {
+        super.dispose();
+        this._geometry.dispose();
+        this._material.dispose();
     }
 }

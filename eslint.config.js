@@ -12,6 +12,7 @@ export default tseslint.config(
             '**/*.js.map',
             '**/*.d.ts',
             'packages/template-*/**',
+            'scripts/**',
         ],
     },
     eslint.configs.recommended,

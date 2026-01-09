@@ -23,7 +23,7 @@ export interface ThreeAssetToLoad {
     totalSize: number;
 }
 
-export interface ThreeAssetOption { }
+export interface ThreeAssetOption {}
 
 export interface ThreeTextureOption extends ThreeAssetOption {
     colorSpace?: ColorSpace;
@@ -39,9 +39,9 @@ export interface ThreeHDROption extends ThreeAssetOption {
     colorSpace?: ColorSpace;
 }
 
-export interface ThreeModelOption extends ThreeAssetOption { }
+export interface ThreeModelOption extends ThreeAssetOption {}
 
-export interface ThreeFontOption extends ThreeAssetOption { }
+export interface ThreeFontOption extends ThreeAssetOption {}
 
 class ThreeAssetsManager {
     private static readonly _DRACO_LOADER_PATH: string = 'loaders/draco/';
@@ -137,11 +137,11 @@ class ThreeAssetsManager {
             else if (asset.type === AssetType.MODEL) this._loadModel(asset);
             else if (asset.type === AssetType.FONT) this._loadFont(asset);
         }
-    };
+    }
 
     public finishLoad(): void {
         this._toLoadList.length = 0;
-    };
+    }
 
     private _loadTexture(asset: ThreeAssetToLoad): void {
         const option = asset.option as ThreeTextureOption | undefined;

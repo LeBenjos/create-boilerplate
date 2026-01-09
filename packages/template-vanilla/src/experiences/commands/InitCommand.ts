@@ -5,7 +5,6 @@ import LoaderManager from '../managers/LoaderManager';
 import ThreeAssetsManager from '../managers/threes/ThreeAssetsManager';
 import ThreeCameraControllerManager from '../managers/threes/ThreeCameraControllerManager';
 import ThreeRaycasterManager from '../managers/threes/ThreeRaycasterManager';
-import ViewProxy from '../proxies/ViewProxy';
 
 class InitCommand {
     public init(): void {
@@ -21,7 +20,7 @@ class InitCommand {
     }
 
     private _initProxies(): void {
-        ViewProxy.init();
+        //
     }
 
     private _initManagers(): void {

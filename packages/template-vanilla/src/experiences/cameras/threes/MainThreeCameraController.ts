@@ -13,8 +13,8 @@ export default class MainThreeCameraController extends ThreeCameraControllerBase
     };
     private static readonly _DEFAULT_CONTAINER_POSITION: Vector3 = new Vector3(0, 1.5, 3);
 
-    constructor(cameraOption: ThreeCameraOptions = MainThreeCameraController._MAIN_CAMERA_OPTIONS) {
-        super(CameraId.THREE_MAIN, cameraOption);
+    constructor() {
+        super(CameraId.THREE_MAIN, MainThreeCameraController._MAIN_CAMERA_OPTIONS);
         this._container.position.copy(MainThreeCameraController._DEFAULT_CONTAINER_POSITION);
     }
 

@@ -16,13 +16,13 @@ body {
     padding: 0;
     overflow: hidden;
 
-    > #app,
-    > #root {
+    >#app,
+    >#root {
         position: relative;
         width: 100%;
         height: 100%;
 
-        > #loader {
+        >#loader {
             position: absolute;
             top: 0;
             left: 0;
@@ -37,7 +37,7 @@ body {
             height: 100%;
         }
 
-        .view-html-container {
+        .html-view {
             position: absolute;
             top: 0;
             left: 0;
@@ -60,7 +60,7 @@ body {
                 }
             }
 
-            &.hide {
+            &.hidden {
                 opacity: 1;
                 animation: hideView $viewTransition ease forwards;
 

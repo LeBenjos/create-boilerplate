@@ -4,12 +4,6 @@ import ThreeAssetsManager from '../../../../../managers/threes/ThreeAssetsManage
 import ActorBase from './bases/ActorBase';
 
 export default class TemplateMesh extends ActorBase {
-    declare private _geometry: SphereGeometry;
-    declare private _material: MeshStandardMaterial;
-    declare private _mesh: Mesh;
-
-    //#region Constants
-    //
     private static readonly _DEFAULT_GEOMETRY_RADIUS = 1;
     private static readonly _DEFAULT_GEOMETRY_WIDTH_SEGMENTS = 64;
     private static readonly _DEFAULT_GEOMETRY_HEIGHT_SEGMENTS = 64;
@@ -21,8 +15,10 @@ export default class TemplateMesh extends ActorBase {
         envMapIntensity: 0,
     };
     private static readonly _MESH_ROTATION_Y = 0.25;
-    //
-    //#endregion
+
+    declare private _geometry: SphereGeometry;
+    declare private _material: MeshStandardMaterial;
+    declare private _mesh: Mesh;
 
     constructor() {
         super();
@@ -56,6 +52,12 @@ export default class TemplateMesh extends ActorBase {
         this._mesh.castShadow = true;
         this._mesh.receiveShadow = true;
         this.add(this._mesh);
+    }
+
+    public override dispose(): void {
+        super.dispose();
+        this._geometry.dispose();
+        this._material.dispose();
     }
 
     public update(dt: number): void {

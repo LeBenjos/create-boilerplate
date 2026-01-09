@@ -27,7 +27,7 @@ class LoaderManager {
     private _beginLoad = (): void => {
         ThreeAssetsManager.beginLoad();
         this.onBeginLoad.execute();
-    }
+    };
 
     private _finishLoad = (): void => {
         ThreeAssetsManager.finishLoad();

@@ -1,5 +1,5 @@
 import { DomResizeManager } from '@benjos/cookware';
-import { Object3D, OrthographicCamera, PerspectiveCamera } from 'three';
+import { Object3D, OrthographicCamera, PerspectiveCamera, Scene } from 'three';
 import type { CameraId } from '../../../constants/experiences/CameraId';
 import MainThree from '../../../engines/threes/MainThree';
 import { ThreeCameraOptions, ThreeCameraType, ThreeControls } from '../../../types/cameraTypes';
@@ -20,7 +20,8 @@ export default abstract class ThreeCameraControllerBase<T extends ThreeControls 
 
     constructor(
         cameraId: CameraId,
-        cameraOptions: ThreeCameraOptions = ThreeCameraControllerBase._DEFAULT_CAMERA_OPTIONS
+        cameraOptions: ThreeCameraOptions = ThreeCameraControllerBase._DEFAULT_CAMERA_OPTIONS,
+        scene: Scene = MainThree.scene
     ) {
         super();
         this._cameraId = cameraId;
@@ -28,7 +29,7 @@ export default abstract class ThreeCameraControllerBase<T extends ThreeControls 
         this._generateContainer();
         this._generateCamera(cameraOptions);
 
-        MainThree.scene.add(this);
+        scene.add(this);
     }
 
     private _generateContainer(): void {
@@ -66,7 +67,9 @@ export default abstract class ThreeCameraControllerBase<T extends ThreeControls 
     }
 
     public resize(): void {
-        if (this._camera instanceof PerspectiveCamera) this._camera.aspect = DomResizeManager.width / DomResizeManager.height;
+        if (this._camera instanceof PerspectiveCamera) {
+            this._camera.aspect = DomResizeManager.width / DomResizeManager.height;
+        }
         this._camera.updateProjectionMatrix();
     }
 

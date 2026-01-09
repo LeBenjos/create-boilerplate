@@ -31,8 +31,8 @@ class DebugManager {
             closeFolders: true,
         });
         this._gui.close();
-        DomKeyboardManager.onKeyUp.remove(this._onKeyUp);
-        DomKeyboardManager.onKeyUp.add(this._onKeyUp);
+        DomKeyboardManager.onKeyDown.remove(this._onKeyDown);
+        DomKeyboardManager.onKeyDown.add(this._onKeyDown);
     }
 
     private _initThreePerf = (): void => {
@@ -54,7 +54,7 @@ class DebugManager {
         this._threePerf.end();
     }
 
-    private readonly _onKeyUp = (_e: KeyboardEvent): void => {
+    private readonly _onKeyDown = (_e: KeyboardEvent): void => {
         if (DomKeyboardManager.areAllKeysDown(DebugManager._TOGGLE_HIDDEN_KEYS)) {
             this._gui.show(this._gui._hidden);
             this._threePerf.visible = !this._threePerf.visible;

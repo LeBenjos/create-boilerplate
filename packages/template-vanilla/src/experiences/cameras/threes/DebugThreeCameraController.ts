@@ -20,8 +20,8 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
     private static readonly _CONTROLS_DAMPING_FACTOR: number = 0.05;
     private static readonly _CONTROLS_CENTER_KEY: string = KeyboardConstant.CODES.CONTROL_LEFT;
 
-    constructor(cameraOption: ThreeCameraOptions = DebugThreeCameraController._DEBUG_CAMERA_OPTIONS) {
-        super(CameraId.THREE_DEBUG, cameraOption);
+    constructor() {
+        super(CameraId.THREE_DEBUG, DebugThreeCameraController._DEBUG_CAMERA_OPTIONS);
         this._camera.position.copy(DebugThreeCameraController._DEFAULT_CAMERA_POSITION);
         this._setControls();
         this.disable();
