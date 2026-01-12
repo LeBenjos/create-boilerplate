@@ -2,7 +2,7 @@ import { DomKeyboardManager } from '@benjos/cookware';
 import { KeyboardConstant } from '@benjos/spices';
 import GUI from 'lil-gui';
 import { ThreePerf } from 'three-perf';
-import MainThree from '../engines/threes/MainThree';
+import MainThreeApp from '../engines/threes/app/MainThreeApp';
 
 class DebugManager {
     private static readonly _IS_ACTIVE_STRING: string = '#debug';
@@ -40,7 +40,7 @@ class DebugManager {
             anchorX: DebugManager._THREE_PERF_ANCHOR_X,
             anchorY: DebugManager._THREE_PERF_ANCHOR_Y,
             domElement: document.body,
-            renderer: MainThree.renderer,
+            renderer: MainThreeApp.renderer,
             showGraph: false,
         });
     };

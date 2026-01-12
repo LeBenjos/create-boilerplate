@@ -10,6 +10,15 @@ export default abstract class ThreeViewBase extends Object3D {
         this._actors = [];
     }
 
+    public init(): void {
+        this.reset();
+        for (const actor of this._actors) actor.init();
+    }
+
+    public reset(): void {
+        for (const actor of this._actors) actor.reset();
+    }
+
     protected _generateActors(): void {
         //
     }

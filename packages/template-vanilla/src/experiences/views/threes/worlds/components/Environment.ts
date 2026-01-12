@@ -1,6 +1,6 @@
 import { DataTexture, DirectionalLight, Object3D, Vector3 } from 'three';
 import { AssetId } from '../../../../constants/experiences/AssetId';
-import MainThree from '../../../../engines/threes/MainThree';
+import MainThreeApp from '../../../../engines/threes/app/MainThreeApp';
 import DebugManager from '../../../../managers/DebugManager';
 import ThreeAssetsManager from '../../../../managers/threes/ThreeAssetsManager';
 
@@ -34,13 +34,13 @@ export default class Environment extends Object3D {
         this._environmentMap.texture = ThreeAssetsManager.getHDR(AssetId.THREE_HDR_TEMPLATE);
         this._environmentMap.texture.needsUpdate = true;
 
-        MainThree.scene.environment = this._environmentMap.texture;
-        MainThree.scene.environmentIntensity = this._environmentMap.intensity!;
+        MainThreeApp.scene.environment = this._environmentMap.texture;
+        MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
 
         if (DebugManager.isActive) {
             const environmentFolder = DebugManager.gui.addFolder('Environment');
             environmentFolder.add(this._environmentMap, 'intensity', 0, 10, 0.01).onChange(() => {
-                MainThree.scene.environmentIntensity = this._environmentMap.intensity!;
+                MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
             });
         }
     };
@@ -69,5 +69,5 @@ export default class Environment extends Object3D {
         }
     }
 
-    public update(_dt: number): void {}
+    public update(_dt: number): void { }
 }

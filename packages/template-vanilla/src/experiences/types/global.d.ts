@@ -1,9 +1,10 @@
-import { MainThree } from '../engines/threes/MainThree';
+import { MainThreeApp } from '../engines/threes/app/MainThreeApp';
 
 declare global {
     interface Window {
-        mainThree: MainThree;
+        mainThreeApp: MainThreeApp;
     }
 }
 
-export {};
+export { };
+

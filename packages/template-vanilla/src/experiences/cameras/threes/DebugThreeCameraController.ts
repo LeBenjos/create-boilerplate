@@ -3,7 +3,7 @@ import { KeyboardConstant } from '@benjos/spices';
 import { Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { CameraId } from '../../constants/experiences/CameraId';
-import MainThree from '../../engines/threes/MainThree';
+import MainThreeApp from '../../engines/threes/app/MainThreeApp';
 import ThreeRaycasterManager from '../../managers/threes/ThreeRaycasterManager';
 import { ThreeCameraOptions, ThreeCameraType } from '../../types/cameraTypes';
 import ThreeCameraControllerBase from './bases/ThreeCameraControllerBase';
@@ -38,14 +38,14 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
     }
 
     private _setControls(): void {
-        this._controls = new OrbitControls(this._camera, MainThree.domElementContainer);
+        this._controls = new OrbitControls(this._camera, MainThreeApp.domElementContainer);
         this._controls.enableDamping = true;
         this._controls.dampingFactor = DebugThreeCameraController._CONTROLS_DAMPING_FACTOR;
     }
 
     private readonly _onMouseDown = (): void => {
         if (DomKeyboardManager.isKeyDown(DebugThreeCameraController._CONTROLS_CENTER_KEY)) {
-            const intersect = ThreeRaycasterManager.castFromCameraToPointer(MainThree.scene.children);
+            const intersect = ThreeRaycasterManager.castFromCameraToPointer(MainThreeApp.scene.children);
             if (intersect.length > 0) {
                 this._controls.target.copy(intersect[0].point);
                 this._controls.update();

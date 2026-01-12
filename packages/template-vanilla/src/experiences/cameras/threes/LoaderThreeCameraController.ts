@@ -1,6 +1,6 @@
 import { Vector3 } from 'three';
 import { CameraId } from '../../constants/experiences/CameraId';
-import LoaderThree from '../../engines/threes/LoaderThree';
+import LoaderThreeApp from '../../engines/threes/app/LoaderThreeApp';
 import { ThreeCameraOptions, ThreeCameraType } from '../../types/cameraTypes';
 import ThreeCameraControllerBase from './bases/ThreeCameraControllerBase';
 
@@ -15,7 +15,7 @@ export default class LoaderThreeCameraController extends ThreeCameraControllerBa
     private static readonly _DEFAULT_CONTAINER_POSITION: Vector3 = new Vector3(0, 0, 0);
 
     constructor() {
-        super(CameraId.THREE_LOADER, LoaderThreeCameraController._LOADER_CAMERA_OPTIONS, LoaderThree.scene);
+        super(CameraId.THREE_LOADER, LoaderThreeCameraController._LOADER_CAMERA_OPTIONS, LoaderThreeApp.scene);
         this._container.position.copy(LoaderThreeCameraController._DEFAULT_CONTAINER_POSITION);
     }
 

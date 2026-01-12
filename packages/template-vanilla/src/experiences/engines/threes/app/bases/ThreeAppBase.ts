@@ -1,10 +1,10 @@
 import { DomResizeManager, TickerManager } from '@benjos/cookware';
 import { Scene } from 'three';
-import ThreeCameraControllerBase from '../../../cameras/threes/bases/ThreeCameraControllerBase';
-import WebGLRendererBase from '../../../renderers/threes/bases/WebGLRendererBase';
-import ThreeViewBase from '../../../views/threes/bases/ThreeViewBase';
+import ThreeCameraControllerBase from '../../../../cameras/threes/bases/ThreeCameraControllerBase';
+import WebGLRendererBase from '../../../../renderers/threes/bases/WebGLRendererBase';
+import ThreeViewBase from '../../../../views/threes/bases/ThreeViewBase';
 
-export default abstract class ThreeBase {
+export default abstract class ThreeAppBase {
     declare protected _domElementContainer: HTMLElement;
     declare protected _scene: Scene;
     declare protected _cameraController: ThreeCameraControllerBase;
@@ -49,12 +49,14 @@ export default abstract class ThreeBase {
         if (this._currentView === view) return;
         if (this._currentView) this._removeOldView(this._currentView);
         this._currentView = view;
+        view.init();
         this.scene.add(this._currentView);
     }
 
     private _removeOldView(view: ThreeViewBase): void {
         this.scene.remove(view);
         view.dispose();
+        view.reset();
     }
 
     protected _onResize = (): void => {

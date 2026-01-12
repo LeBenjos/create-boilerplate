@@ -1,6 +1,6 @@
 {
     "name": "@benjos/create-boilerplate",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "CLI to scaffold Three.js projects with framework support",
     "type": "module",
     "bin": {

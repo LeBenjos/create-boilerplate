@@ -1,13 +1,13 @@
 import { DomUtils } from '@benjos/cookware';
 import { Scene } from 'three';
-import LoaderThreeCameraController from '../../cameras/threes/LoaderThreeCameraController';
-import { CameraId } from '../../constants/experiences/CameraId';
-import ThreeCameraControllerManager from '../../managers/threes/ThreeCameraControllerManager';
-import LoaderRenderer from '../../renderers/threes/LoaderRenderer';
-import LoaderThreeView from '../../views/threes/loaders/LoaderThreeView';
-import ThreeBase from './bases/ThreeBase';
+import LoaderThreeCameraController from '../../../cameras/threes/LoaderThreeCameraController';
+import { CameraId } from '../../../constants/experiences/CameraId';
+import ThreeCameraControllerManager from '../../../managers/threes/ThreeCameraControllerManager';
+import LoaderRenderer from '../../../renderers/threes/LoaderRenderer';
+import LoaderThreeView from '../../../views/threes/loaders/LoaderThreeView';
+import ThreeAppBase from './bases/ThreeAppBase';
 
-class LoaderThree extends ThreeBase {
+class LoaderThreeApp extends ThreeAppBase {
     constructor() {
         super(DomUtils.GetLoader());
     }
@@ -36,4 +36,4 @@ class LoaderThree extends ThreeBase {
     }
 }
 
-export default new LoaderThree();
+export default new LoaderThreeApp();
