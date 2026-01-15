@@ -3,7 +3,7 @@ import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
 import type { AssetId } from '../../../../../../constants/experiences/AssetId';
 import type { Object3DId } from '../../../../../../constants/experiences/Object3dId';
 import ThreeAssetsManager from '../../../../../../managers/threes/ThreeAssetsManager';
-import ActorBase from './ActorBase';
+import ThreeActorBase from './ThreeActorBase';
 
 export interface ModelBaseParams {
     object3DId?: Object3DId;
@@ -11,7 +11,7 @@ export interface ModelBaseParams {
     receiveShadow?: boolean;
 }
 
-export default abstract class ModelBase extends ActorBase {
+export default abstract class ThreeModelBase extends ThreeActorBase {
     protected _assetId: AssetId;
     protected _parameters: ModelBaseParams;
     declare protected _model: Group | Object3D | Mesh;

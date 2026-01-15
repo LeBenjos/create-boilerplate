@@ -44,35 +44,10 @@ body {
             width: 100%;
             height: 100%;
             opacity: 0;
+            transition: opacity $viewTransition ease;
 
             &.show {
-                opacity: 0;
-                animation: showView $viewTransition ease forwards;
-
-                @keyframes showView {
-                    0% {
-                        opacity: 0;
-                    }
-
-                    100% {
-                        opacity: 1;
-                    }
-                }
-            }
-
-            &.hidden {
                 opacity: 1;
-                animation: hideView $viewTransition ease forwards;
-
-                @keyframes hideView {
-                    0% {
-                        opacity: 1;
-                    }
-
-                    100% {
-                        opacity: 0;
-                    }
-                }
             }
         }
     }

@@ -9,7 +9,11 @@ import ThreeAppBase from './bases/ThreeAppBase';
 
 class LoaderThreeApp extends ThreeAppBase {
     constructor() {
-        super(DomUtils.GetLoader());
+        super();
+    }
+
+    protected override _setDomElementContainer(): void {
+        this._domElementContainer = DomUtils.GetLoader();
     }
 
     protected override _generateScenes(): void {

@@ -1,9 +1,9 @@
 import { Vector3 } from 'three';
 import { AssetId } from '../../../../../constants/experiences/AssetId';
 import DebugManager from '../../../../../managers/DebugManager';
-import ModelBase from './bases/ModelBase';
+import ThreeModelBase from './bases/ThreeModelBase';
 
-export default class TemplateModel extends ModelBase {
+export default class TemplateModel extends ThreeModelBase {
     private static readonly _DEFAULT_POSITION: Vector3 = new Vector3(0, 1, 0);
     private static readonly _ROTATION_Y = 0.25;
 

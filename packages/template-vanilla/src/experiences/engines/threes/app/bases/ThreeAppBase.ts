@@ -12,14 +12,14 @@ export default abstract class ThreeAppBase {
     protected readonly _views: ThreeViewBase[];
     declare protected _currentView: ThreeViewBase;
 
-    constructor(domElementContainer: HTMLElement) {
-        this._domElementContainer = domElementContainer;
+    constructor() {
         this._views = [];
     }
 
     public init(): void {
         TickerManager.add(this._update);
 
+        this._setDomElementContainer();
         this._generateScenes();
         this._generateCameras();
         this._generateRenderers();
@@ -27,6 +27,10 @@ export default abstract class ThreeAppBase {
 
         this._onResize();
         DomResizeManager.onResize.add(this._onResize);
+    }
+
+    protected _setDomElementContainer(): void {
+        //
     }
 
     protected _generateScenes(): void {

@@ -24,7 +24,7 @@ class MainThreeApp extends ThreeAppBase {
     declare private _debugWireframeMaterial: MeshStandardMaterial;
 
     constructor() {
-        super(DomUtils.GetApp());
+        super();
     }
 
     public override init(): void {
@@ -34,6 +34,10 @@ class MainThreeApp extends ThreeAppBase {
             window.mainThreeApp = this;
             DomKeyboardManager.onKeyDown.add(this._onKeyDown);
         }
+    }
+
+    protected override _setDomElementContainer(): void {
+        this._domElementContainer = DomUtils.GetApp();
     }
 
     protected override _generateScenes(): void {

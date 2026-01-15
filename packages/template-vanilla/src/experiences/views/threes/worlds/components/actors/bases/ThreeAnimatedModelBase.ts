@@ -2,9 +2,9 @@ import { AnimationAction, AnimationMixer } from 'three';
 import type { AnimationId } from '../../../../../../constants/experiences/AnimationId';
 import type { AssetId } from '../../../../../../constants/experiences/AssetId';
 import ThreeAssetsManager from '../../../../../../managers/threes/ThreeAssetsManager';
-import ModelBase, { type ModelBaseParams } from './ModelBase';
+import ThreeModelBase, { type ModelBaseParams } from './ThreeModelBase';
 
-export default abstract class AnimatedModelBase extends ModelBase {
+export default abstract class ThreeAnimatedModelBase extends ThreeModelBase {
     private static readonly _DEFAULT_ANIMATION_FADE_DURATION: number = 1;
 
     declare private _mixer: AnimationMixer;
@@ -35,7 +35,7 @@ export default abstract class AnimatedModelBase extends ModelBase {
 
     protected _playAnimation = (
         animationId: AnimationId,
-        fadeDuration: number = AnimatedModelBase._DEFAULT_ANIMATION_FADE_DURATION
+        fadeDuration: number = ThreeAnimatedModelBase._DEFAULT_ANIMATION_FADE_DURATION
     ): void => {
         if (!this._actions) return;
         const newAction = this._getAnimationAction(animationId);

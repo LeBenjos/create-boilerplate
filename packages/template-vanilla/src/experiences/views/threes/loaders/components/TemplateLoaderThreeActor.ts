@@ -1,8 +1,8 @@
 import { Mesh, PlaneGeometry } from 'three';
 import LoaderMaterial from '../../../../materials/threes/loaders/LoaderMaterial';
-import ActorBase from '../../worlds/components/actors/bases/ActorBase';
+import ThreeActorBase from '../../worlds/components/actors/bases/ThreeActorBase';
 
-export default class ThreeTemplateLoader extends ActorBase {
+export default class TemplateLoaderThreeActor extends ThreeActorBase {
     private static readonly _DEFAULT_SIZE_WIDTH: number = 2;
     private static readonly _DEFAULT_SIZE_HEIGHT: number = 2;
     private static readonly _DEFAULT_SEGMENTS_WIDTH: number = 1;
@@ -24,10 +24,10 @@ export default class ThreeTemplateLoader extends ActorBase {
 
     private _generateGeometry(): void {
         this._geometry = new PlaneGeometry(
-            ThreeTemplateLoader._DEFAULT_SIZE_WIDTH,
-            ThreeTemplateLoader._DEFAULT_SIZE_HEIGHT,
-            ThreeTemplateLoader._DEFAULT_SEGMENTS_WIDTH,
-            ThreeTemplateLoader._DEFAULT_SEGMENTS_HEIGHT
+            TemplateLoaderThreeActor._DEFAULT_SIZE_WIDTH,
+            TemplateLoaderThreeActor._DEFAULT_SIZE_HEIGHT,
+            TemplateLoaderThreeActor._DEFAULT_SEGMENTS_WIDTH,
+            TemplateLoaderThreeActor._DEFAULT_SEGMENTS_HEIGHT
         );
     }
 

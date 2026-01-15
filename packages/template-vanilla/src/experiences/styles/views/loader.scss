@@ -8,9 +8,7 @@ body {
     >#root {
         >#loader {
             .html-view {
-                &.hidden {
-                    animation-duration: $outroFadeOutDuration;
-                }
+                transition: opacity $outroFadeOutDuration ease;
             }
         }
     }
@@ -39,7 +37,6 @@ body {
             display: flex;
             align-items: center;
             gap: 0.25rem;
-            color: $white;
         }
 
         .loading-bar {

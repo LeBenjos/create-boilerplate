@@ -1,9 +1,9 @@
 import { Mesh, MeshStandardMaterial, RepeatWrapping, SphereGeometry, type MeshStandardMaterialParameters } from 'three';
 import { AssetId } from '../../../../../constants/experiences/AssetId';
 import ThreeAssetsManager from '../../../../../managers/threes/ThreeAssetsManager';
-import ActorBase from './bases/ActorBase';
+import ThreeActorBase from './bases/ThreeActorBase';
 
-export default class TemplateMesh extends ActorBase {
+export default class TemplateMesh extends ThreeActorBase {
     private static readonly _DEFAULT_GEOMETRY_RADIUS = 1;
     private static readonly _DEFAULT_GEOMETRY_WIDTH_SEGMENTS = 64;
     private static readonly _DEFAULT_GEOMETRY_HEIGHT_SEGMENTS = 64;

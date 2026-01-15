@@ -1,8 +1,8 @@
 import { Object3D } from 'three';
-import ActorBase from '../worlds/components/actors/bases/ActorBase';
+import ThreeActorBase from '../worlds/components/actors/bases/ThreeActorBase';
 
 export default abstract class ThreeViewBase extends Object3D {
-    protected readonly _actors: ActorBase[];
+    protected readonly _actors: ThreeActorBase[];
 
     constructor() {
         super();

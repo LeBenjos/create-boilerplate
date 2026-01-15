@@ -1,9 +1,9 @@
 import LoaderManager from '../../../managers/LoaderManager';
 import ThreeViewBase from '../bases/ThreeViewBase';
-import ThreeTemplateLoader from './components/ThreeTemplateLoader';
+import TemplateLoaderThreeActor from './components/TemplateLoaderThreeActor';
 
 export default class LoaderThreeView extends ThreeViewBase {
-    declare private _threeLoader: ThreeTemplateLoader;
+    declare private _threeLoader: TemplateLoaderThreeActor;
 
     constructor() {
         super();
@@ -14,7 +14,7 @@ export default class LoaderThreeView extends ThreeViewBase {
 
     protected override _generateActors(): void {
         super._generateActors();
-        this._threeLoader = new ThreeTemplateLoader();
+        this._threeLoader = new TemplateLoaderThreeActor();
         this._actors.push(this._threeLoader);
 
         for (const actor of this._actors) this.add(actor);
