@@ -41,7 +41,7 @@ async function createProject(projectNameArg?: string): Promise<void> {
             message: 'Choose a framework:',
             choices: [
                 { name: 'Vanilla (Three.js + TypeScript)', value: 'vanilla' },
-                { name: 'React (Three.js + TypeScript + React)', value: 'react' },
+                { name: 'React (Coming soon)', value: 'react', disabled: true },
                 { name: 'Vue (Coming soon)', value: 'vue', disabled: true },
             ],
         },
