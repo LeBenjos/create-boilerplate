@@ -1,21 +1,15 @@
 import eslint from '@eslint/js';
 import eslintPluginPrettier from 'eslint-plugin-prettier/recommended';
+import { defineConfig } from "eslint/config";
 import tseslint from 'typescript-eslint';
 
-export default tseslint.config(
+export default defineConfig(
     {
-        ignores: [
-            '**/dist/**',
-            '**/build/**',
-            '**/node_modules/**',
-            '**/*.min.js',
-            '**/*.js.map',
-            '**/*.d.ts',
-        ],
+        ignores: ['**/dist/**', '**/build/**', '**/node_modules/**', '**/*.min.js', '**/*.js.map', '**/*.d.ts'],
     },
     eslint.configs.recommended,
-    ...tseslint.configs.recommendedTypeChecked,
-    ...tseslint.configs.stylisticTypeChecked,
+    tseslint.configs.recommendedTypeChecked,
+    tseslint.configs.stylisticTypeChecked,
     eslintPluginPrettier,
     {
         languageOptions: {

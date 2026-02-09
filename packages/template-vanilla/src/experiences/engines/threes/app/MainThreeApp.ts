@@ -68,7 +68,7 @@ class MainThreeApp extends ThreeAppBase {
     }
 
     protected override _generateViews(): void {
-        const worldThreeView = new WorldThreeView();
+        const worldThreeView = new WorldThreeView(); // pas créer un view mais donner un constructeur de view et le créer quand on veut l'afficher first time
         this._views.push(worldThreeView);
         this._setCurrentView(worldThreeView);
     }

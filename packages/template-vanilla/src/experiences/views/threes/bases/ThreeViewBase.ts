@@ -29,7 +29,7 @@ export default abstract class ThreeViewBase extends Object3D {
         }
     }
 
-    public update(dt: number): void {
+    public update(_dt: number): void {
         //
     }
 }

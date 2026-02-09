@@ -39,12 +39,6 @@ export default class TemplateLoaderThreeActor extends ThreeActorBase {
         this._mesh = new Mesh(this._geometry, this._material);
     }
 
-    public override dispose(): void {
-        super.dispose();
-        this._geometry.dispose();
-        this._material.dispose();
-    }
-
     //#region Getters
     //
     public get material(): LoaderMaterial {

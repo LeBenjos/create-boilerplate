@@ -55,10 +55,4 @@ export default class TemplateFont extends ThreeActorBase {
 
         this.add(this._mesh);
     }
-
-    public override dispose(): void {
-        super.dispose();
-        this._geometry.dispose();
-        this._material.dispose();
-    }
 }

@@ -4,14 +4,9 @@
         "module": "ESNext",
         "moduleResolution": "Node",
         "strict": true,
-        "lib": [
-            "DOM",
-            "ES2020"
-        ],
+        "lib": ["DOM", "ES2020"],
         "skipLibCheck": true,
         "noEmit": true
     },
-    "include": [
-        "src"
-    ]
+    "include": ["src"]
 }

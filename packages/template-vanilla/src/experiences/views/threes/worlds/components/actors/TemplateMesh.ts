@@ -54,12 +54,6 @@ export default class TemplateMesh extends ThreeActorBase {
         this.add(this._mesh);
     }
 
-    public override dispose(): void {
-        super.dispose();
-        this._geometry.dispose();
-        this._material.dispose();
-    }
-
     public update(dt: number): void {
         super.update(dt);
         this._mesh.rotation.y += dt * TemplateMesh._MESH_ROTATION_Y;

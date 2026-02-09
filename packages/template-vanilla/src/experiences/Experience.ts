@@ -6,7 +6,7 @@ import MainThree from './engines/threes/MainThree';
 import LoaderManager from './managers/LoaderManager';
 
 class Experience {
-    private _isInitialized: boolean = false;
+    private _isInitialized = false;
 
     public init(): void {
         if (this._isInitialized) return;

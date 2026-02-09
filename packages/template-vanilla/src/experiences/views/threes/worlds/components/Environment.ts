@@ -69,5 +69,5 @@ export default class Environment extends Object3D {
         }
     }
 
-    public update(_dt: number): void { }
+    public update(_dt: number): void {}
 }

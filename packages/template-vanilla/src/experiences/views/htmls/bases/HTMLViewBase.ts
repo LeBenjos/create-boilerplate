@@ -1,4 +1,3 @@
-
 export default abstract class HTMLViewBase {
     declare protected _htmlElement: HTMLDivElement;
 

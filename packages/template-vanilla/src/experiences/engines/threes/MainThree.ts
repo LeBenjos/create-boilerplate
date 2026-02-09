@@ -1,5 +1,5 @@
-import LoaderThreeApp from "./app/LoaderThreeApp";
-import MainThreeApp from "./app/MainThreeApp";
+import LoaderThreeApp from './app/LoaderThreeApp';
+import MainThreeApp from './app/MainThreeApp';
 
 class MainThree {
     public init(): void {

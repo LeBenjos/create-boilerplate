@@ -42,20 +42,6 @@ export default abstract class ThreeModelBase extends ThreeActorBase {
         this.add(this._model);
     }
 
-    public override dispose(): void {
-        super.dispose();
-        this._model.traverse((child) => {
-            if (child instanceof Mesh) {
-                child.geometry.dispose();
-                if (Array.isArray(child.material)) {
-                    child.material.forEach((material) => material.dispose());
-                } else {
-                    child.material.dispose();
-                }
-            }
-        });
-    }
-
     public update(dt: number): void {
         super.update(dt);
     }

@@ -1,7 +1,7 @@
 {
     "name": "create-boilerplate",
     "private": true,
-    "version": "1.4.2",
+    "version": "1.4.3",
     "type": "module",
     "scripts": {
         "lint": "eslint . --max-warnings 0",
