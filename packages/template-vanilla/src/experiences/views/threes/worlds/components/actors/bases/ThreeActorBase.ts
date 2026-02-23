@@ -40,5 +40,5 @@ export default abstract class ThreeActorBase extends Object3D {
         geometries.forEach((geo) => geo.dispose());
     }
 
-    public update(_dt: number): void {}
+    public update(_dt: number): void { }
 }

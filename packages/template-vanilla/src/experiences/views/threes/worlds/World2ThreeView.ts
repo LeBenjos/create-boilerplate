@@ -3,14 +3,14 @@ import LoaderManager from '../../../managers/LoaderManager';
 import ThreeViewBase from '../bases/ThreeViewBase';
 import Environment from './components/Environment';
 import TemplateFont from './components/actors/TemplateFont';
-import TemplateMesh from './components/actors/TemplateMesh';
+import TemplateMesh2 from './components/actors/TemplateMesh2';
 import TemplateModel from './components/actors/TemplateModel';
 
-export default class WorldThreeView extends ThreeViewBase {
+export default class World2ThreeView extends ThreeViewBase {
     declare private _environment: Environment;
 
     constructor() {
-        super(ViewId.THREE_VIEW_WORLD_1);
+        super(ViewId.THREE_VIEW_WORLD_2);
         LoaderManager.onFinishLoad.add(this._onFinishLoad);
     }
 
@@ -28,7 +28,7 @@ export default class WorldThreeView extends ThreeViewBase {
 
     protected override _generateActors(): void {
         super._generateActors();
-        this._actors.push(new TemplateMesh());
+        this._actors.push(new TemplateMesh2());
         this._actors.push(new TemplateModel());
         this._actors.push(new TemplateFont());
 

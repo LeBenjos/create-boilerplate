@@ -4,9 +4,11 @@ import { MeshStandardMaterial, Scene } from 'three';
 import DebugThreeCameraController from '../../../cameras/threes/DebugThreeCameraController';
 import MainThreeCameraController from '../../../cameras/threes/MainThreeCameraController';
 import { CameraId } from '../../../constants/experiences/CameraId';
+import { ViewId } from '../../../constants/experiences/ViewId';
 import DebugManager from '../../../managers/DebugManager';
 import ThreeCameraControllerManager from '../../../managers/threes/ThreeCameraControllerManager';
 import Renderer from '../../../renderers/threes/Renderer';
+import World2ThreeView from '../../../views/threes/worlds/World2ThreeView';
 import WorldThreeView from '../../../views/threes/worlds/WorldThreeView';
 import ThreeAppBase from './bases/ThreeAppBase';
 
@@ -69,8 +71,16 @@ class MainThreeApp extends ThreeAppBase {
 
     protected override _generateViews(): void {
         const worldThreeView = new WorldThreeView(); // pas créer un view mais donner un constructeur de view et le créer quand on veut l'afficher first time
-        this._views.push(worldThreeView);
-        this._setCurrentView(worldThreeView);
+        const world2ThreeView = new World2ThreeView(); // pas créer un view mais donner un constructeur de view et le créer quand on veut l'afficher first time
+        this._views.push(worldThreeView, world2ThreeView);
+        this._setCurrentView(ViewId.THREE_VIEW_WORLD_1);
+
+        if (DebugManager.isActive) {
+            const viewsDebug = DebugManager.gui.addFolder('Views');
+            viewsDebug.add({ switchToWorldThreeView: () => this._setCurrentView(ViewId.THREE_VIEW_WORLD_1) }, 'switchToWorldThreeView');
+            viewsDebug.add({ switchToWorld2ThreeView: () => this._setCurrentView(ViewId.THREE_VIEW_WORLD_2) }, 'switchToWorld2ThreeView');
+            viewsDebug.add({ resetCurrentView: () => this._currentView.reset() }, 'resetCurrentView');
+        }
     }
 
     private _onActiveCameraControllerChange = (): void => {

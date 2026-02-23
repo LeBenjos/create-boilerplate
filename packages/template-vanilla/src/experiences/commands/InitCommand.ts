@@ -11,8 +11,8 @@ class InitCommand {
         this._initUtils();
         this._initProxies();
         this._initManagers();
-        this._initCommon();
-        this._initThree();
+        this._initCommonAssets();
+        this._initThreeSharedAssets();
     }
 
     private _initUtils(): void {
@@ -35,11 +35,11 @@ class InitCommand {
         LoaderManager.init();
     }
 
-    private _initCommon(): void {
+    private _initCommonAssets(): void {
         //
     }
 
-    private _initThree(): void {
+    private _initThreeSharedAssets(): void {
         ThreeAssetsManager.addHDR(AssetId.THREE_HDR_TEMPLATE, AssetUtils.GetPath('hdrs/template.hdr'));
         ThreeAssetsManager.addModel(AssetId.THREE_GLTF_TEMPLATE, AssetUtils.GetPath('models/template.glb'));
         ThreeAssetsManager.addTexture(AssetId.THREE_TEXTURE_TEMPLATE, AssetUtils.GetPath('textures/template.jpg'));

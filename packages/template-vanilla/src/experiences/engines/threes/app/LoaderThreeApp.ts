@@ -2,6 +2,7 @@ import { DomUtils } from '@benjos/cookware';
 import { Scene } from 'three';
 import LoaderThreeCameraController from '../../../cameras/threes/LoaderThreeCameraController';
 import { CameraId } from '../../../constants/experiences/CameraId';
+import { ViewId } from '../../../constants/experiences/ViewId';
 import ThreeCameraControllerManager from '../../../managers/threes/ThreeCameraControllerManager';
 import LoaderRenderer from '../../../renderers/threes/LoaderRenderer';
 import LoaderThreeView from '../../../views/threes/loaders/LoaderThreeView';
@@ -36,7 +37,7 @@ class LoaderThreeApp extends ThreeAppBase {
     protected override _generateViews(): void {
         const loaderThreeView = new LoaderThreeView();
         this._views.push(loaderThreeView);
-        this._setCurrentView(loaderThreeView);
+        this._setCurrentView(ViewId.THREE_LOADER);
     }
 }
 

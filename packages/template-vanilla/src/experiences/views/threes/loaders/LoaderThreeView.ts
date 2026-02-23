@@ -1,3 +1,4 @@
+import { ViewId } from '../../../constants/experiences/ViewId';
 import LoaderManager from '../../../managers/LoaderManager';
 import ThreeViewBase from '../bases/ThreeViewBase';
 import TemplateLoaderThreeActor from './components/TemplateLoaderThreeActor';
@@ -6,7 +7,7 @@ export default class LoaderThreeView extends ThreeViewBase {
     declare private _threeLoader: TemplateLoaderThreeActor;
 
     constructor() {
-        super();
+        super(ViewId.THREE_LOADER);
         this._generateActors();
         LoaderManager.onBeginLoad.add(this._onBeginLoad);
         LoaderManager.onFinishLoad.add(this._onFinishLoad);

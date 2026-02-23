@@ -1,6 +1,7 @@
 import { DomResizeManager, TickerManager } from '@benjos/cookware';
 import { Scene } from 'three';
 import ThreeCameraControllerBase from '../../../../cameras/threes/bases/ThreeCameraControllerBase';
+import { ViewId } from '../../../../constants/experiences/ViewId';
 import WebGLRendererBase from '../../../../renderers/threes/bases/WebGLRendererBase';
 import ThreeViewBase from '../../../../views/threes/bases/ThreeViewBase';
 
@@ -49,12 +50,22 @@ export default abstract class ThreeAppBase {
         //
     }
 
-    protected _setCurrentView(view: ThreeViewBase): void {
-        if (this._currentView === view) return;
+    protected _setCurrentView(viewId: ViewId): void {
+        if (this._currentView?.viewId === viewId) return;
         if (this._currentView) this._removeOldView(this._currentView);
+        const view = this._getViewById(viewId);
         this._currentView = view;
         view.init();
         this.scene.add(this._currentView);
+    }
+
+    private _getViewById(viewId: ViewId): ThreeViewBase {
+        let view;
+        for (const v of this._views) {
+            if (v.viewId === viewId) view = v;
+        }
+        if (!view) throw new Error(`View with id ${viewId} not found.`);
+        return view!;
     }
 
     private _removeOldView(view: ThreeViewBase): void {
