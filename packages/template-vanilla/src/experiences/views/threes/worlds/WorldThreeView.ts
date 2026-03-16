@@ -2,7 +2,6 @@ import { DebugGuiTitle } from '../../../constants/experiences/DebugGuiTitle';
 import { ViewId } from '../../../constants/experiences/ViewId';
 import MainThreeApp from '../../../engines/threes/app/MainThreeApp';
 import DebugManager from '../../../managers/DebugManager';
-import LoaderManager from '../../../managers/LoaderManager';
 import ThreeViewBase from '../bases/ThreeViewBase';
 import Environment from './components/Environment';
 import TemplateFont from './components/actors/TemplateFont';
@@ -12,27 +11,16 @@ import TemplateModel from './components/actors/TemplateModel';
 export default class WorldThreeView extends ThreeViewBase {
     constructor() {
         super(ViewId.THREE_VIEW_WORLD_1);
-
-        if (LoaderManager.isLoaded) this._onAssetsReady();
-        else LoaderManager.onFinishLoad.add(this._onFinishLoad);
     }
 
-    private readonly _onFinishLoad = (): void => {
-        this._onAssetsReady();
-        LoaderManager.onFinishLoad.remove(this._onFinishLoad);
-    };
+    protected override _generateActors(): void {
+        super._generateActors();
 
-    private _onAssetsReady(): void {
         if (DebugManager.isActive) {
             const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
             viewsDebug.add({ switchToWorldThreeView: () => MainThreeApp.setCurrentView(ViewId.THREE_VIEW_WORLD_1) }, 'switchToWorldThreeView').name('SWITCH WORLD_1_VIEW');
         }
 
-        this._generateActors();
-    }
-
-    protected override _generateActors(): void {
-        super._generateActors();
         this._actors.push(new Environment());
         this._actors.push(new TemplateMesh());
         this._actors.push(new TemplateModel());

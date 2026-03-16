@@ -15,7 +15,7 @@ class Experience {
         InitCommand.init();
         MainHTML.init();
         MainThree.init();
-        LoaderManager.loadAllAssets();
+        LoaderManager.loadAssets();
     }
 }
 

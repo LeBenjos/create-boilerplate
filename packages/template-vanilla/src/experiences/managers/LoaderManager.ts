@@ -34,7 +34,7 @@ class LoaderManager {
         this.onFinishLoad.execute();
     };
 
-    public loadAllAssets(): void {
+    public loadAssets(): void {
         if (this._checkIsFinished()) return;
         this._beginLoad();
     }
