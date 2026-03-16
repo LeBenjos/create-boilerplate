@@ -16,6 +16,7 @@ import {
     type ToneMapping,
     type WebGLRendererParameters,
 } from 'three';
+import { DebugGuiTitle } from '../../constants/experiences/DebugGuiTitle';
 import DebugManager from '../../managers/DebugManager';
 import WebGLRendererBase from './bases/WebGLRendererBase';
 
@@ -37,7 +38,7 @@ export default class Renderer extends WebGLRendererBase {
         this.setClearColor(Renderer._DEFAULT_CLEAR_COLOR, Renderer._DEFAULT_CLEAR_ALPHA);
 
         if (DebugManager.isActive) {
-            const rendererFolder = DebugManager.gui.addFolder('Renderer');
+            const rendererFolder = DebugManager.getGuiFolder(DebugGuiTitle.THREE_RENDERER)
             rendererFolder
                 .add(this, 'toneMapping', {
                     NoToneMapping,

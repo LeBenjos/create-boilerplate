@@ -1,15 +1,17 @@
-import { DataTexture, DirectionalLight, Object3D, Vector3 } from 'three';
+import { DataTexture, DirectionalLight, Vector3 } from 'three';
 import { AssetId } from '../../../../constants/experiences/AssetId';
+import { DebugGuiTitle } from '../../../../constants/experiences/DebugGuiTitle';
 import MainThreeApp from '../../../../engines/threes/app/MainThreeApp';
 import DebugManager from '../../../../managers/DebugManager';
 import ThreeAssetsManager from '../../../../managers/threes/ThreeAssetsManager';
+import ThreeActorBase from './actors/bases/ThreeActorBase';
 
 interface EnvironmentMap {
     intensity?: number;
     texture?: DataTexture;
 }
 
-export default class Environment extends Object3D {
+export default class Environment extends ThreeActorBase {
     private static readonly _DEFAULT_ENVIRONMENT_MAP_INTENSITY: number = 1;
     private static readonly _DEFAULT_SUN_LIGHT_COLOR: number = 0xffffff;
     private static readonly _DEFAULT_SUN_LIGHT_INTENSITY: number = 10;
@@ -28,6 +30,18 @@ export default class Environment extends Object3D {
         this._generateSunLight();
     }
 
+    public init(): void {
+        this.reset();
+        if (this._environmentMap) {
+            MainThreeApp.scene.environment = this._environmentMap.texture!;
+            MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
+        }
+    }
+
+    public reset(): void {
+        //
+    }
+
     private _generateEnvironmentMap = (): void => {
         this._environmentMap = {};
         this._environmentMap.intensity = Environment._DEFAULT_ENVIRONMENT_MAP_INTENSITY;
@@ -38,7 +52,8 @@ export default class Environment extends Object3D {
         MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
 
         if (DebugManager.isActive) {
-            const environmentFolder = DebugManager.gui.addFolder('Environment');
+            const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
+            const environmentFolder = viewsDebug.addFolder('Environment');
             environmentFolder.add(this._environmentMap, 'intensity', 0, 10, 0.01).onChange(() => {
                 MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
             });
@@ -61,7 +76,8 @@ export default class Environment extends Object3D {
         this.add(this._sunLight);
 
         if (DebugManager.isActive) {
-            const sunLightFolder = DebugManager.gui.addFolder('Sun Light');
+            const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
+            const sunLightFolder = viewsDebug.addFolder('Sun Light');
             sunLightFolder.add(this._sunLight, 'intensity', 0, 10, 0.01).name('intensity');
             sunLightFolder.add(this._sunLight.position, 'x', -5, 5, 0.01).name('positionX');
             sunLightFolder.add(this._sunLight.position, 'y', -5, 5, 0.01).name('positionY');
@@ -69,5 +85,5 @@ export default class Environment extends Object3D {
         }
     }
 
-    public update(_dt: number): void {}
+    public update(_dt: number): void { }
 }

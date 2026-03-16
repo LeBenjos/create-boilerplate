@@ -1,5 +1,6 @@
 import { Vector3 } from 'three';
 import { AssetId } from '../../../../../constants/experiences/AssetId';
+import { DebugGuiTitle } from '../../../../../constants/experiences/DebugGuiTitle';
 import DebugManager from '../../../../../managers/DebugManager';
 import ThreeModelBase from './bases/ThreeModelBase';
 
@@ -15,7 +16,8 @@ export default class TemplateModel extends ThreeModelBase {
         this.position.copy(TemplateModel._DEFAULT_POSITION);
 
         if (DebugManager.isActive) {
-            const templateModelFolder = DebugManager.gui.addFolder('Template Model');
+            const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
+            const templateModelFolder = viewsDebug.addFolder('Template Model');
             templateModelFolder.add(this.position, 'y', -1, 1, 0.01);
         }
     }

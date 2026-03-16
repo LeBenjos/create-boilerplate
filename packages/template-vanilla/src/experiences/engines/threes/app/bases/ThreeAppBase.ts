@@ -11,10 +11,12 @@ export default abstract class ThreeAppBase {
     declare protected _cameraController: ThreeCameraControllerBase;
     declare protected _renderer: WebGLRendererBase;
     protected readonly _views: ThreeViewBase[];
+    protected readonly _viewBuilder: Map<ViewId, new () => ThreeViewBase>;
     declare protected _currentView: ThreeViewBase;
 
     constructor() {
         this._views = [];
+        this._viewBuilder = new Map();
     }
 
     public init(): void {
@@ -24,7 +26,7 @@ export default abstract class ThreeAppBase {
         this._generateScenes();
         this._generateCameras();
         this._generateRenderers();
-        this._generateViews();
+        this._declareViews();
 
         this._onResize();
         DomResizeManager.onResize.add(this._onResize);
@@ -46,26 +48,36 @@ export default abstract class ThreeAppBase {
         //
     }
 
-    protected _generateViews(): void {
+    protected _declareViews(): void {
         //
     }
 
-    protected _setCurrentView(viewId: ViewId): void {
+    protected _generateView(viewId: ViewId): ThreeViewBase {
+        const ViewConstructor = this._viewBuilder.get(viewId);
+        if (!ViewConstructor) {
+            throw new Error(`View constructor for ID '${viewId}' not found.`);
+        }
+        const view = new ViewConstructor();
+        this._views.push(view);
+        return view;
+    }
+
+    public setCurrentView(viewId: ViewId): void {
         if (this._currentView?.viewId === viewId) return;
         if (this._currentView) this._removeOldView(this._currentView);
-        const view = this._getViewById(viewId);
+        let view = this._getViewById(viewId);
+        if (!view) view = this._generateView(viewId);
         this._currentView = view;
         view.init();
         this.scene.add(this._currentView);
     }
 
-    private _getViewById(viewId: ViewId): ThreeViewBase {
+    private _getViewById(viewId: ViewId): ThreeViewBase | null {
         let view;
         for (const v of this._views) {
             if (v.viewId === viewId) view = v;
         }
-        if (!view) throw new Error(`View with id ${viewId} not found.`);
-        return view!;
+        return view || null;
     }
 
     private _removeOldView(view: ThreeViewBase): void {
@@ -84,7 +96,7 @@ export default abstract class ThreeAppBase {
 
     private _update = (dt: number): void => {
         this._cameraController.update(dt);
-        this._currentView.update(dt);
+        this._currentView?.update(dt);
         this._renderer.update(dt);
     };
 

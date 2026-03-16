@@ -34,10 +34,10 @@ class LoaderThreeApp extends ThreeAppBase {
         this._domElementContainer.appendChild(this._renderer.domElement);
     }
 
-    protected override _generateViews(): void {
+    protected override _declareViews(): void {
         const loaderThreeView = new LoaderThreeView();
         this._views.push(loaderThreeView);
-        this._setCurrentView(ViewId.THREE_LOADER);
+        this.setCurrentView(ViewId.THREE_LOADER);
     }
 }
 

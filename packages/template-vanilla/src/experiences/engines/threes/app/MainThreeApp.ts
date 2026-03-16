@@ -4,6 +4,7 @@ import { MeshStandardMaterial, Scene } from 'three';
 import DebugThreeCameraController from '../../../cameras/threes/DebugThreeCameraController';
 import MainThreeCameraController from '../../../cameras/threes/MainThreeCameraController';
 import { CameraId } from '../../../constants/experiences/CameraId';
+import { DebugGuiTitle } from '../../../constants/experiences/DebugGuiTitle';
 import { ViewId } from '../../../constants/experiences/ViewId';
 import DebugManager from '../../../managers/DebugManager';
 import ThreeCameraControllerManager from '../../../managers/threes/ThreeCameraControllerManager';
@@ -69,17 +70,16 @@ class MainThreeApp extends ThreeAppBase {
         this._domElementContainer.appendChild(this._renderer.domElement);
     }
 
-    protected override _generateViews(): void {
-        const worldThreeView = new WorldThreeView(); // pas créer un view mais donner un constructeur de view et le créer quand on veut l'afficher first time
-        const world2ThreeView = new World2ThreeView(); // pas créer un view mais donner un constructeur de view et le créer quand on veut l'afficher first time
-        this._views.push(worldThreeView, world2ThreeView);
-        this._setCurrentView(ViewId.THREE_VIEW_WORLD_1);
+    protected override _declareViews(): void {
+        this._viewBuilder.set(ViewId.THREE_VIEW_WORLD_1, WorldThreeView);
+        this._viewBuilder.set(ViewId.THREE_VIEW_WORLD_2, World2ThreeView);
+        this.setCurrentView(ViewId.THREE_VIEW_WORLD_1);
 
         if (DebugManager.isActive) {
-            const viewsDebug = DebugManager.gui.addFolder('Views');
-            viewsDebug.add({ switchToWorldThreeView: () => this._setCurrentView(ViewId.THREE_VIEW_WORLD_1) }, 'switchToWorldThreeView');
-            viewsDebug.add({ switchToWorld2ThreeView: () => this._setCurrentView(ViewId.THREE_VIEW_WORLD_2) }, 'switchToWorld2ThreeView');
+            const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
             viewsDebug.add({ resetCurrentView: () => this._currentView.reset() }, 'resetCurrentView');
+            viewsDebug.add({ createWorld1: () => this.setCurrentView(ViewId.THREE_VIEW_WORLD_1) }, 'createWorld1');
+            viewsDebug.add({ createWorld2: () => this.setCurrentView(ViewId.THREE_VIEW_WORLD_2) }, 'createWorld2');
         }
     }
 

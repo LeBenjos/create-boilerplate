@@ -2,6 +2,7 @@ import { DomKeyboardManager } from '@benjos/cookware';
 import { KeyboardConstant } from '@benjos/spices';
 import GUI from 'lil-gui';
 import { ThreePerf } from 'three-perf';
+import { DebugGuiTitle } from '../constants/experiences/DebugGuiTitle';
 import MainThreeApp from '../engines/threes/app/MainThreeApp';
 
 class DebugManager {
@@ -44,6 +45,16 @@ class DebugManager {
             showGraph: false,
         });
     };
+
+    private _addGuiFolder(title: DebugGuiTitle): GUI {
+        return this._gui.addFolder(title);
+    }
+
+    public getGuiFolder(title: DebugGuiTitle): GUI {
+        let gui = this._gui.folders.find(gui => gui._title === title);
+        if (!gui) gui = this._addGuiFolder(title);
+        return gui;
+    }
 
     public beginThreePerf(): void {
         if (!this._threePerf) this._initThreePerf();

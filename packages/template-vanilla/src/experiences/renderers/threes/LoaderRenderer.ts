@@ -1,9 +1,9 @@
-import { Camera, LinearSRGBColorSpace, NoToneMapping, Scene, type WebGLRendererParameters } from 'three';
+import { Camera, NoToneMapping, Scene, SRGBColorSpace, type WebGLRendererParameters } from 'three';
 import WebGLRendererBase from './bases/WebGLRendererBase';
 
 export default class LoaderRenderer extends WebGLRendererBase {
     private static readonly _DEFAULT_TONE_MAPPING = NoToneMapping;
-    private static readonly _DEFAULT_OUTPUT_COLOR_SPACE = LinearSRGBColorSpace;
+    private static readonly _DEFAULT_OUTPUT_COLOR_SPACE = SRGBColorSpace;
     private static readonly _DEFAULT_TONE_MAPPING_EXPOSURE = 1;
     private static readonly _DEFAULT_CLEAR_COLOR = 0x000000;
     private static readonly _DEFAULT_CLEAR_ALPHA = 0;
