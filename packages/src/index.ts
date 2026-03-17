@@ -42,7 +42,7 @@ async function createProject(projectNameArg?: string): Promise<void> {
             choices: [
                 { name: 'Vanilla (Three.js + TypeScript)', value: 'vanilla' },
                 { name: 'React (Coming soon)', value: 'react', disabled: true },
-                { name: 'Vue (Coming soon)', value: 'vue', disabled: true },
+                { name: 'Vue (Three.js + TypeScript)', value: 'vue' },
             ],
         },
     ]);
