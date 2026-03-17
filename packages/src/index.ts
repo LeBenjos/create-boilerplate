@@ -12,6 +12,11 @@ const __filename = fileURLToPath(import.meta.url);
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const __dirname = path.dirname(__filename);
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const pkg = await fs.readJson(path.join(__dirname, '..', 'package.json'));
+// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+const version: string = pkg.version as string;
+
 interface ProjectAnswers {
     projectName: string;
     framework: 'vanilla' | 'react' | 'vue';
@@ -95,7 +100,7 @@ async function createProject(projectNameArg?: string): Promise<void> {
 program
     .name('create-boilerplate')
     .description('Create a new Three.js project with Vanilla/React/Vue')
-    .version('1.0.1')
+    .version(version)
     .argument('[project-name]', 'Project name (use "." for current directory)')
     .action((projectName?: string) => createProject(projectName));
 
