@@ -19,15 +19,16 @@ npm create @benjos/boilerplate@latest .
 
 Choose your framework:
 - **Vanilla** → Three.js + TypeScript + HTML views
-- **React** → Three.js + TypeScript + React components
+- **Vue** → Three.js + TypeScript + Vue components
 
 Both templates include:
 - ⚡ Vite for fast development
 - 🎨 GLSL shader support (vite-plugin-glsl)
-- 🐛 Debug mode with lil-gui
-- 📦 Manager-based architecture (Loader, Ticker, Keyboard, Mouse, etc.)
-- 🎯 ViewProxy system for managing views
-- 🎭 Three.js scene management
+- 🐛 Debug mode with lil-gui (DebugManager)
+- 📦 Singleton-based manager architecture (Loader, Debug, Assets, Raycaster, etc.)
+- 🔄 Lazy loading with animated transitions between views
+- 🎭 Multi-view system (HTML views + Three.js views with dispose/cleanup)
+- 🎬 ThreeApp architecture (LoaderThreeApp, MainThreeApp)
 - 📝 TypeScript + ESLint + Prettier
 
 ## 🔧 Development

@@ -1,6 +1,6 @@
-# 🎨 Three.js Vanilla Boilerplate
+# 🎨 Three.js Vue Boilerplate
 
-Three.js + Vite + TypeScript boilerplate with a singleton-based architecture.
+Three.js + Vue + Vite + TypeScript boilerplate with a singleton-based architecture.
 
 ## 🚀 Quick Start
 
@@ -11,11 +11,11 @@ npm run dev
 
 ## ✨ Features
 
-- Three.js + Vite + TypeScript
+- Three.js + Vue 3 + Vite + TypeScript
 - GLSL shader support (vite-plugin-glsl)
 - Singleton-based manager architecture (DebugManager, LoaderManager, ThreeAssetsManager, etc.)
 - Lazy loading with animated transitions between views
-- Multi-view system with HTML views and Three.js views (init/reset/dispose lifecycle)
+- Multi-view system with Vue components and Three.js views (init/reset/dispose lifecycle)
 - ThreeApp layer (LoaderThreeApp, MainThreeApp) for scene orchestration
 - Camera controller system with base classes (MainThreeCameraController, DebugThreeCameraController)
 - ESLint + Prettier
