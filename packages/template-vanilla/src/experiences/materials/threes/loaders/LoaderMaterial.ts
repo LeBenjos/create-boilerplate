@@ -23,19 +23,19 @@ export default class LoaderMaterial extends ShaderMaterial {
         });
     }
 
-    public show(): void {
+    public async show(): Promise<void> {
         gsap.killTweensOf(this.uniforms.uAlpha);
-        gsap.to(this.uniforms.uAlpha, {
+        await gsap.to(this.uniforms.uAlpha, {
             value: 1,
             duration: LoaderMaterial._GSAP_DURATION_FADE_IN,
             ease: LoaderMaterial._GSAP_EASE_FADE_IN,
         });
     }
 
-    public hide(): void {
+    public async hide(): Promise<void> {
         gsap.killTweensOf(this.uniforms.uAlpha);
         this.uniforms.uAlpha.value = 1;
-        gsap.to(this.uniforms.uAlpha, {
+        await gsap.to(this.uniforms.uAlpha, {
             value: 0,
             duration: LoaderMaterial._GSAP_DURATION_FADE_OUT,
             ease: LoaderMaterial._GSAP_EASE_FADE_OUT,

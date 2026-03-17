@@ -9,9 +9,9 @@ export default class LoaderHTMLView extends HTMLViewBase {
 
     constructor() {
         super();
-        LoaderManager.onBeginLoad.add(this._onBeginLoad);
         LoaderManager.onProgress.add(this._onProgress);
-        LoaderManager.onFinishLoad.add(this._onFinishLoad);
+        LoaderManager.onShow.add(this._onShow);
+        LoaderManager.onHide.add(this._onHide);
     }
 
     protected override _getElement(): void {
@@ -21,20 +21,19 @@ export default class LoaderHTMLView extends HTMLViewBase {
         this._loadingBar = this._htmlElement.querySelector('.loading-bar')!;
     }
 
-    private readonly _onBeginLoad = (): void => {
+    private readonly _onShow = (): void => {
         this._loadingNumber.textContent = '0';
         this._loadingBar.style.transform = '';
         this._loadingBar.classList.remove('ended');
         this.show();
     };
-
-    private _onProgress = (): void => {
-        const progress = Math.min(LoaderManager.loadedSize / LoaderManager.totalSize, 1) * 100;
-        this._loadingBar.style.transform = `translateY(-50%) scaleX(${progress / 100})`;
+    private readonly _onProgress = (): void => {
+        const progress = LoaderManager.progress * 100;
+        this._loadingBar.style.transform = `translateY(-50%) scaleX(${LoaderManager.progress})`;
         this._loadingNumber.textContent = Math.round(progress).toString();
     };
 
-    private readonly _onFinishLoad = (): void => {
+    private readonly _onHide = (): void => {
         this._loadingNumber.textContent = '100';
         this._loadingBar.style.transform = '';
         this._loadingBar.classList.add('ended');

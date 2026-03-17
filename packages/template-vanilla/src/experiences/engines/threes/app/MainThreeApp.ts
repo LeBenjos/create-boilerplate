@@ -73,7 +73,6 @@ class MainThreeApp extends ThreeAppBase {
     protected override _declareViews(): void {
         this._viewBuilder.set(ViewId.THREE_VIEW_WORLD_1, WorldThreeView);
         this._viewBuilder.set(ViewId.THREE_VIEW_WORLD_2, World2ThreeView);
-        this.setCurrentView(ViewId.THREE_VIEW_WORLD_1);
 
         if (DebugManager.isActive) {
             const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)

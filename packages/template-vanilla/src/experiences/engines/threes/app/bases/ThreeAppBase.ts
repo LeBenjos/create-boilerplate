@@ -2,6 +2,7 @@ import { DomResizeManager, TickerManager } from '@benjos/cookware';
 import { Scene } from 'three';
 import ThreeCameraControllerBase from '../../../../cameras/threes/bases/ThreeCameraControllerBase';
 import { ViewId } from '../../../../constants/experiences/ViewId';
+import LoaderManager from '../../../../managers/LoaderManager';
 import WebGLRendererBase from '../../../../renderers/threes/bases/WebGLRendererBase';
 import ThreeViewBase from '../../../../views/threes/bases/ThreeViewBase';
 
@@ -62,11 +63,19 @@ export default abstract class ThreeAppBase {
         return view;
     }
 
-    public setCurrentView(viewId: ViewId): void {
+    public async setCurrentView(viewId: ViewId): Promise<void> {
         if (this._currentView?.viewId === viewId) return;
-        if (this._currentView) this._removeOldView(this._currentView);
+
         let view = this._getViewById(viewId);
         if (!view) view = this._generateView(viewId);
+
+        view.declareAssets();
+
+        await LoaderManager.loadAssetsWithTransition(this._swapView.bind(this, view));
+    }
+
+    private readonly _swapView = (view: ThreeViewBase): void => {
+        if (this._currentView) this._removeOldView(this._currentView);
         this._currentView = view;
         view.init();
         this.scene.add(this._currentView);
