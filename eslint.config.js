@@ -8,10 +8,14 @@ export default tseslint.config(
             '**/dist/**',
             '**/build/**',
             '**/node_modules/**',
+            '**/public/**',
             '**/*.min.js',
             '**/*.js.map',
             '**/*.d.ts',
+            '*.config.js',
+            '*.config.ts',
             'packages/template-*/**',
+            'packages/src/**/*.test.ts',
             'scripts/**',
         ],
     },
@@ -47,6 +51,11 @@ export default tseslint.config(
                     selector: 'variable',
                     modifiers: ['const'],
                     format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+                },
+                // Functions
+                {
+                    selector: 'function',
+                    format: ['camelCase', 'PascalCase'],
                 },
                 // Parameters
                 {
@@ -132,7 +141,4 @@ export default tseslint.config(
             'prettier/prettier': 'warn',
         },
     },
-    {
-        ignores: ['dist/**', 'node_modules/**', '*.config.js', '*.config.ts', 'public/**'],
-    }
 );

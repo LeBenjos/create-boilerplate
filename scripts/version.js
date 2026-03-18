@@ -46,54 +46,35 @@ function runCommand(command, cwd) {
     execSync(command, { cwd, stdio: 'inherit' });
 }
 
+const TARGETS = [
+    '.',
+    'packages',
+    'packages/template-vanilla',
+    // 'packages/template-react',
+    'packages/template-vue',
+];
+
 try {
-    // 1. Lire la version actuelle à la racine
     const rootPackagePath = join(ROOT_DIR, 'package.json');
     const rootPackage = JSON.parse(readFileSync(rootPackagePath, 'utf-8'));
     const currentVersion = rootPackage.version;
     const newVersion = updateVersion(currentVersion, versionType);
 
-    console.log(`\n🚀 Mise à jour de la version: ${currentVersion} → ${newVersion}\n`);
+    console.log(`\n🚀 Updating version: ${currentVersion} → ${newVersion}\n`);
 
-    // 2. Mettre à jour la version à la racine
-    console.log('📝 Mise à jour du package.json racine...');
-    updatePackageVersion(rootPackagePath, newVersion);
+    for (const target of TARGETS) {
+        const pkgPath = join(ROOT_DIR, target, 'package.json');
+        console.log(`📝 Updating ${target}/package.json...`);
+        updatePackageVersion(pkgPath, newVersion);
 
-    // 3. npm install à la racine
-    console.log('\n📦 Installation des dépendances à la racine...');
-    runCommand('npm install', ROOT_DIR);
+        console.log(`📦 Installing dependencies in ${target}...`);
+        runCommand('npm install', join(ROOT_DIR, target));
+        console.log('');
+    }
 
-    // 4. Mettre à jour packages/package.json
-    const createBoilerplatePath = join(ROOT_DIR, 'packages/package.json');
-    console.log('\n📝 Mise à jour de packages/package.json...');
-    updatePackageVersion(createBoilerplatePath, newVersion);
-
-    // 5. npm install dans packages/package.json
-    console.log('\n📦 Installation des dépendances dans packages/package.json...');
-    runCommand('npm install', join(ROOT_DIR, 'packages'));
-
-    // 6. Mettre à jour template-react
-    const templateReactPath = join(ROOT_DIR, 'packages/template-react/package.json');
-    console.log('\n📝 Mise à jour de template-react/package.json...');
-    updatePackageVersion(templateReactPath, newVersion);
-
-    // 7. npm install dans template-react
-    console.log('\n📦 Installation des dépendances dans template-react...');
-    runCommand('npm install', join(ROOT_DIR, 'packages/template-react'));
-
-    // 8. Mettre à jour template-vanilla
-    const templateVanillaPath = join(ROOT_DIR, 'packages/template-vanilla/package.json');
-    console.log('\n📝 Mise à jour de template-vanilla/package.json...');
-    updatePackageVersion(templateVanillaPath, newVersion);
-
-    // 9. npm install dans template-vanilla
-    console.log('\n📦 Installation des dépendances dans template-vanilla...');
-    runCommand('npm install', join(ROOT_DIR, 'packages/template-vanilla'));
-
-    console.log(`\n✅ Toutes les versions ont été mises à jour vers ${newVersion} !`);
-    console.log('\n💡 N\'oubliez pas de commit et push vos changements.');
-
+    console.log(`✅ All versions updated to ${newVersion}!`);
+    console.log("\n💡 Don't forget to commit and push your changes.");
 } catch (error) {
-    console.error('\n❌ Erreur lors de la mise à jour des versions:', error.message);
+    console.error('\n❌ Error updating versions:', error.message);
     process.exit(1);
 }

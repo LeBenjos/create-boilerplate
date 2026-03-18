@@ -31,10 +31,6 @@ Both templates include:
 - 🎬 ThreeApp architecture (LoaderThreeApp, MainThreeApp)
 - 📝 TypeScript + ESLint + Prettier
 
-## 🔧 Development
-
-See [MAINTENANCE.md](./MAINTENANCE.md) for contributing.
-
 ## 📄 License
 
 MIT

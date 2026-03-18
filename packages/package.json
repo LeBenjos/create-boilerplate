@@ -1,6 +1,6 @@
 {
     "name": "@benjos/create-boilerplate",
-    "version": "1.5.2",
+    "version": "1.5.3",
     "description": "CLI to scaffold Three.js projects with framework support",
     "type": "module",
     "bin": {
@@ -15,7 +15,9 @@
     "scripts": {
         "build": "tsc",
         "dev": "tsc --watch",
-        "prepublishOnly": "npm run build"
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "prepublishOnly": "npm run test && npm run build"
     },
     "keywords": [
         "three.js",
@@ -28,13 +30,15 @@
     ],
     "author": "Benjamin Schinkel",
     "license": "MIT",
+    "engines": {
+        "node": ">=18.0.0"
+    },
     "repository": {
         "type": "git",
         "url": "https://github.com/LeBenjos/boilerplate.git"
     },
     "homepage": "https://github.com/LeBenjos/boilerplate#readme",
     "dependencies": {
-        "@inquirer/rawlist": "^5.1.0",
         "chalk": "^5.6.2",
         "commander": "^14.0.2",
         "fs-extra": "^11.3.3",

@@ -71,14 +71,14 @@ class MainThreeApp extends ThreeAppBase {
     }
 
     protected override _declareViews(): void {
-        this._viewBuilder.set(ViewId.THREE_VIEW_WORLD_1, WorldThreeView);
-        this._viewBuilder.set(ViewId.THREE_VIEW_WORLD_2, World2ThreeView);
+        this._viewBuilder.set(ViewId.THREE_WORLD_1, WorldThreeView);
+        this._viewBuilder.set(ViewId.THREE_WORLD_2, World2ThreeView);
 
         if (DebugManager.isActive) {
             const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
             viewsDebug.add({ resetCurrentView: () => this._currentView.reset() }, 'resetCurrentView');
-            viewsDebug.add({ createWorld1: () => this.setCurrentView(ViewId.THREE_VIEW_WORLD_1) }, 'createWorld1');
-            viewsDebug.add({ createWorld2: () => this.setCurrentView(ViewId.THREE_VIEW_WORLD_2) }, 'createWorld2');
+            viewsDebug.add({ createWorld1: () => this.setCurrentView(ViewId.THREE_WORLD_1) }, 'createWorld1');
+            viewsDebug.add({ createWorld2: () => this.setCurrentView(ViewId.THREE_WORLD_2) }, 'createWorld2');
         }
     }
 

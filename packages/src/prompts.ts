@@ -1,0 +1,34 @@
+import inquirer from 'inquirer';
+
+import { FRAMEWORK_CHOICES, RESERVED_NAMES } from './constants.js';
+import type { ProjectAnswers } from './types.js';
+
+export function validateProjectName(input: string): string | true {
+    if (input === '.') return true;
+    if (!/^[a-z0-9-]+$/.test(input)) {
+        return 'Project name must contain only lowercase letters, numbers, and hyphens (or "." for current directory)';
+    }
+    if (RESERVED_NAMES.has(input)) {
+        return `"${input}" is a reserved name. Please choose a different project name.`;
+    }
+    return true;
+}
+
+export async function promptForProject(projectNameArg?: string): Promise<ProjectAnswers> {
+    return inquirer.prompt<ProjectAnswers>([
+        {
+            type: 'input',
+            name: 'projectName',
+            message: 'Project name:',
+            default: projectNameArg ?? 'my-threejs-app',
+            when: !projectNameArg,
+            validate: validateProjectName,
+        },
+        {
+            type: 'list',
+            name: 'framework',
+            message: 'Choose a framework:',
+            choices: FRAMEWORK_CHOICES,
+        },
+    ]);
+}

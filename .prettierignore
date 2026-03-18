@@ -2,6 +2,8 @@ dist
 node_modules
 *.min.js
 *.min.css
+*.glsl
 **/public/assets
 package-lock.json
 scripts/
+packages/template-*

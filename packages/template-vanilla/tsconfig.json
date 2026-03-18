@@ -1,10 +1,10 @@
 {
     "compilerOptions": {
-        "target": "ES2020",
+        "target": "ES2022",
         "module": "ESNext",
-        "moduleResolution": "Node",
+        "moduleResolution": "bundler",
         "strict": true,
-        "lib": ["DOM", "ES2020"],
+        "lib": ["DOM", "DOM.Iterable", "ES2022"],
         "skipLibCheck": true,
         "noEmit": true
     },

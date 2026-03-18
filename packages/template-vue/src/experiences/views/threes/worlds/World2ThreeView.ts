@@ -10,7 +10,7 @@ import TemplateModel from './components/actors/TemplateModel';
 
 export default class World2ThreeView extends ThreeViewBase {
     constructor() {
-        super(ViewId.THREE_VIEW_WORLD_2);
+        super(ViewId.THREE_WORLD_2);
     }
 
     protected override _generateActors(): void {
@@ -18,7 +18,7 @@ export default class World2ThreeView extends ThreeViewBase {
 
         if (DebugManager.isActive) {
             const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
-            viewsDebug.add({ switchToWorld2ThreeView: () => MainThreeApp.setCurrentView(ViewId.THREE_VIEW_WORLD_2) }, 'switchToWorld2ThreeView').name('SWITCH WORLD_2_VIEW');
+            viewsDebug.add({ switchToWorld2ThreeView: () => MainThreeApp.setCurrentView(ViewId.THREE_WORLD_2) }, 'switchToWorld2ThreeView').name('SWITCH WORLD_2_VIEW');
         }
 
         this._actors.push(new Environment());
