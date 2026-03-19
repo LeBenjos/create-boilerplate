@@ -4,9 +4,9 @@ import MainThreeApp from '../../../engines/threes/app/MainThreeApp';
 import DebugManager from '../../../managers/DebugManager';
 import ThreeViewBase from '../bases/ThreeViewBase';
 import Environment from './components/Environment';
-import TemplateFont from './components/actors/TemplateFont';
-import TemplateMesh2 from './components/actors/TemplateMesh2';
-import TemplateModel from './components/actors/TemplateModel';
+import TemplateFont from './components/TemplateFont';
+import TemplateMesh2 from './components/TemplateMesh2';
+import TemplateModel from './components/TemplateModel';
 
 export default class World2ThreeView extends ThreeViewBase {
     constructor() {
