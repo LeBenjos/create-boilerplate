@@ -25,6 +25,7 @@ class MainThreeApp extends ThreeAppBase {
     ];
 
     declare private _debugWireframeMaterial: MeshStandardMaterial;
+    declare private _debugPreviousCameraId: CameraId;
 
     constructor() {
         super();
@@ -59,6 +60,7 @@ class MainThreeApp extends ThreeAppBase {
         this._cameraController = ThreeCameraControllerManager.get(CameraId.THREE_MAIN);
 
         if (DebugManager.isActive) {
+            this._debugPreviousCameraId = this._cameraController.cameraId;
             ThreeCameraControllerManager.add(new DebugThreeCameraController());
         }
 
@@ -91,8 +93,9 @@ class MainThreeApp extends ThreeAppBase {
     private readonly _onKeyDown = (_e: KeyboardEvent): void => {
         if (DebugManager.isActive) {
             if (DomKeyboardManager.areAllKeysDown(MainThreeApp._TOGGLE_SWITCH_TO_DEBUG_CAMERA_KEYS)) {
+                if (this._cameraController.cameraId !== CameraId.THREE_DEBUG) this._debugPreviousCameraId = this._cameraController.cameraId;
                 ThreeCameraControllerManager.setActiveCamera(
-                    this._cameraController.cameraId === CameraId.THREE_MAIN ? CameraId.THREE_DEBUG : CameraId.THREE_MAIN
+                    this._cameraController.cameraId === CameraId.THREE_DEBUG ? this._debugPreviousCameraId : CameraId.THREE_DEBUG
                 );
             } else if (DomKeyboardManager.areAllKeysDown(MainThreeApp._TOGGLE_WIREFRAME_KEYS)) {
                 if (this._scene.overrideMaterial === null) {
