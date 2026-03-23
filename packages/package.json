@@ -1,6 +1,6 @@
 {
     "name": "@benjos/create-boilerplate",
-    "version": "1.5.5",
+    "version": "1.5.6",
     "description": "CLI to scaffold Three.js projects with framework support",
     "type": "module",
     "bin": {
@@ -39,15 +39,14 @@
     },
     "homepage": "https://github.com/LeBenjos/boilerplate#readme",
     "dependencies": {
+        "@inquirer/prompts": "^8.3.2",
         "chalk": "^5.6.2",
-        "commander": "^14.0.2",
-        "fs-extra": "^11.3.3",
-        "inquirer": "^9.2.12"
+        "commander": "^14.0.3",
+        "fs-extra": "^11.3.4"
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.4",
-        "@types/inquirer": "^9.0.9",
-        "@types/node": "^25.0.3",
+        "@types/node": "^25.5.0",
         "typescript": "~5.9.3"
     }
 }
