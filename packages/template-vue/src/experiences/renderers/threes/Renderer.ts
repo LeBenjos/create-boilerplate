@@ -74,8 +74,8 @@ export default class Renderer extends WebGLRendererBase {
 
     public override update(dt: number): void {
         const isDebug = DebugManager.isActive;
-        if (isDebug) DebugManager.beginThreePerf();
+        if (isDebug) DebugManager.beginPerf();
         super.update(dt);
-        if (isDebug) DebugManager.endThreePerf();
+        if (isDebug) DebugManager.endPerf();
     }
 }
