@@ -1,8 +1,8 @@
 import TemplatePassFragmentShader from '../../../shaders/threes/composers/templates/TemplatePassFragmentShader.glsl';
 import TemplatePassVertexShader from '../../../shaders/threes/composers/templates/TemplatePassVertexShader.glsl';
-import PassBase from "../bases/passes/PassBase";
+import ThreePassBase from "../bases/passes/ThreePassBase";
 
-export default class TemplatePass extends PassBase {
+export default class TemplateThreePass extends ThreePassBase {
     constructor() {
         super({
             uniforms: {

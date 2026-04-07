@@ -1,9 +1,9 @@
 import { DomResizeManager } from "@benjos/cookware";
 import { HalfFloatType, WebGLRenderTarget, type Camera, type Scene, type TextureDataType, type WebGLRenderer } from "three";
-import { EffectComposer, OutputPass, Pass, RenderPass } from "three/examples/jsm/Addons.js";
-import PassBase from "./passes/PassBase";
+import { EffectComposer, OutputPass, RenderPass, type Pass } from "three/examples/jsm/Addons.js";
+import ThreePassBase from "./passes/ThreePassBase";
 
-export default abstract class EffectComposerBase extends EffectComposer {
+export default abstract class ThreeEffectComposerBase extends EffectComposer {
     protected static readonly _DEFAULT_RENDER_TARGET_SAMPLES = 4;
     protected static readonly _DEFAULT_RENDER_TARGET_TYPE = HalfFloatType;
 
@@ -11,8 +11,8 @@ export default abstract class EffectComposerBase extends EffectComposer {
     private declare _renderPass: RenderPass;
 
     constructor(renderer: WebGLRenderer, scene: Scene, camera: Camera, options: { samples?: number, type?: TextureDataType } = {}) {
-        const samples = options.samples ?? EffectComposerBase._DEFAULT_RENDER_TARGET_SAMPLES;
-        const type = options.type ?? EffectComposerBase._DEFAULT_RENDER_TARGET_TYPE;
+        const samples = options.samples ?? ThreeEffectComposerBase._DEFAULT_RENDER_TARGET_SAMPLES;
+        const type = options.type ?? ThreeEffectComposerBase._DEFAULT_RENDER_TARGET_TYPE;
         super(renderer, new WebGLRenderTarget(DomResizeManager.width, DomResizeManager.height, { samples, type }));
 
         this._createRenderPass(scene, camera);
@@ -47,7 +47,7 @@ export default abstract class EffectComposerBase extends EffectComposer {
 
     public update(dt: number): void {
         for (const pass of this._passes) {
-            if (pass instanceof PassBase) pass.update(dt);
+            if (pass instanceof ThreePassBase) pass.update(dt);
         }
         this.render(dt);
     }

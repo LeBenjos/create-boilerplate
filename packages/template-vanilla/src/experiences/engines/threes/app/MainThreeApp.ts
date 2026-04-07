@@ -8,7 +8,7 @@ import { DebugGuiTitle } from '../../../constants/experiences/DebugGuiTitle';
 import { ViewId } from '../../../constants/experiences/ViewId';
 import DebugManager from '../../../managers/DebugManager';
 import ThreeCameraControllerManager from '../../../managers/threes/ThreeCameraControllerManager';
-import Renderer from '../../../renderers/threes/Renderer';
+import MainThreeWebGLRenderer from '../../../renderers/threes/MainThreeWebGLRenderer';
 import World2ThreeView from '../../../views/threes/worlds/World2ThreeView';
 import WorldThreeView from '../../../views/threes/worlds/WorldThreeView';
 import ThreeAppBase from './bases/ThreeAppBase';
@@ -68,7 +68,7 @@ class MainThreeApp extends ThreeAppBase {
     }
 
     protected override _generateRenderers(): void {
-        this._renderer = new Renderer(this._scene, this._cameraController.camera, { antialias: true });
+        this._renderer = new MainThreeWebGLRenderer(this._scene, this._cameraController.camera, { antialias: true });
         this._domElementContainer.appendChild(this._renderer.domElement);
     }
 

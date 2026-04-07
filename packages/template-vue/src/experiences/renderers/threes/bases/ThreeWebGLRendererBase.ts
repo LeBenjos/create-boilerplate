@@ -1,9 +1,9 @@
 import { DomResizeManager } from '@benjos/cookware';
-import { Camera, Scene, WebGLRenderer, type WebGLRendererParameters } from 'three';
-import EffectComposerBase from '../../../composers/threes/bases/EffectComposerBase';
+import { WebGLRenderer, type Camera, type Scene, type WebGLRendererParameters } from 'three';
+import ThreeEffectComposerBase from '../../../composers/threes/bases/ThreeEffectComposerBase';
 
-export default abstract class WebGLRendererBase extends WebGLRenderer {
-    protected _composer?: EffectComposerBase;
+export default abstract class ThreeWebGLRendererBase extends WebGLRenderer {
+    protected _composer?: ThreeEffectComposerBase;
     protected _isPostProcessingActive: boolean = false;
     protected readonly _scene: Scene;
     protected _camera: Camera;
@@ -49,7 +49,7 @@ export default abstract class WebGLRendererBase extends WebGLRenderer {
 
     //#region Getters
     //
-    public get composer(): EffectComposerBase {
+    public get composer(): ThreeEffectComposerBase {
         return this._composer!;
     }
     public get isPostProcessingActive(): boolean {

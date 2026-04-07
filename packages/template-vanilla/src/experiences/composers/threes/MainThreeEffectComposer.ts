@@ -1,16 +1,16 @@
-import { type Camera, type Scene, type WebGLRenderer } from "three";
-import EffectComposerBase from "./bases/EffectComposerBase";
-import TemplatePass from "./passes/TemplatePass";
+import type { Camera, Scene, WebGLRenderer } from "three";
 import { GlitchPass } from "three/examples/jsm/Addons.js";
+import ThreeEffectComposerBase from "./bases/ThreeEffectComposerBase";
+import TemplateThreePass from "./passes/TemplateThreePass";
 
-export default class Composer extends EffectComposerBase {
+export default class MainThreeEffectComposer extends ThreeEffectComposerBase {
     constructor(renderer: WebGLRenderer, scene: Scene, camera: Camera) {
         super(renderer, scene, camera);
     }
 
     protected override _addPasses(): void {
         super._addPasses();
-        this._addPass(new TemplatePass());
+        this._addPass(new TemplateThreePass());
         this._addPass(new GlitchPass());
     }
 

@@ -1,5 +1,5 @@
 import { Mesh, PlaneGeometry } from 'three';
-import LoaderMaterial from '../../../../materials/threes/loaders/LoaderMaterial';
+import LoaderThreeMaterial from '../../../../materials/threes/loaders/LoaderThreeMaterial';
 import ThreeActorBase from '../../bases/components/ThreeActorBase';
 
 export default class TemplateLoaderThreeActor extends ThreeActorBase {
@@ -9,7 +9,7 @@ export default class TemplateLoaderThreeActor extends ThreeActorBase {
     private static readonly _DEFAULT_SEGMENTS_HEIGHT: number = 1;
 
     declare private _geometry: PlaneGeometry;
-    declare private _material: LoaderMaterial;
+    declare private _material: LoaderThreeMaterial;
     declare private _mesh: Mesh;
 
     constructor() {
@@ -32,7 +32,7 @@ export default class TemplateLoaderThreeActor extends ThreeActorBase {
     }
 
     private _generateMaterial(): void {
-        this._material = new LoaderMaterial();
+        this._material = new LoaderThreeMaterial();
     }
 
     private _generateMesh(): void {
@@ -41,7 +41,7 @@ export default class TemplateLoaderThreeActor extends ThreeActorBase {
 
     //#region Getters
     //
-    public get material(): LoaderMaterial {
+    public get material(): LoaderThreeMaterial {
         return this._material;
     }
     //
