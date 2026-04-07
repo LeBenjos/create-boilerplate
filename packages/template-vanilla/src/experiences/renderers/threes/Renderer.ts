@@ -16,6 +16,7 @@ import {
     type ToneMapping,
     type WebGLRendererParameters,
 } from 'three';
+import Composer from '../../composers/threes/Composer';
 import { DebugGuiTitle } from '../../constants/experiences/DebugGuiTitle';
 import DebugManager from '../../managers/DebugManager';
 import WebGLRendererBase from './bases/WebGLRendererBase';
@@ -59,7 +60,16 @@ export default class Renderer extends WebGLRendererBase {
                 .onChange((value: ColorSpace) => {
                     this.outputColorSpace = value;
                 });
+            const postProcProxy = { active: this._isPostProcessingActive };
+            rendererFolder
+                .add(postProcProxy, 'active')
+                .name('post-processing')
+                .onChange((value: boolean) => this.setIsPostProcessingActive(value));
         }
+    }
+
+    protected override _generateComposers(): void {
+        this._composer = new Composer(this, this._scene, this._camera);
     }
 
     public override update(dt: number): void {
