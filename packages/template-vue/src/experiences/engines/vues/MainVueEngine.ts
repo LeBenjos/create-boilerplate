@@ -1,10 +1,10 @@
 import { createApp } from "vue";
 import App from './MainVue.vue';
 
-class MainVue {
+class MainVueEngine {
     public init(): void {
         createApp(App).mount('#app');
     }
 }
 
-export default new MainVue();
+export default new MainVueEngine();

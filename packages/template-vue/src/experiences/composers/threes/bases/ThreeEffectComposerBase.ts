@@ -8,7 +8,7 @@ export default abstract class ThreeEffectComposerBase extends EffectComposer {
     protected static readonly _DEFAULT_RENDER_TARGET_TYPE = HalfFloatType;
 
     protected readonly _passes: Pass[];
-    private declare _renderPass: RenderPass;
+    declare private _renderPass: RenderPass;
 
     constructor(renderer: WebGLRenderer, scene: Scene, camera: Camera, options: { samples?: number, type?: TextureDataType } = {}) {
         const samples = options.samples ?? ThreeEffectComposerBase._DEFAULT_RENDER_TARGET_SAMPLES;

@@ -11,7 +11,7 @@ import {
     type Wrapping,
 } from 'three';
 import { DRACOLoader, FontLoader, GLTFLoader, HDRLoader, type Font, type GLTF } from 'three/examples/jsm/Addons.js';
-import type { AssetId } from '../../constants/experiences/AssetId';
+import type { AssetId } from '../../constants/AssetId';
 import { AssetType } from '../../types/assetTypes';
 
 export interface ThreeAssetToLoad {
@@ -23,7 +23,7 @@ export interface ThreeAssetToLoad {
     totalSize: number;
 }
 
-export interface ThreeAssetOption {}
+export interface ThreeAssetOption { }
 
 export interface ThreeTextureOption extends ThreeAssetOption {
     colorSpace?: ColorSpace;
@@ -39,11 +39,11 @@ export interface ThreeHDROption extends ThreeAssetOption {
     colorSpace?: ColorSpace;
 }
 
-export interface ThreeModelOption extends ThreeAssetOption {}
+export interface ThreeModelOption extends ThreeAssetOption { }
 
-export interface ThreeFontOption extends ThreeAssetOption {}
+export interface ThreeFontOption extends ThreeAssetOption { }
 
-class ThreeAssetsManager {
+class ThreeAssetManager {
     private static readonly _DRACO_LOADER_PATH: string = 'loaders/draco/';
     private static readonly _DEFAULT_TEXTURE_OPTION_COLOR_SPACE: ColorSpace = LinearSRGBColorSpace;
     private static readonly _DEFAULT_TEXTURE_OPTION_WRAPPING: Wrapping = RepeatWrapping;
@@ -74,7 +74,7 @@ class ThreeAssetsManager {
     public readonly onProgress = new Action();
 
     public init(): void {
-        this._dracoLoader.setDecoderPath(AssetUtils.GetPath(ThreeAssetsManager._DRACO_LOADER_PATH));
+        this._dracoLoader.setDecoderPath(AssetUtils.GetPath(ThreeAssetManager._DRACO_LOADER_PATH));
         this._gltfLoader.setDRACOLoader(this._dracoLoader);
     }
 
@@ -84,8 +84,8 @@ class ThreeAssetsManager {
             type: AssetType.TEXTURE,
             path,
             option: textureOption,
-            loadedSize: ThreeAssetsManager._DEFAULT_LOADED_SIZE,
-            totalSize: ThreeAssetsManager._DEFAULT_TEXTURE_TOTAL_SIZE,
+            loadedSize: ThreeAssetManager._DEFAULT_LOADED_SIZE,
+            totalSize: ThreeAssetManager._DEFAULT_TEXTURE_TOTAL_SIZE,
         });
         this._expectedAssetsCount++;
     }
@@ -96,8 +96,8 @@ class ThreeAssetsManager {
             type: AssetType.HDR,
             path,
             option: hdrOption,
-            loadedSize: ThreeAssetsManager._DEFAULT_LOADED_SIZE,
-            totalSize: ThreeAssetsManager._DEFAULT_TOTAL_SIZE,
+            loadedSize: ThreeAssetManager._DEFAULT_LOADED_SIZE,
+            totalSize: ThreeAssetManager._DEFAULT_TOTAL_SIZE,
         });
         this._expectedAssetsCount++;
     }
@@ -108,8 +108,8 @@ class ThreeAssetsManager {
             type: AssetType.MODEL,
             path,
             option: modelOption,
-            loadedSize: ThreeAssetsManager._DEFAULT_LOADED_SIZE,
-            totalSize: ThreeAssetsManager._DEFAULT_TOTAL_SIZE,
+            loadedSize: ThreeAssetManager._DEFAULT_LOADED_SIZE,
+            totalSize: ThreeAssetManager._DEFAULT_TOTAL_SIZE,
         });
         this._expectedAssetsCount++;
     }
@@ -120,8 +120,8 @@ class ThreeAssetsManager {
             type: AssetType.FONT,
             path,
             option: fontOption,
-            loadedSize: ThreeAssetsManager._DEFAULT_LOADED_SIZE,
-            totalSize: ThreeAssetsManager._DEFAULT_TOTAL_SIZE,
+            loadedSize: ThreeAssetManager._DEFAULT_LOADED_SIZE,
+            totalSize: ThreeAssetManager._DEFAULT_TOTAL_SIZE,
         });
         this._expectedAssetsCount++;
     }
@@ -148,15 +148,15 @@ class ThreeAssetsManager {
         this._textureLoader.load(
             asset.path,
             (texture) => {
-                texture.colorSpace = option?.colorSpace ?? ThreeAssetsManager._DEFAULT_TEXTURE_OPTION_COLOR_SPACE;
-                texture.wrapS = texture.wrapT = option?.wrapping ?? ThreeAssetsManager._DEFAULT_TEXTURE_OPTION_WRAPPING;
+                texture.colorSpace = option?.colorSpace ?? ThreeAssetManager._DEFAULT_TEXTURE_OPTION_COLOR_SPACE;
+                texture.wrapS = texture.wrapT = option?.wrapping ?? ThreeAssetManager._DEFAULT_TEXTURE_OPTION_WRAPPING;
                 texture.repeat.set(
-                    option?.repeatX ?? ThreeAssetsManager._DEFAULT_TEXTURE_OPTION_REPEAT_X,
-                    option?.repeatY ?? ThreeAssetsManager._DEFAULT_TEXTURE_OPTION_REPEAT_Y
+                    option?.repeatX ?? ThreeAssetManager._DEFAULT_TEXTURE_OPTION_REPEAT_X,
+                    option?.repeatY ?? ThreeAssetManager._DEFAULT_TEXTURE_OPTION_REPEAT_Y
                 );
                 texture.center.set(
-                    option?.centerX ?? ThreeAssetsManager._DEFAULT_TEXTURE_OPTION_CENTER_X,
-                    option?.centerY ?? ThreeAssetsManager._DEFAULT_TEXTURE_OPTION_CENTER_Y
+                    option?.centerX ?? ThreeAssetManager._DEFAULT_TEXTURE_OPTION_CENTER_X,
+                    option?.centerY ?? ThreeAssetManager._DEFAULT_TEXTURE_OPTION_CENTER_Y
                 );
                 asset.loadedSize = asset.totalSize;
                 this._onLoad(asset.id, texture);
@@ -171,8 +171,8 @@ class ThreeAssetsManager {
         this._hdrLoader.load(
             asset.path,
             (dataTexture) => {
-                dataTexture.mapping = option?.mapping ?? ThreeAssetsManager._DEFAULT_HDR_MAPPING;
-                dataTexture.colorSpace = option?.colorSpace ?? ThreeAssetsManager._DEFAULT_HDR_COLOR_SPACE;
+                dataTexture.mapping = option?.mapping ?? ThreeAssetManager._DEFAULT_HDR_MAPPING;
+                dataTexture.colorSpace = option?.colorSpace ?? ThreeAssetManager._DEFAULT_HDR_COLOR_SPACE;
                 this._onLoad(asset.id, dataTexture);
             },
             (event: ProgressEvent) => this._onProgress(asset, event),
@@ -204,13 +204,13 @@ class ThreeAssetsManager {
     }
 
     private _onProgress(asset: ThreeAssetToLoad, event: ProgressEvent): void {
-        if (asset.totalSize === ThreeAssetsManager._DEFAULT_TOTAL_SIZE) asset.totalSize = event.total;
+        if (asset.totalSize === ThreeAssetManager._DEFAULT_TOTAL_SIZE) asset.totalSize = event.total;
         asset.loadedSize = event.loaded;
         this.onProgress.execute();
     }
 
     private _onError(type: AssetType, id: AssetId, path: string): void {
-        throw new Error(`ThreeAssetsManager: Failed to load ${type} with id '${id}' from path '${path}'`);
+        throw new Error(`ThreeAssetManager: Failed to load ${type} with id '${id}' from path '${path}'`);
     }
 
     public getTexture(id: AssetId): Texture {
@@ -260,4 +260,4 @@ class ThreeAssetsManager {
     //#endregion
 }
 
-export default new ThreeAssetsManager();
+export default new ThreeAssetManager();

@@ -5,12 +5,12 @@ import DebugManager from '../../../managers/DebugManager';
 import ThreeViewBase from '../bases/ThreeViewBase';
 import EnvironmentThreeActor from './components/EnvironmentThreeActor';
 import TemplateFontThreeActor from './components/TemplateFontThreeActor';
-import TemplateMesh2ThreeActor from './components/TemplateMesh2ThreeActor';
+import TemplateMeshThreeActor from './components/TemplateMeshThreeActor';
 import TemplateModelThreeModel from './components/TemplateModelThreeModel';
 
-export default class World2ThreeView extends ThreeViewBase {
+export default class World1ThreeView extends ThreeViewBase {
     constructor() {
-        super(ViewId.THREE_WORLD_2);
+        super(ViewId.THREE_WORLD_1);
     }
 
     protected override _generateActors(): void {
@@ -18,11 +18,11 @@ export default class World2ThreeView extends ThreeViewBase {
 
         if (DebugManager.isActive) {
             const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
-            viewsDebug.add({ switchToWorld2ThreeView: () => MainThreeApp.setCurrentView(ViewId.THREE_WORLD_2) }, 'switchToWorld2ThreeView').name('SWITCH WORLD_2_VIEW');
+            viewsDebug.add({ switchToWorld1ThreeView: () => MainThreeApp.setCurrentView(ViewId.THREE_WORLD_1) }, 'switchToWorld1ThreeView').name('SWITCH WORLD_1_VIEW');
         }
 
         this._actors.push(new EnvironmentThreeActor());
-        this._actors.push(new TemplateMesh2ThreeActor());
+        this._actors.push(new TemplateMeshThreeActor());
         this._actors.push(new TemplateModelThreeModel());
         this._actors.push(new TemplateFontThreeActor());
 

@@ -1,5 +1,5 @@
 import { Action, TickerManager } from '@benjos/cookware';
-import ThreeAssetsManager from './threes/ThreeAssetsManager';
+import ThreeAssetManager from './threes/ThreeAssetManager';
 
 class LoaderManager {
     private static readonly _MIN_LOAD_DURATION: number = 0.5;
@@ -35,22 +35,22 @@ class LoaderManager {
 
     private _addCallbacks(): void {
         this._removeCallbacks();
-        ThreeAssetsManager.onLoad.add(this._onLoad);
-        ThreeAssetsManager.onProgress.add(this._onAssetProgress);
+        ThreeAssetManager.onLoad.add(this._onLoad);
+        ThreeAssetManager.onProgress.add(this._onAssetProgress);
     }
 
     private _removeCallbacks(): void {
-        ThreeAssetsManager.onLoad.remove(this._onLoad);
-        ThreeAssetsManager.onProgress.remove(this._onAssetProgress);
+        ThreeAssetManager.onLoad.remove(this._onLoad);
+        ThreeAssetManager.onProgress.remove(this._onAssetProgress);
     }
 
     private _beginLoad = (): void => {
-        ThreeAssetsManager.beginLoad();
+        ThreeAssetManager.beginLoad();
         this.onBeginLoad.execute();
     };
 
     private _finishLoad = (): void => {
-        ThreeAssetsManager.finishLoad();
+        ThreeAssetManager.finishLoad();
         this.onFinishLoad.execute();
     };
 
@@ -86,7 +86,7 @@ class LoaderManager {
             this.onProgress.execute();
             TickerManager.remove(this._onTransitionTick);
             this._transitionResolves.forEach((resolve) => resolve());
-            this._transitionResolves.length = 0;
+            this._transitionResolves = [];
         }
     };
 
@@ -130,7 +130,7 @@ class LoaderManager {
     };
 
     private _checkIsFinished = (): boolean => {
-        if (!ThreeAssetsManager.isLoaded) return false;
+        if (!ThreeAssetManager.isLoaded) return false;
         return true;
     };
 
@@ -147,12 +147,12 @@ class LoaderManager {
 
     private _refreshTotalSize = (): void => {
         this._totalSize = 0;
-        this._totalSize += ThreeAssetsManager.totalSize;
+        this._totalSize += ThreeAssetManager.totalSize;
     };
 
     private _refreshLoadedSize = (): void => {
         this._loadedSize = 0;
-        this._loadedSize += ThreeAssetsManager.loadedSize;
+        this._loadedSize += ThreeAssetManager.loadedSize;
     };
 
     //#region Getters

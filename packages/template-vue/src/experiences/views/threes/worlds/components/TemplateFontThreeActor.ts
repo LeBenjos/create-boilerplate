@@ -1,10 +1,10 @@
 import { Mesh, MeshStandardMaterial, type MeshStandardMaterialParameters } from 'three';
 import { TextGeometry, type TextGeometryParameters } from 'three/examples/jsm/Addons.js';
-import { AssetId } from '../../../../constants/experiences/AssetId';
-import ThreeAssetsManager from '../../../../managers/threes/ThreeAssetsManager';
+import { AssetId } from '../../../../constants/AssetId';
+import ThreeAssetManager from '../../../../managers/threes/ThreeAssetManager';
 import ThreeActorBase from '../../bases/components/ThreeActorBase';
 
-export default class TemplateFont extends ThreeActorBase {
+export default class TemplateFontThreeActor extends ThreeActorBase {
     private static readonly _DEFAULT_TEXT: string = 'Hello boilerplate!';
     private static readonly _DEFAULT_TEXT_OPTION: TextGeometryParameters = {
         font: null!,
@@ -38,20 +38,20 @@ export default class TemplateFont extends ThreeActorBase {
     }
 
     private _generateGeometry(): void {
-        this._geometry = new TextGeometry(TemplateFont._DEFAULT_TEXT, {
-            ...TemplateFont._DEFAULT_TEXT_OPTION,
-            font: ThreeAssetsManager.getFont(AssetId.THREE_FONT_TEMPLATE),
+        this._geometry = new TextGeometry(TemplateFontThreeActor._DEFAULT_TEXT, {
+            ...TemplateFontThreeActor._DEFAULT_TEXT_OPTION,
+            font: ThreeAssetManager.getFont(AssetId.THREE_FONT_TEMPLATE),
         });
         this._geometry.center();
     }
 
     private _generateMaterial(): void {
-        this._material = new MeshStandardMaterial(TemplateFont._DEFAULT_MATERIAL_OPTION);
+        this._material = new MeshStandardMaterial(TemplateFontThreeActor._DEFAULT_MATERIAL_OPTION);
     }
 
     private _generateMesh(): void {
         this._mesh = new Mesh(this._geometry, this._material);
-        this._mesh.position.y = TemplateFont._DEFAULT_MESH_POSITION_Y;
+        this._mesh.position.y = TemplateFontThreeActor._DEFAULT_MESH_POSITION_Y;
 
         this.add(this._mesh);
     }

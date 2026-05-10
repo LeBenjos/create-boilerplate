@@ -1,7 +1,7 @@
 import { DomUtils } from '@benjos/cookware';
 import { Scene } from 'three';
 import LoaderThreeCameraController from '../../../cameras/threes/LoaderThreeCameraController';
-import { CameraId } from '../../../constants/experiences/CameraId';
+import { CameraId } from '../../../constants/CameraId';
 import LoaderManager from '../../../managers/LoaderManager';
 import ThreeCameraControllerManager from '../../../managers/threes/ThreeCameraControllerManager';
 import LoaderThreeWebGLRenderer from '../../../renderers/threes/LoaderThreeWebGLRenderer';

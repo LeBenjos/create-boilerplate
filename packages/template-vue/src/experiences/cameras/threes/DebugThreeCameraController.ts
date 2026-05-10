@@ -2,8 +2,8 @@ import { DomKeyboardManager, DomPointerManager } from '@benjos/cookware';
 import { KeyboardConstant } from '@benjos/spices';
 import { Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import { CameraId } from '../../constants/experiences/CameraId';
-import MainThreeApp from '../../engines/threes/app/MainThreeApp';
+import { CameraId } from '../../constants/CameraId';
+import MainThreeApp from '../../engines/threes/apps/MainThreeApp';
 import ThreeRaycasterManager from '../../managers/threes/ThreeRaycasterManager';
 import { ThreeCameraType, type ThreeCameraOptions } from '../../types/cameraTypes';
 import ThreeCameraControllerBase from './bases/ThreeCameraControllerBase';
@@ -29,12 +29,12 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
 
     public override enable(): void {
         super.enable();
-        DomPointerManager.onPointerDown.add(this._onMouseDown);
+        DomPointerManager.onPointerDown.add(this._onPointerDown);
     }
 
     public override disable(): void {
         super.disable();
-        DomPointerManager.onPointerDown.remove(this._onMouseDown);
+        DomPointerManager.onPointerDown.remove(this._onPointerDown);
     }
 
     private _setControls(): void {
@@ -43,12 +43,12 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
         this._controls.dampingFactor = DebugThreeCameraController._CONTROLS_DAMPING_FACTOR;
     }
 
-    private readonly _onMouseDown = (): void => {
+    private readonly _onPointerDown = (): void => {
         if (DomKeyboardManager.isKeyDown(DebugThreeCameraController._CONTROLS_CENTER_KEY)) {
             const intersect = ThreeRaycasterManager.castFromCameraToPointer(MainThreeApp.scene.children);
             if (intersect.length > 0) {
-                this._controls.target.copy(intersect[0].point);
-                this._controls.update();
+                this._controls?.target.copy(intersect[0].point);
+                this._controls?.update();
             }
         }
     };

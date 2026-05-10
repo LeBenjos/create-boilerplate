@@ -1,7 +1,7 @@
 import { DomResizeManager, TickerManager } from '@benjos/cookware';
 import type { Scene } from 'three';
 import type ThreeCameraControllerBase from '../../../../cameras/threes/bases/ThreeCameraControllerBase';
-import type { ViewId } from '../../../../constants/experiences/ViewId';
+import type { ViewId } from '../../../../constants/ViewId';
 import LoaderManager from '../../../../managers/LoaderManager';
 import type ThreeWebGLRendererBase from '../../../../renderers/threes/bases/ThreeWebGLRendererBase';
 import type ThreeViewBase from '../../../../views/threes/bases/ThreeViewBase';
@@ -13,7 +13,7 @@ export default abstract class ThreeAppBase {
     declare protected _renderer: ThreeWebGLRendererBase;
     protected readonly _views: ThreeViewBase[];
     protected readonly _viewBuilder: Map<ViewId, new () => ThreeViewBase>;
-    declare protected _currentView: ThreeViewBase;
+    protected _currentView: ThreeViewBase | null = null;
 
     constructor() {
         this._views = [];
@@ -82,11 +82,10 @@ export default abstract class ThreeAppBase {
     }
 
     public getViewById(viewId: ViewId): ThreeViewBase | null {
-        let view;
         for (const v of this._views) {
-            if (v.viewId === viewId) view = v;
+            if (v.viewId === viewId) return v;
         }
-        return view || null;
+        return null;
     }
 
     private _removeOldView(view: ThreeViewBase): void {
@@ -123,7 +122,7 @@ export default abstract class ThreeAppBase {
     public get cameraController(): ThreeCameraControllerBase {
         return this._cameraController;
     }
-    public get currentView(): ThreeViewBase {
+    public get currentView(): ThreeViewBase | null {
         return this._currentView;
     }
     //

@@ -1,4 +1,4 @@
-import { ViewId } from '../../../constants/experiences/ViewId';
+import { ViewId } from '../../../constants/ViewId';
 import ThreeViewBase from '../bases/ThreeViewBase';
 import TemplateLoaderThreeActor from './components/TemplateLoaderThreeActor';
 

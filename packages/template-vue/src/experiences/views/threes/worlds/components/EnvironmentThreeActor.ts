@@ -1,9 +1,9 @@
 import { DirectionalLight, Vector3, type DataTexture } from 'three';
-import { AssetId } from '../../../../constants/experiences/AssetId';
-import { DebugGuiTitle } from '../../../../constants/experiences/DebugGuiTitle';
-import MainThreeApp from '../../../../engines/threes/app/MainThreeApp';
+import { AssetId } from '../../../../constants/AssetId';
+import { DebugGuiTitle } from '../../../../constants/DebugGuiTitle';
+import MainThreeApp from '../../../../engines/threes/apps/MainThreeApp';
 import DebugManager from '../../../../managers/DebugManager';
-import ThreeAssetsManager from '../../../../managers/threes/ThreeAssetsManager';
+import ThreeAssetManager from '../../../../managers/threes/ThreeAssetManager';
 import ThreeActorBase from '../../bases/components/ThreeActorBase';
 
 interface EnvironmentMap {
@@ -11,7 +11,7 @@ interface EnvironmentMap {
     texture?: DataTexture;
 }
 
-export default class Environment extends ThreeActorBase {
+export default class EnvironmentThreeActor extends ThreeActorBase {
     private static readonly _DEFAULT_ENVIRONMENT_MAP_INTENSITY: number = 1;
     private static readonly _DEFAULT_SUN_LIGHT_COLOR: number = 0xffffff;
     private static readonly _DEFAULT_SUN_LIGHT_INTENSITY: number = 10;
@@ -44,8 +44,8 @@ export default class Environment extends ThreeActorBase {
 
     private _generateEnvironmentMap = (): void => {
         this._environmentMap = {};
-        this._environmentMap.intensity = Environment._DEFAULT_ENVIRONMENT_MAP_INTENSITY;
-        this._environmentMap.texture = ThreeAssetsManager.getHDR(AssetId.THREE_HDR_TEMPLATE);
+        this._environmentMap.intensity = EnvironmentThreeActor._DEFAULT_ENVIRONMENT_MAP_INTENSITY;
+        this._environmentMap.texture = ThreeAssetManager.getHDR(AssetId.THREE_HDR_TEMPLATE);
         this._environmentMap.texture.needsUpdate = true;
 
         MainThreeApp.scene.environment = this._environmentMap.texture;
@@ -62,17 +62,17 @@ export default class Environment extends ThreeActorBase {
 
     private _generateSunLight(): void {
         this._sunLight = new DirectionalLight(
-            Environment._DEFAULT_SUN_LIGHT_COLOR,
-            Environment._DEFAULT_SUN_LIGHT_INTENSITY
+            EnvironmentThreeActor._DEFAULT_SUN_LIGHT_COLOR,
+            EnvironmentThreeActor._DEFAULT_SUN_LIGHT_INTENSITY
         );
         this._sunLight.castShadow = true;
-        this._sunLight.shadow.camera.far = Environment._DEFAULT_SUN_SHADOW_CAMERA_FAR;
+        this._sunLight.shadow.camera.far = EnvironmentThreeActor._DEFAULT_SUN_SHADOW_CAMERA_FAR;
         this._sunLight.shadow.mapSize.set(
-            Environment._DEFAULT_SUN_SHADOW_MAP_SIZE,
-            Environment._DEFAULT_SUN_SHADOW_MAP_SIZE
+            EnvironmentThreeActor._DEFAULT_SUN_SHADOW_MAP_SIZE,
+            EnvironmentThreeActor._DEFAULT_SUN_SHADOW_MAP_SIZE
         );
-        this._sunLight.shadow.normalBias = Environment._DEFAULT_SUN_SHADOW_NORMAL_BIAS;
-        this._sunLight.position.copy(Environment._DEFAULT_SUN_POSITION);
+        this._sunLight.shadow.normalBias = EnvironmentThreeActor._DEFAULT_SUN_SHADOW_NORMAL_BIAS;
+        this._sunLight.position.copy(EnvironmentThreeActor._DEFAULT_SUN_POSITION);
         this.add(this._sunLight);
 
         if (DebugManager.isActive) {
