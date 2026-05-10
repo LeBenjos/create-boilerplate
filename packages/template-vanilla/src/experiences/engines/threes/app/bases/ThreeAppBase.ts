@@ -66,7 +66,7 @@ export default abstract class ThreeAppBase {
     public async setCurrentView(viewId: ViewId): Promise<void> {
         if (this._currentView?.viewId === viewId) return;
 
-        let view = this._getViewById(viewId);
+        let view = this.getViewById(viewId);
         if (!view) view = this._generateView(viewId);
 
         view.declareAssets();
@@ -81,7 +81,7 @@ export default abstract class ThreeAppBase {
         this.scene.add(this._currentView);
     }
 
-    private _getViewById(viewId: ViewId): ThreeViewBase | null {
+    public getViewById(viewId: ViewId): ThreeViewBase | null {
         let view;
         for (const v of this._views) {
             if (v.viewId === viewId) view = v;
@@ -122,6 +122,9 @@ export default abstract class ThreeAppBase {
     }
     public get cameraController(): ThreeCameraControllerBase {
         return this._cameraController;
+    }
+    public get currentView(): ThreeViewBase {
+        return this._currentView;
     }
     //
     //#endregion

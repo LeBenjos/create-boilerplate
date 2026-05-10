@@ -1,4 +1,4 @@
-import { Mesh, type Group, type Object3D } from 'three';
+import { Mesh, type Object3D } from 'three';
 import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
 import type { AssetId } from '../../../../constants/experiences/AssetId';
 import type { Object3DId } from '../../../../constants/experiences/Object3dId';
@@ -14,7 +14,7 @@ export interface ModelBaseParams {
 export default abstract class ThreeModelBase extends ThreeActorBase {
     protected _assetId: AssetId;
     protected _parameters: ModelBaseParams;
-    declare protected _model: Group | Object3D | Mesh;
+    declare protected _model: Object3D;
 
     constructor(assetId: AssetId, params: ModelBaseParams = {}) {
         super();
@@ -40,6 +40,14 @@ export default abstract class ThreeModelBase extends ThreeActorBase {
         });
 
         this.add(this._model);
+    }
+
+    protected _getObjectByName(name: string): Object3D {
+        const object = this._model.getObjectByName(name);
+        if (!object) {
+            throw new Error(`Object3D not found for name: ${name} in model with ID: ${this._parameters.object3DId ?? this._assetId}`);
+        }
+        return object;
     }
 
     public update(dt: number): void {

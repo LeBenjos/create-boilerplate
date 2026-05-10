@@ -1,6 +1,6 @@
 import { DomResizeManager } from "@benjos/cookware";
 import { HalfFloatType, WebGLRenderTarget, type Camera, type Scene, type TextureDataType, type WebGLRenderer } from "three";
-import { EffectComposer, OutputPass, RenderPass, type Pass } from "three/examples/jsm/Addons.js";
+import { EffectComposer, OutputPass, RenderPass, SMAAPass, type Pass } from "three/examples/jsm/Addons.js";
 import ThreePassBase from "./passes/ThreePassBase";
 
 export default abstract class ThreeEffectComposerBase extends EffectComposer {
@@ -18,6 +18,7 @@ export default abstract class ThreeEffectComposerBase extends EffectComposer {
         this._createRenderPass(scene, camera);
         this._passes = [];
         this._addPasses();
+        this._addPass(new SMAAPass());
         this._addPass(new OutputPass());
         this.resize();
     }

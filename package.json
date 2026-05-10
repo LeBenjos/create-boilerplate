@@ -1,7 +1,7 @@
 {
     "name": "create-boilerplate",
     "private": true,
-    "version": "1.5.9",
+    "version": "1.5.10",
     "workspaces": [
         "packages"
     ],
@@ -12,14 +12,14 @@
         "format": "prettier --write \"**/src/**\"",
         "format:check": "prettier --check \"**/src/**\"",
         "version": "node scripts/version.js",
-        "update:deps": "npx -y npm-check-updates -u --deep && npm install"
+        "update:deps": "npx -y npm-check-updates -u --deep --install always"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
-        "eslint": "^10.1.0",
+        "eslint": "^10.3.0",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.5",
-        "prettier": "^3.8.1",
-        "typescript-eslint": "^8.57.1"
+        "prettier": "^3.8.3",
+        "typescript-eslint": "^8.59.2"
     }
 }

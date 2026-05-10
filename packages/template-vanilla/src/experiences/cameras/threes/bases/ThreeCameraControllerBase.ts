@@ -14,8 +14,8 @@ export default abstract class ThreeCameraControllerBase<T extends ThreeControls 
     };
 
     protected readonly _cameraId: CameraId;
-    declare protected _camera: PerspectiveCamera | OrthographicCamera;
     declare protected _container: Object3D;
+    declare protected _camera: PerspectiveCamera | OrthographicCamera;
     declare protected _controls: T;
 
     constructor(
@@ -81,6 +81,9 @@ export default abstract class ThreeCameraControllerBase<T extends ThreeControls 
     //
     public get cameraId(): CameraId {
         return this._cameraId;
+    }
+    public get container(): Object3D {
+        return this._container;
     }
     public get camera(): PerspectiveCamera | OrthographicCamera {
         return this._camera;

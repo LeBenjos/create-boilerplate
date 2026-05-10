@@ -43,5 +43,6 @@ git push
 **3. Publish to npm:**
 ```bash
 cd packages
+npm login
 npm publish --access public
 ```
