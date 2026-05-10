@@ -1,15 +1,15 @@
 import { Object3D } from 'three';
-import type { ViewId } from '../../../constants/experiences/ViewId';
+import type { ViewId } from '../../../constants/ViewId';
 import type ThreeActorBase from './components/ThreeActorBase';
 
 export default abstract class ThreeViewBase extends Object3D {
-    private readonly _id: ViewId;
+    private readonly _viewId: ViewId;
     protected readonly _actors: ThreeActorBase[];
     private _areActorsGenerated = false;
 
-    constructor(id: ViewId) {
+    constructor(viewId: ViewId) {
         super();
-        this._id = id;
+        this._viewId = viewId;
         this._actors = [];
     }
 
@@ -43,7 +43,7 @@ export default abstract class ThreeViewBase extends Object3D {
 
     //#region Getters
     //
-    public get viewId(): ViewId { return this._id; }
+    public get viewId(): ViewId { return this._viewId; }
     //
     //#endregion
 }

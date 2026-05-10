@@ -1,10 +1,10 @@
 import { Vector3 } from 'three';
-import { AssetId } from '../../../../constants/experiences/AssetId';
-import { DebugGuiTitle } from '../../../../constants/experiences/DebugGuiTitle';
+import { AssetId } from '../../../../constants/AssetId';
+import { DebugGuiTitle } from '../../../../constants/DebugGuiTitle';
 import DebugManager from '../../../../managers/DebugManager';
 import ThreeModelBase from '../../bases/components/ThreeModelBase';
 
-export default class TemplateModel extends ThreeModelBase {
+export default class TemplateModelThreeModel extends ThreeModelBase {
     private static readonly _DEFAULT_POSITION: Vector3 = new Vector3(0, 1, 0);
     private static readonly _ROTATION_Y = 0.25;
 
@@ -13,7 +13,7 @@ export default class TemplateModel extends ThreeModelBase {
             castShadow: true,
             receiveShadow: true,
         });
-        this.position.copy(TemplateModel._DEFAULT_POSITION);
+        this.position.copy(TemplateModelThreeModel._DEFAULT_POSITION);
 
         if (DebugManager.isActive) {
             const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
@@ -28,6 +28,6 @@ export default class TemplateModel extends ThreeModelBase {
 
     public update(dt: number): void {
         super.update(dt);
-        this.rotation.y += dt * TemplateModel._ROTATION_Y;
+        this.rotation.y += dt * TemplateModelThreeModel._ROTATION_Y;
     }
 }

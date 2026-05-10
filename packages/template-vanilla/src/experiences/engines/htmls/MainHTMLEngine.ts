@@ -1,7 +1,7 @@
 import HTMLViewBase from '../../views/htmls/bases/HTMLViewBase';
 import LoaderHTMLView from '../../views/htmls/loaders/LoaderHTMLView';
 
-class MainHTML {
+class MainHTMLEngine {
     private _views: HTMLViewBase[] = [];
 
     public init(): void {
@@ -13,4 +13,4 @@ class MainHTML {
     }
 }
 
-export default new MainHTML();
+export default new MainHTMLEngine();

@@ -1,15 +1,14 @@
 import { Action } from '@benjos/cookware';
 import type ThreeCameraControllerBase from '../../cameras/threes/bases/ThreeCameraControllerBase';
-import type { CameraId } from '../../constants/experiences/CameraId';
+import type { CameraId } from '../../constants/CameraId';
 
 class ThreeCameraControllerManager {
-    declare private _threeCameraControllers: Map<CameraId, ThreeCameraControllerBase>;
+    private _threeCameraControllers: Map<CameraId, ThreeCameraControllerBase> = new Map();
     declare private _activeThreeCameraController: ThreeCameraControllerBase;
 
     public readonly onActiveThreeCameraControllerChange = new Action();
 
     public init(): void {
-        this._threeCameraControllers = new Map();
         this._threeCameraControllers.clear();
     }
 

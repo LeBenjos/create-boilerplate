@@ -17,7 +17,7 @@ import {
     type WebGLRendererParameters
 } from 'three';
 import MainThreeEffectComposer from '../../composers/threes/MainThreeEffectComposer';
-import { DebugGuiTitle } from '../../constants/experiences/DebugGuiTitle';
+import { DebugGuiTitle } from '../../constants/DebugGuiTitle';
 import DebugManager from '../../managers/DebugManager';
 import ThreeWebGLRendererBase from './bases/ThreeWebGLRendererBase';
 

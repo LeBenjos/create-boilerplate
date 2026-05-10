@@ -1,15 +1,15 @@
 import { AnimationMixer, type AnimationAction } from 'three';
-import type { AnimationId } from '../../../../constants/experiences/AnimationId';
-import type { AssetId } from '../../../../constants/experiences/AssetId';
-import ThreeAssetsManager from '../../../../managers/threes/ThreeAssetsManager';
+import type { AnimationId } from '../../../../constants/AnimationId';
+import type { AssetId } from '../../../../constants/AssetId';
+import ThreeAssetManager from '../../../../managers/threes/ThreeAssetManager';
 import ThreeModelBase, { type ModelBaseParams } from './ThreeModelBase';
 
 export default abstract class ThreeAnimatedModelBase extends ThreeModelBase {
     private static readonly _DEFAULT_ANIMATION_FADE_DURATION: number = 1;
 
     declare private _mixer: AnimationMixer;
-    declare private _actions: AnimationAction[];
-    declare private _currentAction: AnimationAction | null;
+    private _actions: AnimationAction[] = [];
+    private _currentAction: AnimationAction | null = null;
 
     constructor(assetId: AssetId, params: ModelBaseParams = {}) {
         super(assetId, params);
@@ -18,7 +18,7 @@ export default abstract class ThreeAnimatedModelBase extends ThreeModelBase {
     }
 
     protected _generateAnimations(): void {
-        const animations = ThreeAssetsManager.getModel(this._assetId).animations;
+        const animations = ThreeAssetManager.getModel(this._assetId).animations;
         this._mixer = new AnimationMixer(this._model);
         this._actions = [];
         this._currentAction = null;

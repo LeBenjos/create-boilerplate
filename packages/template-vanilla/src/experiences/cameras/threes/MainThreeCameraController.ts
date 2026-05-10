@@ -1,5 +1,5 @@
 import { Vector3 } from 'three';
-import { CameraId } from '../../constants/experiences/CameraId';
+import { CameraId } from '../../constants/CameraId';
 import { ThreeCameraType, type ThreeCameraOptions } from '../../types/cameraTypes';
 import ThreeCameraControllerBase from './bases/ThreeCameraControllerBase';
 

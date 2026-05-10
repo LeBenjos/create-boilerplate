@@ -1,9 +1,9 @@
 import { BoxGeometry, Mesh, MeshStandardMaterial, RepeatWrapping, type MeshStandardMaterialParameters } from 'three';
-import { AssetId } from '../../../../constants/experiences/AssetId';
-import ThreeAssetsManager from '../../../../managers/threes/ThreeAssetsManager';
+import { AssetId } from '../../../../constants/AssetId';
+import ThreeAssetManager from '../../../../managers/threes/ThreeAssetManager';
 import ThreeActorBase from '../../bases/components/ThreeActorBase';
 
-export default class TemplateMesh2 extends ThreeActorBase {
+export default class TemplateMesh2ThreeActor extends ThreeActorBase {
     private static readonly _DEFAULT_GEOMETRY_WIDTH = 2;
     private static readonly _DEFAULT_GEOMETRY_HEIGHT = 2;
     private static readonly _DEFAULT_GEOMETRY_DEPTH = 2;
@@ -33,22 +33,22 @@ export default class TemplateMesh2 extends ThreeActorBase {
 
     private _generateGeometry(): void {
         this._geometry = new BoxGeometry(
-            TemplateMesh2._DEFAULT_GEOMETRY_WIDTH,
-            TemplateMesh2._DEFAULT_GEOMETRY_HEIGHT,
-            TemplateMesh2._DEFAULT_GEOMETRY_DEPTH,
-            TemplateMesh2._DEFAULT_GEOMETRY_WIDTH_SEGMENTS,
-            TemplateMesh2._DEFAULT_GEOMETRY_HEIGHT_SEGMENTS,
-            TemplateMesh2._DEFAULT_GEOMETRY_DEPTH_SEGMENTS
+            TemplateMesh2ThreeActor._DEFAULT_GEOMETRY_WIDTH,
+            TemplateMesh2ThreeActor._DEFAULT_GEOMETRY_HEIGHT,
+            TemplateMesh2ThreeActor._DEFAULT_GEOMETRY_DEPTH,
+            TemplateMesh2ThreeActor._DEFAULT_GEOMETRY_WIDTH_SEGMENTS,
+            TemplateMesh2ThreeActor._DEFAULT_GEOMETRY_HEIGHT_SEGMENTS,
+            TemplateMesh2ThreeActor._DEFAULT_GEOMETRY_DEPTH_SEGMENTS
         );
     }
 
     private _generateMaterial(): void {
-        const normalMat = ThreeAssetsManager.getTexture(AssetId.THREE_TEXTURE_TEMPLATE);
-        normalMat.repeat.set(TemplateMesh2._DEFAULT_MATERIAL_REPEAT, TemplateMesh2._DEFAULT_MATERIAL_REPEAT);
+        const normalMat = ThreeAssetManager.getTexture(AssetId.THREE_TEXTURE_TEMPLATE);
+        normalMat.repeat.set(TemplateMesh2ThreeActor._DEFAULT_MATERIAL_REPEAT, TemplateMesh2ThreeActor._DEFAULT_MATERIAL_REPEAT);
         normalMat.wrapS = normalMat.wrapT = RepeatWrapping;
 
         this._material = new MeshStandardMaterial({
-            ...TemplateMesh2._DEFAULT_MATERIAL_OPTIONS,
+            ...TemplateMesh2ThreeActor._DEFAULT_MATERIAL_OPTIONS,
             normalMap: normalMat,
         });
     }
@@ -66,6 +66,6 @@ export default class TemplateMesh2 extends ThreeActorBase {
 
     public update(dt: number): void {
         super.update(dt);
-        this._mesh.rotation.y += dt * TemplateMesh2._MESH_ROTATION_Y;
+        this._mesh.rotation.y += dt * TemplateMesh2ThreeActor._MESH_ROTATION_Y;
     }
 }

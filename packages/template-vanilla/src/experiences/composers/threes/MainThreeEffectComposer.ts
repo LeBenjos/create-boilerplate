@@ -1,7 +1,7 @@
 import type { Camera, Scene, WebGLRenderer } from "three";
 import { GlitchPass } from "three/examples/jsm/Addons.js";
 import ThreeEffectComposerBase from "./bases/ThreeEffectComposerBase";
-import TemplateThreePass from "./passes/TemplateThreePass";
+import TemplateThreePass from "./passes/templates/TemplateThreePass";
 
 export default class MainThreeEffectComposer extends ThreeEffectComposerBase {
     constructor(renderer: WebGLRenderer, scene: Scene, camera: Camera) {

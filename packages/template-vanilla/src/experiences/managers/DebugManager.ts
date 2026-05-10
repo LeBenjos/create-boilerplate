@@ -3,8 +3,8 @@ import { KeyboardConstant } from '@benjos/spices';
 import GUI from 'lil-gui';
 import Stats from 'stats.js';
 import { ThreePerf } from 'three-perf';
-import type { DebugGuiTitle } from '../constants/experiences/DebugGuiTitle';
-import MainThreeApp from '../engines/threes/app/MainThreeApp';
+import type { DebugGuiTitle } from '../constants/DebugGuiTitle';
+import MainThreeApp from '../engines/threes/apps/MainThreeApp';
 
 class DebugManager {
     private static readonly _IS_ACTIVE_STRING: string = '#debug';

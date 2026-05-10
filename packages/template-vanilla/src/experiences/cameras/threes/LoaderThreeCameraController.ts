@@ -1,6 +1,6 @@
 import { Vector3 } from 'three';
-import { CameraId } from '../../constants/experiences/CameraId';
-import LoaderThreeApp from '../../engines/threes/app/LoaderThreeApp';
+import { CameraId } from '../../constants/CameraId';
+import LoaderThreeApp from '../../engines/threes/apps/LoaderThreeApp';
 import { ThreeCameraType, type ThreeCameraOptions } from '../../types/cameraTypes';
 import ThreeCameraControllerBase from './bases/ThreeCameraControllerBase';
 
