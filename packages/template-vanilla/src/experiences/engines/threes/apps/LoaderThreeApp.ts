@@ -3,14 +3,27 @@ import { Scene } from 'three';
 import LoaderThreeCameraController from '../../../cameras/threes/LoaderThreeCameraController';
 import { CameraId } from '../../../constants/CameraId';
 import LoaderManager from '../../../managers/LoaderManager';
-import ThreeCameraControllerManager from '../../../managers/threes/ThreeCameraControllerManager';
 import LoaderThreeWebGLRenderer from '../../../renderers/threes/LoaderThreeWebGLRenderer';
 import LoaderThreeView from '../../../views/threes/loaders/LoaderThreeView';
 import ThreeAppBase from './bases/ThreeAppBase';
+import { ViewId } from '../../../constants/ViewId';
 
 class LoaderThreeApp extends ThreeAppBase {
     constructor() {
         super();
+    }
+
+    public override init(): void {
+        super.init();
+        this._addCallbacks();
+    }
+
+    private _addCallbacks(): void {
+        LoaderManager.onShow.add(this._onLoaderShow);
+        LoaderManager.onHideComplete.add(this._onLoaderHideComplete);
+        const loaderThreeView = this._currentView as LoaderThreeView;
+        LoaderManager.setShowTransition(loaderThreeView.show);
+        LoaderManager.setHideTransition(loaderThreeView.hide);
     }
 
     protected override _setDomElementContainer(): void {
@@ -21,29 +34,33 @@ class LoaderThreeApp extends ThreeAppBase {
         this._scene = new Scene();
     }
 
-    protected override _generateCameras(): void {
-        ThreeCameraControllerManager.add(new LoaderThreeCameraController());
-        this._cameraController = ThreeCameraControllerManager.get(CameraId.THREE_LOADER);
+    protected override _generateCameraControllers(): void {
+        const loaderCameraController = new LoaderThreeCameraController();
+        this._cameraControllers.set(loaderCameraController.cameraId, loaderCameraController);
+        this._currentCameraController = this._cameraControllers.get(CameraId.THREE_LOADER)!;
+        loaderCameraController.enable();
     }
 
     protected override _generateRenderers(): void {
         this._renderer = new LoaderThreeWebGLRenderer(
             this._scene,
-            ThreeCameraControllerManager.get(CameraId.THREE_LOADER).camera
+            this._currentCameraController.camera
         );
         this._domElementContainer.appendChild(this._renderer.domElement);
     }
 
     protected override _declareViews(): void {
-        const loaderThreeView = new LoaderThreeView();
-        this._views.push(loaderThreeView);
-        this._currentView = loaderThreeView;
-        loaderThreeView.init();
-        this._scene.add(loaderThreeView);
-
-        LoaderManager.setShowTransition(loaderThreeView.show);
-        LoaderManager.setHideTransition(loaderThreeView.hide);
+        this._viewBuilder.set(ViewId.THREE_LOADER, LoaderThreeView);
+        this._setInitialView(ViewId.THREE_LOADER);
     }
+
+    private readonly _onLoaderShow = (): void => {
+        this.play();
+    };
+
+    private readonly _onLoaderHideComplete = (): void => {
+        this.pause();
+    };
 }
 
 export default new LoaderThreeApp();

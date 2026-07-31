@@ -1,10 +1,10 @@
 import { Object3D } from 'three';
 import type { ViewId } from '../../../constants/ViewId';
-import type ThreeActorBase from './components/ThreeActorBase';
+import type ThreeActorViewBase from './components/ThreeActorViewBase';
 
 export default abstract class ThreeViewBase extends Object3D {
     private readonly _viewId: ViewId;
-    protected readonly _actors: ThreeActorBase[];
+    protected readonly _actors: ThreeActorViewBase[];
     private _areActorsGenerated = false;
 
     constructor(viewId: ViewId) {
@@ -32,13 +32,11 @@ export default abstract class ThreeViewBase extends Object3D {
     }
 
     public dispose(): void {
-        for (const actor of this._actors) {
-            actor.dispose();
-        }
+        for (const actor of this._actors) actor.dispose();
     }
 
-    public update(_dt: number): void {
-        //
+    public update(dt: number): void {
+        for (const actor of this._actors) actor.update(dt);
     }
 
     //#region Getters

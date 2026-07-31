@@ -1,19 +1,18 @@
-import TemplatePassFragmentShader from '../../../shaders/threes/composers/passes/templates/TemplatePassFragmentShader.glsl';
-import TemplatePassVertexShader from '../../../shaders/threes/composers/passes/templates/TemplatePassVertexShader.glsl';
+import { Uniform } from 'three';
+import TemplatePassFragmentShader from '../../../../shaders/threes/composers/passes/templates/TemplatePassFragmentShader.glsl';
+import TemplatePassVertexShader from '../../../../shaders/threes/composers/passes/templates/TemplatePassVertexShader.glsl';
 import ThreePassBase from "../../bases/passes/ThreePassBase";
 
 export default class TemplateThreePass extends ThreePassBase {
     constructor() {
         super({
             uniforms: {
-                tDiffuse: { value: null },
-                uTime: { value: null },
+                tDiffuse: new Uniform(null),
+                uTime: new Uniform(0),
             },
             vertexShader: TemplatePassVertexShader,
             fragmentShader: TemplatePassFragmentShader,
         });
-
-        this.uniforms.uTime.value = 0;
     }
 
     public update(dt: number): void {

@@ -1,6 +1,6 @@
 import { BufferGeometry, Material, Mesh, Object3D, Texture } from 'three';
 
-export default abstract class ThreeActorBase extends Object3D {
+export default abstract class ThreeActorViewBase extends Object3D {
     constructor() {
         super();
     }

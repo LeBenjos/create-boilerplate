@@ -1,6 +1,7 @@
-import { DomResizeManager, TickerManager } from '@benjos/cookware';
+import { Action, DomResizeManager, TickerManager } from '@benjos/cookware';
 import type { Scene } from 'three';
 import type ThreeCameraControllerBase from '../../../../cameras/threes/bases/ThreeCameraControllerBase';
+import { CameraId } from '../../../../constants/CameraId';
 import type { ViewId } from '../../../../constants/ViewId';
 import LoaderManager from '../../../../managers/LoaderManager';
 import type ThreeWebGLRendererBase from '../../../../renderers/threes/bases/ThreeWebGLRendererBase';
@@ -9,11 +10,16 @@ import type ThreeViewBase from '../../../../views/threes/bases/ThreeViewBase';
 export default abstract class ThreeAppBase {
     declare protected _domElementContainer: HTMLElement;
     declare protected _scene: Scene;
-    declare protected _cameraController: ThreeCameraControllerBase;
+    protected readonly _cameraControllers: Map<CameraId, ThreeCameraControllerBase> = new Map();
+    declare protected _currentCameraController: ThreeCameraControllerBase;
     declare protected _renderer: ThreeWebGLRendererBase;
     protected readonly _views: ThreeViewBase[];
     protected readonly _viewBuilder: Map<ViewId, new () => ThreeViewBase>;
     protected _currentView: ThreeViewBase | null = null;
+    protected _isPaused = false;
+
+
+    public readonly onCameraControllerChange = new Action();
 
     constructor() {
         this._views = [];
@@ -22,10 +28,11 @@ export default abstract class ThreeAppBase {
 
     public init(): void {
         TickerManager.add(this._update);
+        this._cameraControllers.clear();
 
         this._setDomElementContainer();
         this._generateScenes();
-        this._generateCameras();
+        this._generateCameraControllers();
         this._generateRenderers();
         this._declareViews();
 
@@ -41,7 +48,7 @@ export default abstract class ThreeAppBase {
         //
     }
 
-    protected _generateCameras(): void {
+    protected _generateCameraControllers(): void {
         //
     }
 
@@ -56,11 +63,18 @@ export default abstract class ThreeAppBase {
     protected _generateView(viewId: ViewId): ThreeViewBase {
         const ViewConstructor = this._viewBuilder.get(viewId);
         if (!ViewConstructor) {
-            throw new Error(`View constructor for ID '${viewId}' not found.`);
+            throw new Error(`[${this.constructor.name}]: View constructor for ID '${viewId}' not found in "viewBuilder".`);
         }
         const view = new ViewConstructor();
         this._views.push(view);
         return view;
+    }
+
+    protected _setInitialView(viewId: ViewId): void {
+        const view = this._generateView(viewId);
+        this._currentView = view;
+        view.init();
+        this._scene.add(view);
     }
 
     public async setCurrentView(viewId: ViewId): Promise<void> {
@@ -78,7 +92,7 @@ export default abstract class ThreeAppBase {
         if (this._currentView) this._removeOldView(this._currentView);
         this._currentView = view;
         view.init();
-        this.scene.add(this._currentView);
+        this._scene.add(this._currentView);
     }
 
     public getViewById(viewId: ViewId): ThreeViewBase | null {
@@ -86,6 +100,29 @@ export default abstract class ThreeAppBase {
             if (v.viewId === viewId) return v;
         }
         return null;
+    }
+
+    public play(): void {
+        if (!this._isPaused) return;
+        this._isPaused = false;
+        TickerManager.add(this._update);
+    }
+
+    public pause(): void {
+        if (this._isPaused) return;
+        this._isPaused = true;
+        TickerManager.remove(this._update);
+    }
+
+    public setCurrentCameraController(cameraId: CameraId): void {
+        const threeCameraController = this._cameraControllers.get(cameraId)!;
+        if (!threeCameraController) throw new Error(`[${this.constructor.name}]: No cameraController with id '${cameraId}'`);
+        this._currentCameraController.disable();
+        this._currentCameraController = threeCameraController;
+        this._currentCameraController.enable();
+        this._renderer.setCamera(this._currentCameraController.camera);
+        this._onResize();
+        this.onCameraControllerChange.execute();
     }
 
     private _removeOldView(view: ThreeViewBase): void {
@@ -98,12 +135,12 @@ export default abstract class ThreeAppBase {
         this._renderer.domElement.width = window.innerWidth;
         this._renderer.domElement.height = window.innerHeight;
 
-        this._cameraController.resize();
+        this._currentCameraController.resize();
         this._renderer.resize();
     };
 
     private _update = (dt: number): void => {
-        this._cameraController.update(dt);
+        this._currentCameraController.update(dt);
         this._currentView?.update(dt);
         this._renderer.update(dt);
     };
@@ -119,11 +156,14 @@ export default abstract class ThreeAppBase {
     public get renderer(): ThreeWebGLRendererBase {
         return this._renderer;
     }
-    public get cameraController(): ThreeCameraControllerBase {
-        return this._cameraController;
+    public get currentCameraController(): ThreeCameraControllerBase {
+        return this._currentCameraController;
     }
     public get currentView(): ThreeViewBase | null {
         return this._currentView;
+    }
+    public get isPaused(): boolean {
+        return this._isPaused;
     }
     //
     //#endregion

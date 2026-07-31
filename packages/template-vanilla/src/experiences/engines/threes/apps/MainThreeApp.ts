@@ -7,7 +7,6 @@ import { CameraId } from '../../../constants/CameraId';
 import { DebugGuiTitle } from '../../../constants/DebugGuiTitle';
 import { ViewId } from '../../../constants/ViewId';
 import DebugManager from '../../../managers/DebugManager';
-import ThreeCameraControllerManager from '../../../managers/threes/ThreeCameraControllerManager';
 import MainThreeWebGLRenderer from '../../../renderers/threes/MainThreeWebGLRenderer';
 import World1ThreeView from '../../../views/threes/worlds/World1ThreeView';
 import World2ThreeView from '../../../views/threes/worlds/World2ThreeView';
@@ -34,10 +33,7 @@ class MainThreeApp extends ThreeAppBase {
     public override init(): void {
         super.init();
 
-        if (DebugManager.isActive) {
-            window.mainThreeApp = this;
-            DomKeyboardManager.onKeyDown.add(this._onKeyDown);
-        }
+        if (DebugManager.isActive) this._setupDebug();
     }
 
     protected override _setDomElementContainer(): void {
@@ -46,66 +42,65 @@ class MainThreeApp extends ThreeAppBase {
 
     protected override _generateScenes(): void {
         this._scene = new Scene();
-
-        if (DebugManager.isActive) {
-            this._debugWireframeMaterial = new MeshStandardMaterial({
-                wireframe: true,
-                color: MainThreeApp._DEBUG_WIREFRAME_MATERIAL_COLOR,
-            });
-        }
     }
 
-    protected override _generateCameras(): void {
-        ThreeCameraControllerManager.add(new MainThreeCameraController(), true);
-        this._cameraController = ThreeCameraControllerManager.get(CameraId.THREE_MAIN);
-
-        if (DebugManager.isActive) {
-            this._debugPreviousCameraId = this._cameraController.cameraId;
-            ThreeCameraControllerManager.add(new DebugThreeCameraController());
-        }
-
-        ThreeCameraControllerManager.onActiveThreeCameraControllerChange.add(this._onActiveCameraControllerChange);
+    protected override _generateCameraControllers(): void {
+        const mainCameraController = new MainThreeCameraController();
+        this._cameraControllers.set(mainCameraController.cameraId, mainCameraController);
+        this._currentCameraController = mainCameraController;
+        mainCameraController.enable();
     }
 
     protected override _generateRenderers(): void {
-        this._renderer = new MainThreeWebGLRenderer(this._scene, this._cameraController.camera, { antialias: true });
+        this._renderer = new MainThreeWebGLRenderer(this._scene, this._currentCameraController.camera, { antialias: true });
         this._domElementContainer.appendChild(this._renderer.domElement);
     }
 
     protected override _declareViews(): void {
         this._viewBuilder.set(ViewId.THREE_WORLD_1, World1ThreeView);
         this._viewBuilder.set(ViewId.THREE_WORLD_2, World2ThreeView);
+    }
 
-        if (DebugManager.isActive) {
-            const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
-            viewsDebug.add({ resetCurrentView: () => this._currentView?.reset() }, 'resetCurrentView');
-            viewsDebug.add({ createWorld1: () => this.setCurrentView(ViewId.THREE_WORLD_1) }, 'createWorld1');
-            viewsDebug.add({ createWorld2: () => this.setCurrentView(ViewId.THREE_WORLD_2) }, 'createWorld2');
+    private _setupDebug(): void {
+        window.mainThreeApp = this;
+        DomKeyboardManager.onKeyDown.add(this._onKeyDown);
+
+        this._debugWireframeMaterial = new MeshStandardMaterial({
+            wireframe: true,
+            color: MainThreeApp._DEBUG_WIREFRAME_MATERIAL_COLOR,
+        });
+
+        const debugCameraController = new DebugThreeCameraController();
+        this._cameraControllers.set(debugCameraController.cameraId, debugCameraController);
+
+        const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS);
+        viewsDebug.add({ resetCurrentView: () => this._currentView?.reset() }, 'resetCurrentView');
+        viewsDebug.add({ createWorld1: () => this.setCurrentView(ViewId.THREE_WORLD_1) }, 'createWorld1');
+        viewsDebug.add({ createWorld2: () => this.setCurrentView(ViewId.THREE_WORLD_2) }, 'createWorld2');
+    }
+
+    private readonly _onKeyDown = (_e: KeyboardEvent): void => {
+        if (DomKeyboardManager.areAllKeysDown(MainThreeApp._TOGGLE_SWITCH_TO_DEBUG_CAMERA_KEYS)) {
+            this._toggleCameraController();
+        } else if (DomKeyboardManager.areAllKeysDown(MainThreeApp._TOGGLE_WIREFRAME_KEYS)) {
+            this._toggleWireframe();
         }
     }
 
-    private _onActiveCameraControllerChange = (): void => {
-        this._cameraController = ThreeCameraControllerManager.activeThreeCameraController;
-        this._renderer.setCamera(this._cameraController.camera);
-        this._onResize();
-    };
+    private _toggleCameraController(): void {
+        if (this._currentCameraController.cameraId !== CameraId.THREE_DEBUG) this._debugPreviousCameraId = this._currentCameraController.cameraId;
+        this.setCurrentCameraController(
+            this._currentCameraController.cameraId === CameraId.THREE_DEBUG ? this._debugPreviousCameraId : CameraId.THREE_DEBUG
+        );
+    }
 
-    private readonly _onKeyDown = (_e: KeyboardEvent): void => {
-        if (DebugManager.isActive) {
-            if (DomKeyboardManager.areAllKeysDown(MainThreeApp._TOGGLE_SWITCH_TO_DEBUG_CAMERA_KEYS)) {
-                if (this._cameraController.cameraId !== CameraId.THREE_DEBUG) this._debugPreviousCameraId = this._cameraController.cameraId;
-                ThreeCameraControllerManager.setActiveCamera(
-                    this._cameraController.cameraId === CameraId.THREE_DEBUG ? this._debugPreviousCameraId : CameraId.THREE_DEBUG
-                );
-            } else if (DomKeyboardManager.areAllKeysDown(MainThreeApp._TOGGLE_WIREFRAME_KEYS)) {
-                if (this._scene.overrideMaterial === null) {
-                    this._scene.overrideMaterial = this._debugWireframeMaterial;
-                } else {
-                    this._scene.overrideMaterial = null;
-                }
-            }
+    private _toggleWireframe(): void {
+        if (this._scene.overrideMaterial === null) {
+            this._scene.overrideMaterial = this._debugWireframeMaterial;
+        } else {
+            this._scene.overrideMaterial = null;
         }
-    };
+    }
 }
 
 export type { MainThreeApp };

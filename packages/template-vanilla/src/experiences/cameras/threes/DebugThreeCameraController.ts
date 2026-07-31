@@ -9,20 +9,20 @@ import { ThreeCameraType, type ThreeCameraOptions } from '../../types/cameraType
 import ThreeCameraControllerBase from './bases/ThreeCameraControllerBase';
 
 export default class DebugThreeCameraController extends ThreeCameraControllerBase<OrbitControls> {
-    private static readonly _DEBUG_CAMERA_OPTIONS: ThreeCameraOptions = {
+    private static readonly _CAMERA_OPTIONS: ThreeCameraOptions = {
         type: ThreeCameraType.PERSPECTIVE,
         fov: 75,
         aspect: window.innerWidth / window.innerHeight,
         near: 0.1,
         far: 1000,
     };
-    private static readonly _DEFAULT_CAMERA_POSITION: Vector3 = new Vector3(0, 1.5, 3);
+    private static readonly _CAMERA_DEFAULT_POSITION: Vector3 = new Vector3(0, 1.5, 3);
     private static readonly _CONTROLS_DAMPING_FACTOR: number = 0.05;
     private static readonly _CONTROLS_CENTER_KEY: string = KeyboardConstant.CODES.CONTROL_LEFT;
 
     constructor() {
-        super(CameraId.THREE_DEBUG, DebugThreeCameraController._DEBUG_CAMERA_OPTIONS);
-        this._camera.position.copy(DebugThreeCameraController._DEFAULT_CAMERA_POSITION);
+        super(CameraId.THREE_DEBUG, DebugThreeCameraController._CAMERA_OPTIONS, MainThreeApp.scene);
+        this._camera.position.copy(DebugThreeCameraController._CAMERA_DEFAULT_POSITION);
         this._setControls();
         this.disable();
     }
@@ -45,11 +45,15 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
 
     private readonly _onPointerDown = (): void => {
         if (DomKeyboardManager.isKeyDown(DebugThreeCameraController._CONTROLS_CENTER_KEY)) {
-            const intersect = ThreeRaycasterManager.castFromCameraToPointer(MainThreeApp.scene.children);
-            if (intersect.length > 0) {
-                this._controls?.target.copy(intersect[0].point);
-                this._controls?.update();
-            }
+            this._setOrbitTargetToPointer()
         }
     };
+
+    private readonly _setOrbitTargetToPointer = (): void => {
+        const intersect = ThreeRaycasterManager.castFromCameraToPointer(MainThreeApp.currentCameraController.camera, MainThreeApp.scene.children);
+        if (intersect.length > 0) {
+            this._controls?.target.copy(intersect[0].point);
+            this._controls?.update();
+        }
+    }
 }

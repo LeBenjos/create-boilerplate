@@ -2,13 +2,13 @@ import { AnimationMixer, type AnimationAction } from 'three';
 import type { AnimationId } from '../../../../constants/AnimationId';
 import type { AssetId } from '../../../../constants/AssetId';
 import ThreeAssetManager from '../../../../managers/threes/ThreeAssetManager';
-import ThreeModelBase, { type ModelBaseParams } from './ThreeModelBase';
+import ThreeModelViewBase, { type ModelBaseParams } from './ThreeModelViewBase';
 
-export default abstract class ThreeAnimatedModelBase extends ThreeModelBase {
+export default abstract class ThreeAnimatedModelBase extends ThreeModelViewBase {
     private static readonly _DEFAULT_ANIMATION_FADE_DURATION: number = 1;
 
     declare private _mixer: AnimationMixer;
-    private _actions: AnimationAction[] = [];
+    private readonly _actions: AnimationAction[] = [];
     private _currentAction: AnimationAction | null = null;
 
     constructor(assetId: AssetId, params: ModelBaseParams = {}) {
@@ -20,8 +20,6 @@ export default abstract class ThreeAnimatedModelBase extends ThreeModelBase {
     protected _generateAnimations(): void {
         const animations = ThreeAssetManager.getModel(this._assetId).animations;
         this._mixer = new AnimationMixer(this._model);
-        this._actions = [];
-        this._currentAction = null;
 
         for (const clip of animations) {
             const action = this._mixer.clipAction(clip);
@@ -37,9 +35,10 @@ export default abstract class ThreeAnimatedModelBase extends ThreeModelBase {
         animationId: AnimationId,
         fadeDuration: number = ThreeAnimatedModelBase._DEFAULT_ANIMATION_FADE_DURATION
     ): void => {
-        if (!this._actions) return;
         const newAction = this._getAnimationAction(animationId);
-        const oldAction = this._currentAction ?? null;
+        if (newAction === this._currentAction) return;
+
+        const oldAction = this._currentAction;
 
         newAction.reset();
         newAction.play();
@@ -53,11 +52,18 @@ export default abstract class ThreeAnimatedModelBase extends ThreeModelBase {
                 return action;
             }
         }
-        throw new Error(`Animation action not found for animationId: ${animationId}`);
+        throw new Error(`[${this.constructor.name}]: Animation action not found for animationId: ${animationId}`);
     };
 
     public update(dt: number): void {
         super.update(dt);
-        if (this._mixer) this._mixer.update(dt);
+        this._mixer.update(dt);
+    }
+
+    public override dispose(): void {
+        this._mixer.stopAllAction();
+        this._mixer.uncacheRoot(this._model);
+        this._currentAction = null;
+        super.dispose();
     }
 }

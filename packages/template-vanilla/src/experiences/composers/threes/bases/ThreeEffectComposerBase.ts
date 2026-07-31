@@ -1,6 +1,10 @@
 import { DomResizeManager } from "@benjos/cookware";
 import { HalfFloatType, WebGLRenderTarget, type Camera, type Scene, type TextureDataType, type WebGLRenderer } from "three";
-import { EffectComposer, OutputPass, RenderPass, SMAAPass, type Pass } from "three/examples/jsm/Addons.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { OutputPass } from "three/examples/jsm/postprocessing/OutputPass.js";
+import type { Pass } from "three/examples/jsm/postprocessing/Pass.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
 import ThreePassBase from "./passes/ThreePassBase";
 
 export default abstract class ThreeEffectComposerBase extends EffectComposer {
@@ -15,11 +19,9 @@ export default abstract class ThreeEffectComposerBase extends EffectComposer {
         const type = options.type ?? ThreeEffectComposerBase._DEFAULT_RENDER_TARGET_TYPE;
         super(renderer, new WebGLRenderTarget(DomResizeManager.width, DomResizeManager.height, { samples, type }));
 
-        this._createRenderPass(scene, camera);
         this._passes = [];
+        this._generateRenderPass(scene, camera);
         this._addPasses();
-        this._addPass(new SMAAPass());
-        this._addPass(new OutputPass());
         this.resize();
     }
 
@@ -32,13 +34,14 @@ export default abstract class ThreeEffectComposerBase extends EffectComposer {
         this.setPixelRatio(DomResizeManager.pixelRatio);
     }
 
-    private _createRenderPass(scene: Scene, camera: Camera): void {
+    private _generateRenderPass(scene: Scene, camera: Camera): void {
         this._renderPass = new RenderPass(scene, camera);
-        this.addPass(this._renderPass);
+        this._addPass(this._renderPass);
     }
 
     protected _addPasses(): void {
-        //
+        this._addPass(new SMAAPass());
+        this._addPass(new OutputPass());
     }
 
     protected _addPass(pass: Pass): void {

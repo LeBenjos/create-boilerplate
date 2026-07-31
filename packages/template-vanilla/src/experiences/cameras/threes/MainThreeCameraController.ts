@@ -2,6 +2,7 @@ import { Vector3 } from 'three';
 import { CameraId } from '../../constants/CameraId';
 import { ThreeCameraType, type ThreeCameraOptions } from '../../types/cameraTypes';
 import ThreeCameraControllerBase from './bases/ThreeCameraControllerBase';
+import MainThreeApp from '../../engines/threes/apps/MainThreeApp';
 
 export default class MainThreeCameraController extends ThreeCameraControllerBase {
     private static readonly _MAIN_CAMERA_OPTIONS: ThreeCameraOptions = {
@@ -14,7 +15,7 @@ export default class MainThreeCameraController extends ThreeCameraControllerBase
     private static readonly _DEFAULT_CONTAINER_POSITION: Vector3 = new Vector3(0, 1.5, 3);
 
     constructor() {
-        super(CameraId.THREE_MAIN, MainThreeCameraController._MAIN_CAMERA_OPTIONS);
+        super(CameraId.THREE_MAIN, MainThreeCameraController._MAIN_CAMERA_OPTIONS, MainThreeApp.scene);
         this._container.position.copy(MainThreeCameraController._DEFAULT_CONTAINER_POSITION);
     }
 

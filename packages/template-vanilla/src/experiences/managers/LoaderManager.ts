@@ -8,6 +8,7 @@ class LoaderManager {
     private _loadedSize = 0;
     private _progress = 0;
     private _isTransitioning = false;
+    private _isTickerActive = false;
     private _elapsed = 0;
     private _hasAssetsToLoad = false;
     private _assetsFinished = false;
@@ -19,7 +20,9 @@ class LoaderManager {
     public readonly onProgress = new Action();
     public readonly onFinishLoad = new Action();
     public readonly onShow = new Action();
+    public readonly onShowComplete = new Action();
     public readonly onHide = new Action();
+    public readonly onHideComplete = new Action();
 
     public init(): void {
         this._addCallbacks();
@@ -57,11 +60,13 @@ class LoaderManager {
     private async _showLoader(): Promise<void> {
         this.onShow.execute();
         if (this._showTransition) await this._showTransition();
+        this.onShowComplete.execute();
     }
 
     private async _hideLoader(): Promise<void> {
         this.onHide.execute();
         if (this._hideTransition) await this._hideTransition();
+        this.onHideComplete.execute();
     }
 
     private readonly _onAssetsFinish = (): void => {
@@ -85,6 +90,7 @@ class LoaderManager {
             this._progress = 1;
             this.onProgress.execute();
             TickerManager.remove(this._onTransitionTick);
+            this._isTickerActive = false;
             this._transitionResolves.forEach((resolve) => resolve());
             this._transitionResolves = [];
         }
@@ -100,10 +106,14 @@ class LoaderManager {
         this._hasAssetsToLoad = !this._checkIsFinished();
 
         if (this._hasAssetsToLoad || !isNested) {
-            this._progress = 0;
-            this._elapsed = 0;
-            this._assetsFinished = !this._hasAssetsToLoad;
-            this.onProgress.execute();
+            if (!isNested) {
+                this._progress = 0;
+                this._elapsed = 0;
+                this._assetsFinished = !this._hasAssetsToLoad;
+                this.onProgress.execute();
+            } else if (this._hasAssetsToLoad) {
+                this._assetsFinished = false;
+            }
 
             if (this._hasAssetsToLoad) {
                 this.onFinishLoad.add(this._onAssetsFinish);
@@ -112,7 +122,10 @@ class LoaderManager {
 
             await new Promise<void>((resolve) => {
                 this._transitionResolves.push(resolve);
-                TickerManager.add(this._onTransitionTick);
+                if (!this._isTickerActive) {
+                    TickerManager.add(this._onTransitionTick);
+                    this._isTickerActive = true;
+                }
             });
         }
 
@@ -136,8 +149,10 @@ class LoaderManager {
 
     private _onAssetProgress = (): void => {
         this._refreshSizes();
-        this._progress = this._totalSize > 0 ? Math.min(this._loadedSize / this._totalSize, 1) : 0;
-        this.onProgress.execute();
+        if (!this._isTransitioning) {
+            this._progress = this._totalSize > 0 ? Math.min(this._loadedSize / this._totalSize, 1) : 0;
+            this.onProgress.execute();
+        }
     };
 
     private _refreshSizes = (): void => {

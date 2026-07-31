@@ -1,9 +1,9 @@
 import { BoxGeometry, Mesh, MeshStandardMaterial, RepeatWrapping, type MeshStandardMaterialParameters } from 'three';
 import { AssetId } from '../../../../constants/AssetId';
 import ThreeAssetManager from '../../../../managers/threes/ThreeAssetManager';
-import ThreeActorBase from '../../bases/components/ThreeActorBase';
+import ThreeActorViewBase from '../../bases/components/ThreeActorViewBase';
 
-export default class TemplateMesh2ThreeActor extends ThreeActorBase {
+export default class TemplateMesh2ThreeActor extends ThreeActorViewBase {
     private static readonly _DEFAULT_GEOMETRY_WIDTH = 2;
     private static readonly _DEFAULT_GEOMETRY_HEIGHT = 2;
     private static readonly _DEFAULT_GEOMETRY_DEPTH = 2;

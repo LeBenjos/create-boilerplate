@@ -4,14 +4,14 @@ import { DebugGuiTitle } from '../../../../constants/DebugGuiTitle';
 import MainThreeApp from '../../../../engines/threes/apps/MainThreeApp';
 import DebugManager from '../../../../managers/DebugManager';
 import ThreeAssetManager from '../../../../managers/threes/ThreeAssetManager';
-import ThreeActorBase from '../../bases/components/ThreeActorBase';
+import ThreeActorViewBase from '../../bases/components/ThreeActorViewBase';
 
 interface EnvironmentMap {
     intensity?: number;
     texture?: DataTexture;
 }
 
-export default class EnvironmentThreeActor extends ThreeActorBase {
+export default class EnvironmentThreeActor extends ThreeActorViewBase {
     private static readonly _DEFAULT_ENVIRONMENT_MAP_INTENSITY: number = 1;
     private static readonly _DEFAULT_SUN_LIGHT_COLOR: number = 0xffffff;
     private static readonly _DEFAULT_SUN_LIGHT_INTENSITY: number = 10;
@@ -36,6 +36,7 @@ export default class EnvironmentThreeActor extends ThreeActorBase {
             MainThreeApp.scene.environment = this._environmentMap.texture!;
             MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
         }
+        if (DebugManager.isActive) this._setupDebug();
     }
 
     public reset(): void {
@@ -50,14 +51,6 @@ export default class EnvironmentThreeActor extends ThreeActorBase {
 
         MainThreeApp.scene.environment = this._environmentMap.texture;
         MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
-
-        if (DebugManager.isActive) {
-            const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
-            const environmentFolder = viewsDebug.addFolder('Environment');
-            environmentFolder.add(this._environmentMap, 'intensity', 0, 10, 0.01).onChange(() => {
-                MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
-            });
-        }
     };
 
     private _generateSunLight(): void {
@@ -74,16 +67,22 @@ export default class EnvironmentThreeActor extends ThreeActorBase {
         this._sunLight.shadow.normalBias = EnvironmentThreeActor._DEFAULT_SUN_SHADOW_NORMAL_BIAS;
         this._sunLight.position.copy(EnvironmentThreeActor._DEFAULT_SUN_POSITION);
         this.add(this._sunLight);
-
-        if (DebugManager.isActive) {
-            const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
-            const sunLightFolder = viewsDebug.addFolder('Sun Light');
-            sunLightFolder.add(this._sunLight, 'intensity', 0, 10, 0.01).name('intensity');
-            sunLightFolder.add(this._sunLight.position, 'x', -5, 5, 0.01).name('positionX');
-            sunLightFolder.add(this._sunLight.position, 'y', -5, 5, 0.01).name('positionY');
-            sunLightFolder.add(this._sunLight.position, 'z', -5, 5, 0.01).name('positionZ');
-        }
     }
 
     public update(_dt: number): void { }
+
+    private _setupDebug(): void {
+        const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS)
+
+        const environmentFolder = viewsDebug.addFolder('Environment');
+        environmentFolder.add(this._environmentMap, 'intensity', 0, 10, 0.01).onChange(() => {
+            MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
+        });
+
+        const sunLightFolder = viewsDebug.addFolder('Sun Light');
+        sunLightFolder.add(this._sunLight, 'intensity', 0, 10, 0.01).name('intensity');
+        sunLightFolder.add(this._sunLight.position, 'x', -5, 5, 0.01).name('positionX');
+        sunLightFolder.add(this._sunLight.position, 'y', -5, 5, 0.01).name('positionY');
+        sunLightFolder.add(this._sunLight.position, 'z', -5, 5, 0.01).name('positionZ');
+    }
 }

@@ -1,18 +1,9 @@
 import { DomResizeManager } from '@benjos/cookware';
 import { Object3D, OrthographicCamera, PerspectiveCamera, type Scene } from 'three';
 import type { CameraId } from '../../../constants/CameraId';
-import MainThreeApp from '../../../engines/threes/apps/MainThreeApp';
 import { ThreeCameraType, type ThreeCameraOptions, type ThreeControls } from '../../../types/cameraTypes';
 
 export default abstract class ThreeCameraControllerBase<T extends ThreeControls = ThreeControls> extends Object3D {
-    private static readonly _DEFAULT_CAMERA_OPTIONS: ThreeCameraOptions = {
-        type: ThreeCameraType.PERSPECTIVE,
-        fov: 75,
-        aspect: window.innerWidth / window.innerHeight,
-        near: 0.1,
-        far: 1000,
-    };
-
     protected readonly _cameraId: CameraId;
     declare protected _container: Object3D;
     declare protected _camera: PerspectiveCamera | OrthographicCamera;
@@ -20,8 +11,8 @@ export default abstract class ThreeCameraControllerBase<T extends ThreeControls 
 
     constructor(
         cameraId: CameraId,
-        cameraOptions: ThreeCameraOptions = ThreeCameraControllerBase._DEFAULT_CAMERA_OPTIONS,
-        scene: Scene = MainThreeApp.scene
+        cameraOptions: ThreeCameraOptions,
+        scene: Scene
     ) {
         super();
         this._cameraId = cameraId;
@@ -45,7 +36,7 @@ export default abstract class ThreeCameraControllerBase<T extends ThreeControls 
                 cameraOptions.near,
                 cameraOptions.far
             );
-        } else {
+        } else if (cameraOptions.type === ThreeCameraType.ORTHOGRAPHIC) {
             this._camera = new OrthographicCamera(
                 cameraOptions.left,
                 cameraOptions.right,
@@ -69,6 +60,13 @@ export default abstract class ThreeCameraControllerBase<T extends ThreeControls 
     public resize(): void {
         if (this._camera instanceof PerspectiveCamera) {
             this._camera.aspect = DomResizeManager.width / DomResizeManager.height;
+        } else if (this._camera instanceof OrthographicCamera) {
+            const aspect = DomResizeManager.width / DomResizeManager.height;
+            const verticalSize = this._camera.top - this._camera.bottom;
+            const horizontalCenter = (this._camera.left + this._camera.right) / 2;
+            const halfWidth = (verticalSize * aspect) / 2;
+            this._camera.left = horizontalCenter - halfWidth;
+            this._camera.right = horizontalCenter + halfWidth;
         }
         this._camera.updateProjectionMatrix();
     }

@@ -1,6 +1,5 @@
 import { DomPointerManager } from '@benjos/cookware';
-import { Raycaster, Vector2, type Intersection, type Object3D, type Object3DEventMap } from 'three';
-import MainThreeApp from '../../engines/threes/apps/MainThreeApp';
+import { Raycaster, Vector2, type Camera, type Intersection, type Object3D } from 'three';
 
 class ThreeRaycasterManager {
     private readonly _raycaster = new Raycaster();
@@ -10,9 +9,9 @@ class ThreeRaycasterManager {
         //
     }
 
-    public castFromCameraToPointer(objects: Object3D[], recursive = true): Intersection<Object3D<Object3DEventMap>>[] {
+    public castFromCameraToPointer(camera: Camera, objects: Object3D[], recursive = true): Intersection[] {
         this._pointerPosition.set(DomPointerManager.ndcX, DomPointerManager.ndcY);
-        this._raycaster.setFromCamera(this._pointerPosition, MainThreeApp.cameraController.camera);
+        this._raycaster.setFromCamera(this._pointerPosition, camera);
         const intersects = this._raycaster.intersectObjects(objects, recursive);
         return intersects;
     }

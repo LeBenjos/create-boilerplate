@@ -3,13 +3,15 @@ import LoaderThreeApp from './apps/LoaderThreeApp';
 import MainThreeApp from './apps/MainThreeApp';
 
 class MainThreeEngine {
+    private static readonly _ENTRY_VIEW_ID: ViewId = ViewId.THREE_WORLD_1;
+
     public init(): void {
         LoaderThreeApp.init();
         MainThreeApp.init();
     }
 
     public setEntryView(): Promise<void> {
-        return MainThreeApp.setCurrentView(ViewId.THREE_WORLD_1);
+        return MainThreeApp.setCurrentView(MainThreeEngine._ENTRY_VIEW_ID);
     }
 }
 

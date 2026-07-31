@@ -2,9 +2,9 @@ import { Mesh, MeshStandardMaterial, type MeshStandardMaterialParameters } from 
 import { TextGeometry, type TextGeometryParameters } from 'three/examples/jsm/Addons.js';
 import { AssetId } from '../../../../constants/AssetId';
 import ThreeAssetManager from '../../../../managers/threes/ThreeAssetManager';
-import ThreeActorBase from '../../bases/components/ThreeActorBase';
+import ThreeActorViewBase from '../../bases/components/ThreeActorViewBase';
 
-export default class TemplateFontThreeActor extends ThreeActorBase {
+export default class TemplateFontThreeActor extends ThreeActorViewBase {
     private static readonly _DEFAULT_TEXT: string = 'Hello boilerplate!';
     private static readonly _DEFAULT_TEXT_OPTION: TextGeometryParameters = {
         font: null!,

@@ -1,4 +1,4 @@
-import { DomKeyboardManager } from '@benjos/cookware';
+import { Action, DomKeyboardManager } from '@benjos/cookware';
 import { KeyboardConstant } from '@benjos/spices';
 import GUI from 'lil-gui';
 import Stats from 'stats.js';
@@ -21,6 +21,7 @@ class DebugManager {
     declare private _gui: GUI;
     declare private _threePerf: ThreePerf;
     declare private _stats: Stats;
+    public onToggleVisibility = new Action();
 
     public init(): void {
         if (this.isActive) {
@@ -79,12 +80,17 @@ class DebugManager {
 
     private readonly _onKeyDown = (_e: KeyboardEvent): void => {
         if (DomKeyboardManager.areAllKeysDown(DebugManager._TOGGLE_HIDDEN_KEYS)) {
-            this._isDebugVisible = !this._isDebugVisible;
-            this._gui.show(this._isDebugVisible);
-            if (this._threePerf) this._threePerf.visible = this._isDebugVisible;
-            if (this._stats) this._stats.dom.style.display = this._isDebugVisible ? 'block' : 'none';
+            this._toggleVisibility();
         }
     };
+
+    private _toggleVisibility(): void {
+        this._isDebugVisible = !this._isDebugVisible;
+        this._gui.show(this._isDebugVisible);
+        if (this._threePerf) this._threePerf.visible = this._isDebugVisible;
+        if (this._stats) this._stats.dom.style.display = this._isDebugVisible ? 'block' : 'none';
+        this.onToggleVisibility.execute();
+    }
 
     //#region Getters
     //

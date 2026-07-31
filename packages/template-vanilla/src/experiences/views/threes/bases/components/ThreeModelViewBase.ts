@@ -1,9 +1,9 @@
 import { Mesh, type Object3D } from 'three';
-import { SkeletonUtils } from 'three/examples/jsm/Addons.js';
+import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
 import type { AssetId } from '../../../../constants/AssetId';
 import type { Object3DId } from '../../../../constants/Object3DId';
 import ThreeAssetManager from '../../../../managers/threes/ThreeAssetManager';
-import ThreeActorBase from './ThreeActorBase';
+import ThreeActorViewBase from './ThreeActorViewBase';
 
 export interface ModelBaseParams {
     object3DId?: Object3DId;
@@ -11,15 +11,15 @@ export interface ModelBaseParams {
     receiveShadow?: boolean;
 }
 
-export default abstract class ThreeModelBase extends ThreeActorBase {
-    protected _assetId: AssetId;
-    protected _parameters: ModelBaseParams;
+export default abstract class ThreeModelViewBase extends ThreeActorViewBase {
+    protected readonly _assetId: AssetId;
+    protected readonly _parameters: ModelBaseParams;
     declare protected _model: Object3D;
 
     constructor(assetId: AssetId, params: ModelBaseParams = {}) {
         super();
         this._assetId = assetId;
-        this._parameters = params || {};
+        this._parameters = params;
 
         this._generateModel();
     }
@@ -28,14 +28,18 @@ export default abstract class ThreeModelBase extends ThreeActorBase {
         const originalModel = ThreeAssetManager.getModel(this._assetId).scene;
         const model = SkeletonUtils.clone(originalModel);
 
-        this._model = this._parameters.object3DId
-            ? (model.getObjectByName(this._parameters.object3DId) ?? model)
-            : model;
+        if (this._parameters.object3DId) {
+            const target = model.getObjectByName(this._parameters.object3DId);
+            if (!target) throw new Error(`[${this.constructor.name}]: Object3D '${this._parameters.object3DId}' not found in model '${this._assetId}'`);
+            this._model = target;
+        } else {
+            this._model = model;
+        }
 
         this._model.traverse((child) => {
             if (child instanceof Mesh) {
-                if (this._parameters.castShadow) child.castShadow = true;
-                if (this._parameters.receiveShadow) child.receiveShadow = true;
+                if (this._parameters.castShadow !== undefined) child.castShadow = this._parameters.castShadow;
+                if (this._parameters.receiveShadow !== undefined) child.receiveShadow = this._parameters.receiveShadow;
             }
         });
 
@@ -45,7 +49,7 @@ export default abstract class ThreeModelBase extends ThreeActorBase {
     protected _getObjectByName(name: string): Object3D {
         const object = this._model.getObjectByName(name);
         if (!object) {
-            throw new Error(`Object3D not found for name: ${name} in model with ID: ${this._parameters.object3DId ?? this._assetId}`);
+            throw new Error(`[${this.constructor.name}]: Object3D not found for name: ${name} in model with ID: ${this._parameters.object3DId ?? this._assetId}`);
         }
         return object;
     }

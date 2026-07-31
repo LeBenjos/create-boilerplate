@@ -1,8 +1,8 @@
 import { Mesh, PlaneGeometry } from 'three';
 import LoaderThreeMaterial from '../../../../materials/threes/loaders/LoaderThreeMaterial';
-import ThreeActorBase from '../../bases/components/ThreeActorBase';
+import ThreeActorViewBase from '../../bases/components/ThreeActorViewBase';
 
-export default class TemplateLoaderThreeActor extends ThreeActorBase {
+export default class TemplateLoaderThreeActor extends ThreeActorViewBase {
     private static readonly _DEFAULT_SIZE_WIDTH: number = 2;
     private static readonly _DEFAULT_SIZE_HEIGHT: number = 2;
     private static readonly _DEFAULT_SEGMENTS_WIDTH: number = 1;

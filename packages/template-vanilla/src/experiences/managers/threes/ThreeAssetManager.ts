@@ -1,16 +1,16 @@
 import { Action, AssetUtils } from '@benjos/cookware';
 import {
+    DataTexture,
     EquirectangularRefractionMapping,
     LinearSRGBColorSpace,
     RepeatWrapping,
+    Texture,
     TextureLoader,
     type ColorSpace,
-    type DataTexture,
     type Mapping,
-    type Texture,
     type Wrapping,
 } from 'three';
-import { DRACOLoader, FontLoader, GLTFLoader, HDRLoader, type Font, type GLTF } from 'three/examples/jsm/Addons.js';
+import { DRACOLoader, Font, FontLoader, GLTF, GLTFLoader, HDRLoader } from 'three/examples/jsm/Addons.js';
 import type { AssetId } from '../../constants/AssetId';
 import { AssetType } from '../../types/assetTypes';
 
@@ -57,10 +57,7 @@ class ThreeAssetManager {
     private static readonly _DEFAULT_TOTAL_SIZE: number = -1;
     private static readonly _DEFAULT_TEXTURE_TOTAL_SIZE: number = 1;
 
-    private readonly _assets: Map<string, Texture | DataTexture | GLTF | Font> = new Map<
-        string,
-        Texture | GLTF | Font
-    >();
+    private readonly _assets: Map<AssetId, Texture | DataTexture | GLTF | Font> = new Map();
     private readonly _toLoadList: ThreeAssetToLoad[] = [];
     private _expectedAssetsCount = 0;
 
@@ -79,6 +76,7 @@ class ThreeAssetManager {
     }
 
     public addTexture(id: AssetId, path: string, textureOption?: ThreeTextureOption): void {
+        this._checkDuplicateId(id);
         this._toLoadList.push({
             id,
             type: AssetType.TEXTURE,
@@ -91,6 +89,7 @@ class ThreeAssetManager {
     }
 
     public addHDR(id: AssetId, path: string, hdrOption?: ThreeHDROption): void {
+        this._checkDuplicateId(id);
         this._toLoadList.push({
             id,
             type: AssetType.HDR,
@@ -103,6 +102,7 @@ class ThreeAssetManager {
     }
 
     public addModel(id: AssetId, path: string, modelOption?: ThreeModelOption): void {
+        this._checkDuplicateId(id);
         this._toLoadList.push({
             id,
             type: AssetType.MODEL,
@@ -115,6 +115,7 @@ class ThreeAssetManager {
     }
 
     public addFont(id: AssetId, path: string, fontOption?: ThreeFontOption): void {
+        this._checkDuplicateId(id);
         this._toLoadList.push({
             id,
             type: AssetType.FONT,
@@ -124,6 +125,12 @@ class ThreeAssetManager {
             totalSize: ThreeAssetManager._DEFAULT_TOTAL_SIZE,
         });
         this._expectedAssetsCount++;
+    }
+
+    private _checkDuplicateId(id: AssetId): void {
+        if (this._toLoadList.some((asset) => asset.id === id) || this._assets.has(id)) {
+            throw new Error(`[ThreeAssetManager]: Asset with id '${id}' already exists!`);
+        }
     }
 
     public beginLoad(): void {
@@ -158,8 +165,7 @@ class ThreeAssetManager {
                     option?.centerX ?? ThreeAssetManager._DEFAULT_TEXTURE_OPTION_CENTER_X,
                     option?.centerY ?? ThreeAssetManager._DEFAULT_TEXTURE_OPTION_CENTER_Y
                 );
-                asset.loadedSize = asset.totalSize;
-                this._onLoad(asset.id, texture);
+                this._onLoad(asset, texture);
             },
             (event: ProgressEvent) => this._onProgress(asset, event),
             () => this._onError(AssetType.TEXTURE, asset.id, asset.path)
@@ -173,7 +179,7 @@ class ThreeAssetManager {
             (dataTexture) => {
                 dataTexture.mapping = option?.mapping ?? ThreeAssetManager._DEFAULT_HDR_MAPPING;
                 dataTexture.colorSpace = option?.colorSpace ?? ThreeAssetManager._DEFAULT_HDR_COLOR_SPACE;
-                this._onLoad(asset.id, dataTexture);
+                this._onLoad(asset, dataTexture);
             },
             (event: ProgressEvent) => this._onProgress(asset, event),
             () => this._onError(AssetType.HDR, asset.id, asset.path)
@@ -183,7 +189,7 @@ class ThreeAssetManager {
     private _loadModel(asset: ThreeAssetToLoad): void {
         this._gltfLoader.load(
             asset.path,
-            (model) => this._onLoad(asset.id, model),
+            (model) => this._onLoad(asset, model),
             (event: ProgressEvent) => this._onProgress(asset, event),
             () => this._onError(AssetType.MODEL, asset.id, asset.path)
         );
@@ -192,14 +198,15 @@ class ThreeAssetManager {
     private _loadFont(asset: ThreeAssetToLoad): void {
         this._fontLoader.load(
             asset.path,
-            (font) => this._onLoad(asset.id, font),
+            (font) => this._onLoad(asset, font),
             (event: ProgressEvent) => this._onProgress(asset, event),
             () => this._onError(AssetType.FONT, asset.id, asset.path)
         );
     }
 
-    private _onLoad(id: AssetId, asset: Texture | GLTF | Font): void {
-        this._assets.set(id, asset);
+    private _onLoad(data: ThreeAssetToLoad, asset: Texture | DataTexture | GLTF | Font): void {
+        data.loadedSize = data.totalSize;
+        this._assets.set(data.id, asset);
         this.onLoad.execute();
     }
 
@@ -210,31 +217,31 @@ class ThreeAssetManager {
     }
 
     private _onError(type: AssetType, id: AssetId, path: string): void {
-        throw new Error(`ThreeAssetManager: Failed to load ${type} with id '${id}' from path '${path}'`);
+        throw new Error(`[ThreeAssetManager]: Failed to load ${type} with id '${id}' from path '${path}'`);
     }
 
     public getTexture(id: AssetId): Texture {
         const asset = this._assets.get(id);
-        if (!asset) throw new Error(`Texture with id '${id}' not found!`);
-        return asset as Texture;
+        if (!asset || !(asset instanceof Texture)) throw new Error(`[ThreeAssetManager]: Texture with id '${id}' not found!`);
+        return asset;
     }
 
     public getHDR(id: AssetId): DataTexture {
         const asset = this._assets.get(id);
-        if (!asset) throw new Error(`HDR with id '${id}' not found!`);
-        return asset as DataTexture;
+        if (!asset || !(asset instanceof DataTexture)) throw new Error(`[ThreeAssetManager]: HDR with id '${id}' not found!`);
+        return asset;
     }
 
     public getModel(id: AssetId): GLTF {
         const asset = this._assets.get(id);
-        if (!asset) throw new Error(`Model with id '${id}' not found!`);
+        if (!asset) throw new Error(`[ThreeAssetManager]: Model with id '${id}' not found!`);
         return asset as GLTF;
     }
 
     public getFont(id: AssetId): Font {
         const asset = this._assets.get(id);
-        if (!asset) throw new Error(`Font with id '${id}' not found!`);
-        return asset as Font;
+        if (!asset || !(asset instanceof Font)) throw new Error(`[ThreeAssetManager]: Font with id '${id}' not found!`);
+        return asset;
     }
 
     //#region Getters

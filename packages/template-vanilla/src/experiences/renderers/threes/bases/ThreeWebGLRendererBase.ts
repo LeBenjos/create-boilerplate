@@ -30,7 +30,10 @@ export default abstract class ThreeWebGLRendererBase extends WebGLRenderer {
     }
 
     public setIsPostProcessingActive(enabled: boolean): void {
-        this._isPostProcessingActive = enabled && !!this._composer;
+        if (enabled && !this._composer) {
+            throw new Error(`[${this.constructor.name}]: cannot enable post-processing — no composer`);
+        }
+        this._isPostProcessingActive = enabled;
     }
 
     public resize(): void {
@@ -49,8 +52,8 @@ export default abstract class ThreeWebGLRendererBase extends WebGLRenderer {
 
     //#region Getters
     //
-    public get composer(): ThreeEffectComposerBase {
-        return this._composer!;
+    public get composer(): ThreeEffectComposerBase | undefined {
+        return this._composer;
     }
     public get isPostProcessingActive(): boolean {
         return this._isPostProcessingActive;

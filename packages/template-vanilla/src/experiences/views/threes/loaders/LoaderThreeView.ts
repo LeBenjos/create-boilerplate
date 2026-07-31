@@ -7,7 +7,6 @@ export default class LoaderThreeView extends ThreeViewBase {
 
     constructor() {
         super(ViewId.THREE_LOADER);
-        this._generateActors();
     }
 
     protected override _generateActors(): void {

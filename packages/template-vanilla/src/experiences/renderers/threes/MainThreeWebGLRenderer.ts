@@ -11,9 +11,7 @@ import {
     ReinhardToneMapping,
     SRGBColorSpace,
     type Camera,
-    type ColorSpace,
     type Scene,
-    type ToneMapping,
     type WebGLRendererParameters
 } from 'three';
 import MainThreeEffectComposer from '../../composers/threes/MainThreeEffectComposer';
@@ -38,34 +36,7 @@ export default class MainThreeWebGLRenderer extends ThreeWebGLRendererBase {
         this.shadowMap.type = MainThreeWebGLRenderer._DEFAULT_SHADOW_MAP_TYPE;
         this.setClearColor(MainThreeWebGLRenderer._DEFAULT_CLEAR_COLOR, MainThreeWebGLRenderer._DEFAULT_CLEAR_ALPHA);
 
-        if (DebugManager.isActive) {
-            const rendererFolder = DebugManager.getGuiFolder(DebugGuiTitle.THREE_RENDERER)
-            rendererFolder
-                .add(this, 'toneMapping', {
-                    NoToneMapping,
-                    LinearToneMapping,
-                    ReinhardToneMapping,
-                    CineonToneMapping,
-                    ACESFilmicToneMapping,
-                    CustomToneMapping,
-                    AgXToneMapping,
-                    NeutralToneMapping,
-                })
-                .onChange((value: ToneMapping) => {
-                    this.toneMapping = value;
-                });
-            rendererFolder.add(this, 'toneMappingExposure', 0, 10, 0.001);
-            rendererFolder
-                .add(this, 'outputColorSpace', { SRGBColorSpace, LinearSRGBColorSpace })
-                .onChange((value: ColorSpace) => {
-                    this.outputColorSpace = value;
-                });
-            const postProcProxy = { active: this._isPostProcessingActive };
-            rendererFolder
-                .add(postProcProxy, 'active')
-                .name('post-processing')
-                .onChange((value: boolean) => this.setIsPostProcessingActive(value));
-        }
+        if (DebugManager.isActive) this._setupDebug();
     }
 
     protected override _generateComposers(): void {
@@ -77,5 +48,28 @@ export default class MainThreeWebGLRenderer extends ThreeWebGLRendererBase {
         if (isDebug) DebugManager.beginPerf();
         super.update(dt);
         if (isDebug) DebugManager.endPerf();
+    }
+
+    private _setupDebug(): void {
+        const rendererFolder = DebugManager.getGuiFolder(DebugGuiTitle.THREE_RENDERER)
+        rendererFolder
+            .add(this, 'toneMapping', {
+                NoToneMapping,
+                LinearToneMapping,
+                ReinhardToneMapping,
+                CineonToneMapping,
+                ACESFilmicToneMapping,
+                CustomToneMapping,
+                AgXToneMapping,
+                NeutralToneMapping,
+            });
+        rendererFolder.add(this, 'toneMappingExposure', 0, 10, 0.001);
+        rendererFolder
+            .add(this, 'outputColorSpace', { SRGBColorSpace, LinearSRGBColorSpace });
+        const postProcProxy = { active: this._isPostProcessingActive };
+        rendererFolder
+            .add(postProcProxy, 'active')
+            .name('post-processing')
+            .onChange((value: boolean) => this.setIsPostProcessingActive(value));
     }
 }
