@@ -1,5 +1,5 @@
-import { DomKeyboardManager, DomUtils } from '@benjos/cookware';
-import { KeyboardConstant } from '@benjos/spices';
+import { DomUtils } from '@benjos/cookware';
+import { KeyboardCode } from '@benjos/spices';
 import { MeshStandardMaterial, Scene } from 'three';
 import DebugThreeCameraController from '../../../cameras/threes/DebugThreeCameraController';
 import MainThreeCameraController from '../../../cameras/threes/MainThreeCameraController';
@@ -7,6 +7,7 @@ import { CameraId } from '../../../constants/CameraId';
 import { DebugGuiTitle } from '../../../constants/DebugGuiTitle';
 import { ViewId } from '../../../constants/ViewId';
 import DebugManager from '../../../managers/DebugManager';
+import DomKeyboardManager from '../../../managers/doms/DomKeyboardManager';
 import MainThreeWebGLRenderer from '../../../renderers/threes/MainThreeWebGLRenderer';
 import World1ThreeView from '../../../views/threes/worlds/World1ThreeView';
 import World2ThreeView from '../../../views/threes/worlds/World2ThreeView';
@@ -15,13 +16,10 @@ import ThreeAppBase from './bases/ThreeAppBase';
 class MainThreeApp extends ThreeAppBase {
     private static readonly _DEBUG_WIREFRAME_MATERIAL_COLOR: number = 0x3f79f3;
     private static readonly _TOGGLE_SWITCH_TO_DEBUG_CAMERA_KEYS: string[] = [
-        KeyboardConstant.CODES.SHIFT_LEFT,
-        KeyboardConstant.CODES.KEY_C,
+        KeyboardCode.SHIFT_LEFT,
+        KeyboardCode.KEY_C,
     ];
-    private static readonly _TOGGLE_WIREFRAME_KEYS: string[] = [
-        KeyboardConstant.CODES.SHIFT_LEFT,
-        KeyboardConstant.CODES.KEY_W,
-    ];
+    private static readonly _TOGGLE_WIREFRAME_KEYS: string[] = [KeyboardCode.SHIFT_LEFT, KeyboardCode.KEY_W];
 
     declare private _debugWireframeMaterial: MeshStandardMaterial;
     declare private _debugPreviousCameraId: CameraId;

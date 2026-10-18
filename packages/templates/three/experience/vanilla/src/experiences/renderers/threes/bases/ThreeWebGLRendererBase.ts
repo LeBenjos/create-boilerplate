@@ -1,6 +1,6 @@
-import { DomResizeManager } from '@benjos/cookware';
 import { WebGLRenderer, type Camera, type Scene, type WebGLRendererParameters } from 'three';
 import ThreeEffectComposerBase from '../../../composers/threes/bases/ThreeEffectComposerBase';
+import DomResizeManager from '../../../managers/doms/DomResizeManager';
 
 export default abstract class ThreeWebGLRendererBase extends WebGLRenderer {
     protected _composer?: ThreeEffectComposerBase;

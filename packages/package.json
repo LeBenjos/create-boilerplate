@@ -34,11 +34,11 @@
     },
     "homepage": "https://github.com/LeBenjos/boilerplate#readme",
     "dependencies": {
-        "@inquirer/prompts": "^8.4.3",
-        "commander": "^14.0.3"
+        "@inquirer/prompts": "^8.7.3",
+        "commander": "^15.0.0"
     },
     "devDependencies": {
-        "@types/node": "^25.6.2",
+        "@types/node": "^26.6.5",
         "typescript": "~6.0.3"
     }
 }

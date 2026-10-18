@@ -1,10 +1,11 @@
-import { Action, DomKeyboardManager } from '@benjos/cookware';
-import { KeyboardConstant } from '@benjos/spices';
+import { Action } from '@benjos/cookware';
+import { KeyboardCode } from '@benjos/spices';
 import GUI from 'lil-gui';
 import Stats from 'stats.js';
 import { ThreePerf } from 'three-perf';
 import type { DebugGuiTitle } from '../constants/DebugGuiTitle';
 import MainThreeApp from '../engines/threes/apps/MainThreeApp';
+import DomKeyboardManager from './doms/DomKeyboardManager';
 
 class DebugManager {
     private static readonly _IS_ACTIVE_STRING: string = '#debug';
@@ -12,10 +13,7 @@ class DebugManager {
     private static readonly _GUI_TITLE: string = 'Debug Panel';
     private static readonly _THREE_PERF_ANCHOR_X: 'left' | 'right' = 'left';
     private static readonly _THREE_PERF_ANCHOR_Y: 'top' | 'bottom' = 'bottom';
-    private static readonly _TOGGLE_HIDDEN_KEYS: string[] = [
-        KeyboardConstant.CODES.SHIFT_LEFT,
-        KeyboardConstant.CODES.KEY_H,
-    ];
+    private static readonly _TOGGLE_HIDDEN_KEYS: string[] = [KeyboardCode.SHIFT_LEFT, KeyboardCode.KEY_H];
 
     // Read once at startup: the GUI only exists if #debug was there on load, adding it later must not enable debug
     private readonly _isActive = window.location.hash === DebugManager._IS_ACTIVE_STRING;

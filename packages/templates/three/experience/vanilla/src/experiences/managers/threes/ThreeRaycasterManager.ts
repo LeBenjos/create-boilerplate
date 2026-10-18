@@ -1,5 +1,5 @@
-import { DomPointerManager } from '@benjos/cookware';
 import { Raycaster, Vector2, type Camera, type Intersection, type Object3D } from 'three';
+import DomPointerManager from '../doms/DomPointerManager';
 
 class ThreeRaycasterManager {
     private readonly _raycaster = new Raycaster();

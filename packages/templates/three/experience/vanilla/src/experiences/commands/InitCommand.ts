@@ -1,8 +1,12 @@
-import { AssetUtils, DomKeyboardManager, DomPointerManager, DomResizeManager, TickerManager } from '@benjos/cookware';
+import { AssetUtils } from '@benjos/cookware';
 import { AssetId } from '../constants/AssetId';
 
 import DebugManager from '../managers/DebugManager';
+import DomKeyboardManager from '../managers/doms/DomKeyboardManager';
+import DomPointerManager from '../managers/doms/DomPointerManager';
+import DomResizeManager from '../managers/doms/DomResizeManager';
 import LoaderManager from '../managers/LoaderManager';
+import TickerManager from '../managers/TickerManager';
 import ThreeAssetManager from '../managers/threes/ThreeAssetManager';
 import ThreeRaycasterManager from '../managers/threes/ThreeRaycasterManager';
 

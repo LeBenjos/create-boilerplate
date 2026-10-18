@@ -14,29 +14,29 @@
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",
-        "@types/howler": "^2.2.12",
-        "@types/three": "^0.184.1",
-        "eslint": "^10.3.0",
+        "@types/howler": "^2.2.13",
+        "@types/three": "^0.186.0",
+        "eslint": "^10.13.0",
         "eslint-config-prettier": "^10.1.8",
-        "eslint-plugin-prettier": "^5.5.5",
-        "prettier": "^3.8.3",
-        "sass-embedded": "^1.99.0",
+        "eslint-plugin-prettier": "^5.5.7",
+        "prettier": "^3.9.10",
+        "sass-embedded": "^1.105.2",
         "three-perf": "^1.0.11",
         "typescript": "~6.0.3",
-        "typescript-eslint": "^8.59.2",
-        "vite": "^8.0.11",
-        "vite-plugin-glsl": "^1.6.0"
+        "typescript-eslint": "^8.71.2",
+        "vite": "^8.3.4",
+        "vite-plugin-glsl": "^1.6.2"
     },
     "dependencies": {
-        "@benjos/cookware": "^1.0.4",
-        "@benjos/spices": "^1.0.1",
-        "@dimforge/rapier3d": "^0.19.3",
+        "@benjos/cookware": "^2.0.3",
+        "@benjos/spices": "^2.0.1",
+        "@dimforge/rapier3d": "^0.21.0",
         "@types/stats.js": "^0.17.4",
         "gsap": "^3.15.0",
         "howler": "^2.2.4",
         "lil-gui": "^0.21.0",
         "stats.js": "^0.17.0",
-        "three": "^0.184.0",
+        "three": "^0.186.1",
         "three-custom-shader-material": "^6.4.0"
     }
 }

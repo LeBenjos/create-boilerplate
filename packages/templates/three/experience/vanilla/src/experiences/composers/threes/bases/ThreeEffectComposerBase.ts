@@ -1,4 +1,3 @@
-import { DomResizeManager } from '@benjos/cookware';
 import {
     HalfFloatType,
     WebGLRenderTarget,
@@ -12,6 +11,7 @@ import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js';
 import type { Pass } from 'three/examples/jsm/postprocessing/Pass.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { SMAAPass } from 'three/examples/jsm/postprocessing/SMAAPass.js';
+import DomResizeManager from '../../../managers/doms/DomResizeManager';
 import ThreePassBase from './passes/ThreePassBase';
 
 export default abstract class ThreeEffectComposerBase extends EffectComposer {

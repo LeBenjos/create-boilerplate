@@ -1,9 +1,10 @@
-import { DomKeyboardManager, DomPointerManager } from '@benjos/cookware';
-import { KeyboardConstant } from '@benjos/spices';
+import { KeyboardCode } from '@benjos/spices';
 import { Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { CameraId } from '../../constants/CameraId';
 import MainThreeApp from '../../engines/threes/apps/MainThreeApp';
+import DomKeyboardManager from '../../managers/doms/DomKeyboardManager';
+import DomPointerManager from '../../managers/doms/DomPointerManager';
 import ThreeRaycasterManager from '../../managers/threes/ThreeRaycasterManager';
 import { ThreeCameraType, type ThreeCameraOptions } from '../../types/cameraTypes';
 import ThreeCameraControllerBase from './bases/ThreeCameraControllerBase';
@@ -18,7 +19,7 @@ export default class DebugThreeCameraController extends ThreeCameraControllerBas
     };
     private static readonly _CAMERA_DEFAULT_POSITION: Vector3 = new Vector3(0, 1.5, 3);
     private static readonly _CONTROLS_DAMPING_FACTOR: number = 0.05;
-    private static readonly _CONTROLS_CENTER_KEY: string = KeyboardConstant.CODES.CONTROL_LEFT;
+    private static readonly _CONTROLS_CENTER_KEY: string = KeyboardCode.CONTROL_LEFT;
 
     constructor() {
         super(CameraId.THREE_DEBUG, DebugThreeCameraController._CAMERA_OPTIONS, MainThreeApp.scene);

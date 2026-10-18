@@ -1,5 +1,6 @@
-import { Action, TickerManager } from '@benjos/cookware';
+import { Action } from '@benjos/cookware';
 import ThreeAssetManager from './threes/ThreeAssetManager';
+import TickerManager from './TickerManager';
 
 class LoaderManager {
     private static readonly _MIN_LOAD_DURATION: number = 0.5;

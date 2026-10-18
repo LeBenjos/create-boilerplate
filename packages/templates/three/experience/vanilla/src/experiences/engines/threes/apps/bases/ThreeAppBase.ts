@@ -1,9 +1,11 @@
-import { Action, DomResizeManager, TickerManager } from '@benjos/cookware';
+import { Action } from '@benjos/cookware';
 import type { Scene } from 'three';
 import type ThreeCameraControllerBase from '../../../../cameras/threes/bases/ThreeCameraControllerBase';
 import { CameraId } from '../../../../constants/CameraId';
 import type { ViewId } from '../../../../constants/ViewId';
+import DomResizeManager from '../../../../managers/doms/DomResizeManager';
 import LoaderManager from '../../../../managers/LoaderManager';
+import TickerManager from '../../../../managers/TickerManager';
 import type ThreeWebGLRendererBase from '../../../../renderers/threes/bases/ThreeWebGLRendererBase';
 import type ThreeViewBase from '../../../../views/threes/bases/ThreeViewBase';
 
