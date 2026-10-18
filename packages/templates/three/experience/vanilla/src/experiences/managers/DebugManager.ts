@@ -1,41 +1,37 @@
 import { Action } from '@benjos/cookware';
 import { KeyboardCode } from '@benjos/spices';
-import GUI from 'lil-gui';
-import Stats from 'stats.js';
 import { ThreePerf } from 'three-perf';
+import { Pane, type FolderApi } from 'tweakpane';
 import type { DebugGuiTitle } from '../constants/DebugGuiTitle';
 import MainThreeApp from '../engines/threes/apps/MainThreeApp';
 import DomKeyboardManager from './doms/DomKeyboardManager';
 
 class DebugManager {
     private static readonly _IS_ACTIVE_STRING: string = '#debug';
-    private static readonly _GUI_WIDTH: number = 300;
     private static readonly _GUI_TITLE: string = 'Debug Panel';
+    private static readonly _PANE_CONTAINER_CLASS_NAME: string = 'debug-panel';
     private static readonly _THREE_PERF_ANCHOR_X: 'left' | 'right' = 'left';
     private static readonly _THREE_PERF_ANCHOR_Y: 'top' | 'bottom' = 'bottom';
     private static readonly _TOGGLE_HIDDEN_KEYS: string[] = [KeyboardCode.SHIFT_LEFT, KeyboardCode.KEY_H];
 
-    // Read once at startup: the GUI only exists if #debug was there on load, adding it later must not enable debug
     private readonly _isActive = window.location.hash === DebugManager._IS_ACTIVE_STRING;
     private _isDebugVisible = true;
-    declare private _gui: GUI;
+    declare private _pane: Pane;
+    private readonly _folders = new Map<DebugGuiTitle, FolderApi>();
     declare private _threePerf: ThreePerf;
-    declare private _stats: Stats;
     public onToggleVisibility = new Action();
 
     public init(): void {
         if (this.isActive) {
-            this._initGui();
+            this._initPane();
         }
     }
 
-    private _initGui(): void {
-        this._gui = new GUI({
-            width: DebugManager._GUI_WIDTH,
-            title: DebugManager._GUI_TITLE,
-            closeFolders: true,
-        });
-        this._gui.close();
+    private _initPane(): void {
+        const container = document.createElement('div');
+        container.classList.add(DebugManager._PANE_CONTAINER_CLASS_NAME);
+        document.body.appendChild(container);
+        this._pane = new Pane({ container, title: DebugManager._GUI_TITLE, expanded: false });
         DomKeyboardManager.onKeyDown.remove(this._onKeyDown);
         DomKeyboardManager.onKeyDown.add(this._onKeyDown);
     }
@@ -47,32 +43,26 @@ class DebugManager {
             domElement: document.body,
             renderer: MainThreeApp.renderer,
             showGraph: false,
+            overClock: false,
         });
     };
 
-    private _initStats = (): void => {
-        this._stats = new Stats();
-        this._stats.showPanel(0);
-        document.body.appendChild(this._stats.dom);
-    };
-
-    private _addGuiFolder(title: DebugGuiTitle): GUI {
-        return this._gui.addFolder(title);
+    private _addGuiFolder(title: DebugGuiTitle): FolderApi {
+        const folder = this._pane.addFolder({ title, expanded: false });
+        this._folders.set(title, folder);
+        return folder;
     }
 
-    public getGuiFolder(title: DebugGuiTitle): GUI {
-        return this._gui.folders.find((gui) => gui._title === title) ?? this._addGuiFolder(title);
+    public getGuiFolder(title: DebugGuiTitle): FolderApi {
+        return this._folders.get(title) ?? this._addGuiFolder(title);
     }
 
     public beginPerf(): void {
         if (!this._threePerf) this._initThreePerf();
-        if (!this._stats) this._initStats();
-        this._stats.begin();
         this._threePerf.begin();
     }
 
     public endPerf(): void {
-        this._stats.end();
         this._threePerf.end();
     }
 
@@ -84,9 +74,8 @@ class DebugManager {
 
     private _toggleVisibility(): void {
         this._isDebugVisible = !this._isDebugVisible;
-        this._gui.show(this._isDebugVisible);
+        this._pane.hidden = !this._isDebugVisible;
         if (this._threePerf) this._threePerf.visible = this._isDebugVisible;
-        if (this._stats) this._stats.dom.style.display = this._isDebugVisible ? 'block' : 'none';
         this.onToggleVisibility.execute();
     }
 
@@ -94,9 +83,6 @@ class DebugManager {
     //
     public get isActive(): boolean {
         return this._isActive;
-    }
-    public get gui(): GUI {
-        return this._gui;
     }
     //
     //#endregion

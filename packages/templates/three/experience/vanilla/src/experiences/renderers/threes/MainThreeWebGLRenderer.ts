@@ -52,22 +52,23 @@ export default class MainThreeWebGLRenderer extends ThreeWebGLRendererBase {
 
     private _setupDebug(): void {
         const rendererFolder = DebugManager.getGuiFolder(DebugGuiTitle.THREE_RENDERER);
-        rendererFolder.add(this, 'toneMapping', {
-            NoToneMapping,
-            LinearToneMapping,
-            ReinhardToneMapping,
-            CineonToneMapping,
-            ACESFilmicToneMapping,
-            CustomToneMapping,
-            AgXToneMapping,
-            NeutralToneMapping,
+        rendererFolder.addBinding(this, 'toneMapping', {
+            options: {
+                NoToneMapping,
+                LinearToneMapping,
+                ReinhardToneMapping,
+                CineonToneMapping,
+                ACESFilmicToneMapping,
+                CustomToneMapping,
+                AgXToneMapping,
+                NeutralToneMapping,
+            },
         });
-        rendererFolder.add(this, 'toneMappingExposure', 0, 10, 0.001);
-        rendererFolder.add(this, 'outputColorSpace', { SRGBColorSpace, LinearSRGBColorSpace });
+        rendererFolder.addBinding(this, 'toneMappingExposure', { min: 0, max: 10, step: 0.001 });
+        rendererFolder.addBinding(this, 'outputColorSpace', { options: { SRGBColorSpace, LinearSRGBColorSpace } });
         const postProcProxy = { active: this._isPostProcessingActive };
         rendererFolder
-            .add(postProcProxy, 'active')
-            .name('post-processing')
-            .onChange((value: boolean) => this.setIsPostProcessingActive(value));
+            .addBinding(postProcProxy, 'active', { label: 'post-processing' })
+            .on('change', (event) => this.setIsPostProcessingActive(event.value));
     }
 }

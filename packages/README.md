@@ -24,7 +24,7 @@ Choose a template:
 Experience templates include:
 - ⚡ Vite for fast development
 - 🎨 GLSL shader support (vite-plugin-glsl)
-- 🐛 Debug mode with lil-gui (DebugManager)
+- 🐛 Debug mode with Tweakpane (DebugManager)
 - 📦 Singleton-based manager architecture (Loader, Debug, Assets, Raycaster, etc.)
 - 🔄 Lazy loading with animated transitions between views
 - 🎭 Multi-view system (HTML views + Three.js views with dispose/cleanup)

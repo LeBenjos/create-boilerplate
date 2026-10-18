@@ -29,7 +29,7 @@ export default class TemplateThreeModel extends ThreeModelViewBase {
 
     private _setupDebug(): void {
         const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS);
-        const templateModelFolder = viewsDebug.addFolder('Template Model');
-        templateModelFolder.add(this.position, 'y', -1, 1, 0.01);
+        const templateModelFolder = viewsDebug.addFolder({ title: 'Template Model', expanded: false });
+        templateModelFolder.addBinding(this.position, 'y', { min: -1, max: 1, step: 0.01 });
     }
 }

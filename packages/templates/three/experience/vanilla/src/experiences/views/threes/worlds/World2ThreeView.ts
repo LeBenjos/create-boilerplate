@@ -29,10 +29,7 @@ export default class World2ThreeView extends ThreeViewBase {
     private _setupDebug(): void {
         const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS);
         viewsDebug
-            .add(
-                { switchToWorld2ThreeView: () => MainThreeApp.setCurrentView(ViewId.THREE_WORLD_2) },
-                'switchToWorld2ThreeView'
-            )
-            .name('SWITCH WORLD_2_VIEW');
+            .addButton({ title: 'SWITCH WORLD_2_VIEW' })
+            .on('click', () => void MainThreeApp.setCurrentView(ViewId.THREE_WORLD_2));
     }
 }

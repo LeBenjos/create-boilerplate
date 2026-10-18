@@ -1,3 +1,3 @@
-import GUI from 'lil-gui';
+import { Pane } from 'tweakpane';
 
-export const gui = new GUI();
+export const gui = new Pane();

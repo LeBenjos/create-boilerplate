@@ -11,7 +11,7 @@ const renderer = new Renderer(scene, camera, { antialias: true });
 
 const cube = new Mesh(new BoxGeometry(1, 1, 1, 1), new MeshNormalMaterial());
 scene.add(cube);
-gui.add(cube.rotation, 'y', 0, Math.PI * 2).name('cube rotation');
+gui.addBinding(cube.rotation, 'y', { min: 0, max: Math.PI * 2, label: 'cube rotation' });
 
 domResizeManager.init();
 tickerManager.init();

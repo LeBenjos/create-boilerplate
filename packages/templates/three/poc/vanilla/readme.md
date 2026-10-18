@@ -11,10 +11,10 @@ npm run dev
 
 ## What's inside
 
-- `src/main.ts`: scene with a demo cube and a lil-gui control
+- `src/main.ts`: scene with a demo cube and a Tweakpane control
 - `src/components/`: `Camera` (OrbitControls) and `Renderer`, resized and ticked by `@benjos/cookware`
 - `src/loaders/`: `gltfLoader` (Draco ready), `hdrLoader`, `textureLoader`, `fontLoader`
-- `src/gui.ts`: shared `lil-gui` instance
+- `src/gui.ts`: shared `Tweakpane` instance
 
 ## Assets
 

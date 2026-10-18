@@ -74,15 +74,17 @@ export default class EnvironmentThreeActor extends ThreeActorViewBase {
     private _setupDebug(): void {
         const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS);
 
-        const environmentFolder = viewsDebug.addFolder('Environment');
-        environmentFolder.add(this._environmentMap, 'intensity', 0, 10, 0.01).onChange(() => {
-            MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
-        });
+        const environmentFolder = viewsDebug.addFolder({ title: 'Environment', expanded: false });
+        environmentFolder
+            .addBinding(this._environmentMap, 'intensity', { min: 0, max: 10, step: 0.01 })
+            .on('change', () => {
+                MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
+            });
 
-        const sunLightFolder = viewsDebug.addFolder('Sun Light');
-        sunLightFolder.add(this._sunLight, 'intensity', 0, 10, 0.01).name('intensity');
-        sunLightFolder.add(this._sunLight.position, 'x', -5, 5, 0.01).name('positionX');
-        sunLightFolder.add(this._sunLight.position, 'y', -5, 5, 0.01).name('positionY');
-        sunLightFolder.add(this._sunLight.position, 'z', -5, 5, 0.01).name('positionZ');
+        const sunLightFolder = viewsDebug.addFolder({ title: 'Sun Light', expanded: false });
+        sunLightFolder.addBinding(this._sunLight, 'intensity', { min: 0, max: 10, step: 0.01, label: 'intensity' });
+        sunLightFolder.addBinding(this._sunLight.position, 'x', { min: -5, max: 5, step: 0.01, label: 'positionX' });
+        sunLightFolder.addBinding(this._sunLight.position, 'y', { min: -5, max: 5, step: 0.01, label: 'positionY' });
+        sunLightFolder.addBinding(this._sunLight.position, 'z', { min: -5, max: 5, step: 0.01, label: 'positionZ' });
     }
 }

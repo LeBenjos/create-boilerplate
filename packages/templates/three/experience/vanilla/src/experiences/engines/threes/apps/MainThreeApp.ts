@@ -74,9 +74,13 @@ class MainThreeApp extends ThreeAppBase {
         this._cameraControllers.set(debugCameraController.cameraId, debugCameraController);
 
         const viewsDebug = DebugManager.getGuiFolder(DebugGuiTitle.THREE_VIEWS);
-        viewsDebug.add({ resetCurrentView: () => this._currentView?.reset() }, 'resetCurrentView');
-        viewsDebug.add({ createWorld1: () => this.setCurrentView(ViewId.THREE_WORLD_1) }, 'createWorld1');
-        viewsDebug.add({ createWorld2: () => this.setCurrentView(ViewId.THREE_WORLD_2) }, 'createWorld2');
+        viewsDebug.addButton({ title: 'resetCurrentView' }).on('click', () => this._currentView?.reset());
+        viewsDebug
+            .addButton({ title: 'createWorld1' })
+            .on('click', () => void this.setCurrentView(ViewId.THREE_WORLD_1));
+        viewsDebug
+            .addButton({ title: 'createWorld2' })
+            .on('click', () => void this.setCurrentView(ViewId.THREE_WORLD_2));
     }
 
     private readonly _onKeyDown = (_e: KeyboardEvent): void => {

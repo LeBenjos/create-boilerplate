@@ -52,7 +52,14 @@ body {
         }
     }
 
-    .lil-gui,
+    .debug-panel {
+        position: fixed;
+        top: 8px;
+        right: 8px;
+        width: 300px;
+    }
+
+    .debug-panel,
     #three-perf-ui {
         z-index: 999999;
     }
