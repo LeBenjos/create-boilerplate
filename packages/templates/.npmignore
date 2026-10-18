@@ -1,13 +1,21 @@
 # Applies to every template. Templates ship their gitignore as `_gitignore`, which npm does not read,
 # so local artifacts must be excluded here. Keep in sync with the templates' `_gitignore`.
 node_modules
-dist
-dist-ssr
+# Build output at a template's root only (templates/<tech>/<kind>/<framework>/dist)
+/*/*/*/dist
+/*/*/*/dist-ssr
 .claude
 .vscode
 .idea
 *.local
+logs
 *.log
+*-debug.log*
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 improvements.md
 # Everything in assets_source except dotfiles (.gitkeep). No `!` negation: it makes npm re-include whole trees.
 **/assets_source/[!.]*

@@ -33,3 +33,5 @@ cd packages
 npm login
 npm publish --access public
 ```
+
+`npm publish` first runs `prepublishOnly`: build, tests, then `scripts/check-pack.js` (published templates must match git). Any failure aborts the publish.

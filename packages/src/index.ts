@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import chalk from 'chalk';
 import { program } from 'commander';
-import fs from 'fs-extra';
+import { readFile } from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { styleText } from 'util';
 
 import { createProject } from './createProject.js';
 import { CliError, type PackageJson } from './types.js';
@@ -14,7 +14,7 @@ const __filename = fileURLToPath(import.meta.url);
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const __dirname = path.dirname(__filename);
 
-const pkg = (await fs.readJson(path.join(__dirname, '..', 'package.json'))) as PackageJson;
+const pkg = JSON.parse(await readFile(path.join(__dirname, '..', 'package.json'), 'utf8')) as PackageJson;
 
 program
     .name('create-boilerplate')
@@ -26,7 +26,7 @@ program
             await createProject(projectName);
         } catch (error) {
             if (error instanceof CliError) {
-                console.error(chalk.red(`\n❌ ${error.message}`));
+                console.error(styleText('red', `\n❌ ${error.message}`));
                 process.exit(1);
             }
             // Thrown by @inquirer/prompts on Ctrl+C

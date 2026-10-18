@@ -41,6 +41,8 @@ npm install
 
 Templates live in `packages/templates/<tech>/<kind>/<framework>`. Each one ships its gitignore as `_gitignore` (npm strips `.gitignore` from published packages); the CLI renames it on copy.
 
+Before `npm publish`, `prepublishOnly` runs the tests and `scripts/check-pack.js`, which fails if the published templates differ from the git-tracked ones (keep `packages/templates/.npmignore` in sync with the `_gitignore` files).
+
 To add one: create the folder and add its path to `TEMPLATE_CHOICES` (`packages/src/constants.ts`). `npm run bump` finds every template with a `package.json` automatically.
 
 ## 📄 License

@@ -11,6 +11,11 @@ export const RESERVED_NAMES = new Set([
     'node_modules',
 ]);
 
+export const DEFAULT_PROJECT_NAME = 'my-threejs-app';
+
+// npm rejects longer package names
+export const PROJECT_NAME_MAX_LENGTH = 214;
+
 // Entries tolerated in a non-empty current directory
 export const ALLOWED_EXISTING_ENTRIES = new Set([
     '.git',
