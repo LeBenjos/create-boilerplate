@@ -12,7 +12,7 @@ Quickly test and develop a local package (e.g. @benjos/cookware) in your project
 npm link
 ```
 
-### b) In your project folder (e.g. template-vanilla):
+### b) In your project folder (e.g. templates/three/experience/vanilla):
 ```sh
 npm link @benjos/cookware
 ```

@@ -3,11 +3,14 @@ export interface PackageJson {
     version: string;
 }
 
-export type Framework = 'vanilla' | 'vue';
+import type { TEMPLATE_CHOICES } from './constants.js';
+
+// Path relative to `templates/`
+export type Template = (typeof TEMPLATE_CHOICES)[number]['value'];
 
 export interface ProjectAnswers {
     projectName: string;
-    framework: Framework;
+    template: Template;
 }
 
 export class CliError extends Error {

@@ -10,15 +10,15 @@ Create a new Three.js project:
 npm create @benjos/boilerplate@latest
 ```
 
-Choose between:
-- **Vanilla** → Three.js + TypeScript + HTML views
-- **Vue** → Three.js + TypeScript + Vue components
+Choose a template:
+- **Three.js · Experience · Vanilla** → full architecture + HTML views
+- **Three.js · POC · Vanilla** → minimal Three.js + Vite setup for quick prototypes
 
 ## 🛠️ For Developers
 
 ### Prerequisites
 
-- Node.js >= 18.0.0
+- Node.js >= 20.12.0
 
 ### Setup
 
@@ -30,19 +30,18 @@ npm install
 
 | Command | Description |
 |---|---|
+| `npm test` | Build the CLI and run its tests |
 | `npm run lint` | Run ESLint with zero-warnings policy |
 | `npm run lint:fix` | Run ESLint with auto-fix |
 | `npm run format` | Format code with Prettier |
 | `npm run format:check` | Check code formatting |
-| `npm run version <patch\|minor\|major>` | Bump version across all packages |
+| `npm run bump <patch\|minor\|major>` | Bump version across all packages |
 
-### Testing
+### Templates
 
-```bash
-cd packages
-npm run test         # Run tests once
-npm run test:watch   # Run tests in watch mode
-```
+Templates live in `packages/templates/<tech>/<kind>/<framework>`. Each one ships its gitignore as `_gitignore` (npm strips `.gitignore` from published packages); the CLI renames it on copy.
+
+To add one: create the folder and add its path to `TEMPLATE_CHOICES` (`packages/src/constants.ts`). `npm run bump` finds every template with a `package.json` automatically.
 
 ## 📄 License
 

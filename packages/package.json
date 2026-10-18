@@ -1,35 +1,32 @@
 {
     "name": "@benjos/create-boilerplate",
     "version": "1.5.11",
-    "description": "CLI to scaffold Three.js projects with framework support",
+    "description": "CLI to scaffold Three.js projects (experiences and POCs)",
     "type": "module",
     "bin": {
         "create-boilerplate": "./dist/index.js"
     },
     "files": [
         "dist",
-        "template-vanilla",
-        "template-react",
-        "template-vue"
+        "templates"
     ],
     "scripts": {
-        "build": "tsc",
+        "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc",
         "dev": "tsc --watch",
-        "prepublishOnly": "npm run build"
+        "test": "npm run build && node --test test/",
+        "prepublishOnly": "npm test"
     },
     "keywords": [
         "three.js",
         "boilerplate",
         "cli",
         "scaffold",
-        "vanilla",
-        "react",
-        "vue"
+        "vanilla"
     ],
     "author": "Benjamin Schinkel",
     "license": "MIT",
     "engines": {
-        "node": ">=18.0.0"
+        "node": ">=20.12.0"
     },
     "repository": {
         "type": "git",

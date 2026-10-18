@@ -6,4 +6,4 @@ node_modules
 **/public/assets
 package-lock.json
 scripts/
-packages/template-*
+packages/templates

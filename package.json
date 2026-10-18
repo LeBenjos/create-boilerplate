@@ -9,10 +9,11 @@
     "scripts": {
         "lint": "eslint . --max-warnings 0",
         "lint:fix": "eslint . --fix",
-        "format": "prettier --write \"**/src/**\"",
-        "format:check": "prettier --check \"**/src/**\"",
-        "version": "node scripts/version.js",
-        "update:deps": "npx -y npm-check-updates -u --deep --install always"
+        "format": "prettier --write \"**/src/**\" \"packages/test/**\"",
+        "format:check": "prettier --check \"**/src/**\" \"packages/test/**\"",
+        "bump": "node scripts/version.js",
+        "update:deps": "npx -y npm-check-updates -u --deep --install always",
+        "test": "npm test --workspace packages"
     },
     "devDependencies": {
         "@eslint/js": "^10.0.1",

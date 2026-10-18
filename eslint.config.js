@@ -14,8 +14,7 @@ export default tseslint.config(
             '**/*.d.ts',
             '*.config.js',
             '*.config.ts',
-            'packages/template-*/**',
-            'packages/src/**/*.test.ts',
+            'packages/templates/**',
             'scripts/**',
         ],
     },
@@ -139,6 +138,15 @@ export default tseslint.config(
 
             // Prettier integration
             'prettier/prettier': 'warn',
+        },
+    },
+    // Tests are plain JS run against dist/, outside the TypeScript project
+    {
+        files: ['packages/test/**/*.js'],
+        ...tseslint.configs.disableTypeChecked,
+        rules: {
+            ...tseslint.configs.disableTypeChecked.rules,
+            '@typescript-eslint/explicit-function-return-type': 'off',
         },
     },
 );

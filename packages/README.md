@@ -17,11 +17,11 @@ npm create @benjos/boilerplate@latest .
 
 ## ✨ Features
 
-Choose your framework:
-- **Vanilla** → Three.js + TypeScript + HTML views
-- **Vue** → Three.js + TypeScript + Vue components
+Choose a template:
+- **Three.js · Experience · Vanilla** → full architecture + HTML views
+- **Three.js · POC · Vanilla** → minimal Three.js + Vite setup for quick prototypes
 
-Both templates include:
+Experience templates include:
 - ⚡ Vite for fast development
 - 🎨 GLSL shader support (vite-plugin-glsl)
 - 🐛 Debug mode with lil-gui (DebugManager)

@@ -18,7 +18,7 @@ const pkg = (await fs.readJson(path.join(__dirname, '..', 'package.json'))) as P
 
 program
     .name('create-boilerplate')
-    .description('Create a new Three.js project with Vanilla/Vue')
+    .description('Create a new project from a template')
     .version(pkg.version)
     .argument('[project-name]', 'Project name (use "." for current directory)')
     .action(async (projectName?: string) => {
@@ -26,11 +26,15 @@ program
             await createProject(projectName);
         } catch (error) {
             if (error instanceof CliError) {
-                console.log(chalk.red(`\n❌ ${error.message}`));
+                console.error(chalk.red(`\n❌ ${error.message}`));
                 process.exit(1);
+            }
+            // Thrown by @inquirer/prompts on Ctrl+C
+            if (error instanceof Error && error.name === 'ExitPromptError') {
+                process.exit(130);
             }
             throw error;
         }
     });
 
-program.parse();
+await program.parseAsync();

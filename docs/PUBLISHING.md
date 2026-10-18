@@ -2,33 +2,20 @@
 
 ## Development Workflow
 
-**Develop Vanilla:**
+**Develop a template** (e.g. `three/experience/vanilla`, `three/poc/vanilla`):
 ```bash
-cd packages/template-vanilla
+cd packages/templates/three/experience/vanilla
 npm install
 npm run dev
-```
-
-**Develop Vue:**
-```bash
-cd packages/template-vue
-npm install
-npm run dev
-```
-
-**Run Tests:**
-```bash
-cd packages
-npm run test
 ```
 
 ## Publishing Workflow
 
 **1. Bump version (from project root):**
 ```bash
-npm run version patch   # patch: 1.0.x
-npm run version minor   # minor: 1.x.0
-npm run version major   # major: x.0.0
+npm run bump patch   # patch: 1.0.x
+npm run bump minor   # minor: 1.x.0
+npm run bump major   # major: x.0.0
 ```
 
 This updates the version in all `package.json` files (root, packages, and all templates) and runs `npm install` in each.

@@ -13,13 +13,13 @@ dist-ssr
 .claude
 *.local
 
-assets_source/*
-!assets_source/.gitkeep
+**/assets_source/*
+!**/assets_source/.gitkeep
 improvements.md
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
+**/.vscode/*
+!**/.vscode/extensions.json
 .idea
 .DS_Store
 *.suo
