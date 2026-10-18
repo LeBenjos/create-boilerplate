@@ -1,6 +1,6 @@
-import { PerspectiveCamera } from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { domResizeManager, tickerManager } from "../managers";
+import { PerspectiveCamera } from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { domResizeManager, tickerManager } from '../managers';
 
 export default class Camera extends PerspectiveCamera {
     private _controller: OrbitControls;
@@ -21,9 +21,9 @@ export default class Camera extends PerspectiveCamera {
     private _onResize = (): void => {
         this.aspect = domResizeManager.aspectRatio;
         this.updateProjectionMatrix();
-    }
+    };
 
     private _update = (): void => {
         this._controller.update();
-    }
+    };
 }

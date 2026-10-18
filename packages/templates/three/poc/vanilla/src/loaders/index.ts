@@ -1,6 +1,6 @@
-import { AssetUtils } from "@benjos/cookware";
-import { TextureLoader } from "three";
-import { DRACOLoader, FontLoader, GLTFLoader, HDRLoader } from "three/examples/jsm/Addons.js";
+import { AssetUtils } from '@benjos/cookware';
+import { TextureLoader } from 'three';
+import { DRACOLoader, FontLoader, GLTFLoader, HDRLoader } from 'three/examples/jsm/Addons.js';
 
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath(AssetUtils.GetPath('loaders/draco/'));

@@ -1,5 +1,5 @@
-import { PerspectiveCamera, Scene, WebGLRenderer, type WebGLRendererParameters } from "three";
-import { domResizeManager, tickerManager } from "../managers";
+import { PerspectiveCamera, Scene, WebGLRenderer, type WebGLRendererParameters } from 'three';
+import { domResizeManager, tickerManager } from '../managers';
 
 export default class Renderer extends WebGLRenderer {
     private _scene: Scene;
@@ -18,9 +18,9 @@ export default class Renderer extends WebGLRenderer {
     private _onResize = (): void => {
         this.setPixelRatio(domResizeManager.pixelRatio);
         this.setSize(domResizeManager.width, domResizeManager.height);
-    }
+    };
 
     private _update = (): void => {
         this.render(this._scene, this._camera);
-    }
+    };
 }

@@ -9,10 +9,7 @@ const scene = new Scene();
 const camera = new Camera(75, domResizeManager.aspectRatio, 0.1, 1000);
 const renderer = new Renderer(scene, camera, { antialias: true });
 
-const cube = new Mesh(
-    new BoxGeometry(1, 1, 1, 1),
-    new MeshNormalMaterial()
-);
+const cube = new Mesh(new BoxGeometry(1, 1, 1, 1), new MeshNormalMaterial());
 scene.add(cube);
 gui.add(cube.rotation, 'y', 0, Math.PI * 2).name('cube rotation');
 

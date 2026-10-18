@@ -11,7 +11,7 @@ npm run dev
 
 ## What's inside
 
-- `src/main.ts`: scene, cube, HDR environment and GLB demo (delete what you don't need)
+- `src/main.ts`: scene with a demo cube and a lil-gui control
 - `src/components/`: `Camera` (OrbitControls) and `Renderer`, resized and ticked by `@benjos/cookware`
 - `src/loaders/`: `gltfLoader` (Draco ready), `hdrLoader`, `textureLoader`, `fontLoader`
 - `src/gui.ts`: shared `lil-gui` instance
