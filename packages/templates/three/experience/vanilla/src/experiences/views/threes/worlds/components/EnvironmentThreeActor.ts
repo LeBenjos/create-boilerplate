@@ -28,6 +28,8 @@ export default class EnvironmentThreeActor extends ThreeActorViewBase {
 
         this._generateEnvironmentMap();
         this._generateSunLight();
+
+        if (DebugManager.isActive) this._setupDebug();
     }
 
     public init(): void {
@@ -36,7 +38,6 @@ export default class EnvironmentThreeActor extends ThreeActorViewBase {
             MainThreeApp.scene.environment = this._environmentMap.texture!;
             MainThreeApp.scene.environmentIntensity = this._environmentMap.intensity!;
         }
-        if (DebugManager.isActive) this._setupDebug();
     }
 
     public reset(): void {

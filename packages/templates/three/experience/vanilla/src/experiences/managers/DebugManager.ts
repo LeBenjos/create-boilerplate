@@ -1,7 +1,7 @@
 import { Action } from '@benjos/cookware';
 import { KeyboardCode } from '@benjos/spices';
-import { ThreePerf } from 'three-perf';
-import { Pane, type FolderApi } from 'tweakpane';
+import type { ThreePerf } from 'three-perf';
+import type { FolderApi, Pane } from 'tweakpane';
 import type { DebugGuiTitle } from '../constants/DebugGuiTitle';
 import MainThreeApp from '../engines/threes/apps/MainThreeApp';
 import DomKeyboardManager from './doms/DomKeyboardManager';
@@ -19,15 +19,18 @@ class DebugManager {
     declare private _pane: Pane;
     private readonly _folders = new Map<DebugGuiTitle, FolderApi>();
     declare private _threePerf: ThreePerf;
+    declare private _threePerfClass: typeof ThreePerf;
     public onToggleVisibility = new Action();
 
-    public init(): void {
+    public async init(): Promise<void> {
         if (this.isActive) {
-            this._initPane();
+            await this._initPane();
         }
     }
 
-    private _initPane(): void {
+    private async _initPane(): Promise<void> {
+        const [{ Pane }, { ThreePerf }] = await Promise.all([import('tweakpane'), import('three-perf')]);
+        this._threePerfClass = ThreePerf;
         const container = document.createElement('div');
         container.classList.add(DebugManager._PANE_CONTAINER_CLASS_NAME);
         document.body.appendChild(container);
@@ -37,7 +40,7 @@ class DebugManager {
     }
 
     private _initThreePerf = (): void => {
-        this._threePerf = new ThreePerf({
+        this._threePerf = new this._threePerfClass({
             anchorX: DebugManager._THREE_PERF_ANCHOR_X,
             anchorY: DebugManager._THREE_PERF_ANCHOR_Y,
             domElement: document.body,

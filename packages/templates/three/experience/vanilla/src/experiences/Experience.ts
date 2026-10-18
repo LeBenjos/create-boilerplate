@@ -10,7 +10,7 @@ class Experience {
     public async init(): Promise<void> {
         if (this._isInitialized) return;
         this._isInitialized = true;
-        InitCommand.init();
+        await InitCommand.init();
         await LoaderManager.loadAssetsWithTransition(this._onReady);
     }
 

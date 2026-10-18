@@ -14,10 +14,10 @@ import MainHTMLEngine from '../engines/htmls/MainHTMLEngine';
 import MainThreeEngine from '../engines/threes/MainThreeEngine';
 
 class InitCommand {
-    public init(): void {
+    public async init(): Promise<void> {
         this._initUtils();
         this._initProxies();
-        this._initManagers();
+        await this._initManagers();
         this._initCommonAssets();
         this._initThreeSharedAssets();
         this._initEngines();
@@ -31,7 +31,7 @@ class InitCommand {
         //
     }
 
-    private _initManagers(): void {
+    private async _initManagers(): Promise<void> {
         // Core
         TickerManager.init();
 
@@ -45,7 +45,7 @@ class InitCommand {
         ThreeRaycasterManager.init();
 
         // App
-        DebugManager.init();
+        await DebugManager.init();
         LoaderManager.init();
     }
 
