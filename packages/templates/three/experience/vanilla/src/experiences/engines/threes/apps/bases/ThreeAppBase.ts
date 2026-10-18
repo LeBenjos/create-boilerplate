@@ -135,10 +135,6 @@ export default abstract class ThreeAppBase {
     }
 
     protected _onResize = (): void => {
-        // C'est pas à mentre dans this._renderer.resize(); ?
-        this._renderer.domElement.width = window.innerWidth;
-        this._renderer.domElement.height = window.innerHeight;
-
         this._currentCameraController.resize();
         this._renderer.resize();
     };
