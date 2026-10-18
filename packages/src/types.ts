@@ -1,9 +1,9 @@
+import type { TEMPLATE_CHOICES } from './constants.js';
+
 export interface PackageJson {
     name: string;
     version: string;
 }
-
-import type { TEMPLATE_CHOICES } from './constants.js';
 
 // Path relative to `templates/`
 export type Template = (typeof TEMPLATE_CHOICES)[number]['value'];
