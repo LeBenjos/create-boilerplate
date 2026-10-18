@@ -17,6 +17,8 @@ class DebugManager {
         KeyboardConstant.CODES.KEY_H,
     ];
 
+    // Read once at startup: the GUI only exists if #debug was there on load, adding it later must not enable debug
+    private readonly _isActive = window.location.hash === DebugManager._IS_ACTIVE_STRING;
     private _isDebugVisible = true;
     declare private _gui: GUI;
     declare private _threePerf: ThreePerf;
@@ -93,7 +95,7 @@ class DebugManager {
     //#region Getters
     //
     public get isActive(): boolean {
-        return window.location.hash === DebugManager._IS_ACTIVE_STRING;
+        return this._isActive;
     }
     public get gui(): GUI {
         return this._gui;
