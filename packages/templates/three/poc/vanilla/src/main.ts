@@ -1,6 +1,7 @@
 import { BoxGeometry, Mesh, MeshNormalMaterial, Scene } from 'three';
 import Camera from './components/Camera';
 import Renderer from './components/Renderer';
+import { gui } from './gui';
 import { domResizeManager, tickerManager } from './managers';
 import './style.css';
 
@@ -13,6 +14,7 @@ const cube = new Mesh(
     new MeshNormalMaterial()
 );
 scene.add(cube);
+gui.add(cube.rotation, 'y', 0, Math.PI * 2).name('cube rotation');
 
 domResizeManager.init();
 tickerManager.init();
